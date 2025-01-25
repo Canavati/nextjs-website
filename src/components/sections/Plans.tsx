@@ -152,7 +152,7 @@ const FibraMovilConfigurator = () => {
             <div className="absolute inset-[1px] rounded-[10px] bg-gradient-to-br from-[#f8f9ff] via-white to-[#f8f9ff]" />
             
             {/* Selection/Hover Gradient */}
-            <div className={`absolute inset-[1px] rounded-[10px] bg-gradient-to-br from-[#ed54ba]/20 via-[#51fcff]/20 to-[#ed54ba]/20 opacity-0 transition-opacity duration-300 ${
+            <div className={`absolute inset-[1px] rounded-[10px] bg-gradient-to-br from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 transition-opacity duration-300 ${
               config.selectedPlan === index ? 'opacity-100' : 'group-hover:opacity-100'
             }`} />
             
