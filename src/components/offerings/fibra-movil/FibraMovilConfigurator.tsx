@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
-import { WifiHigh, DeviceMobile, Plus, Minus } from '@phosphor-icons/react';
+import { WifiHigh, DeviceMobile, Plus, Minus, Lightning, Crown, Rocket, Star } from '@phosphor-icons/react';
 
 interface FibraMovilConfig {
   selectedPlan: number;
@@ -75,6 +75,9 @@ export default function FibraMovilConfigurator() {
     }
   });
 
+  // Add state for mobile tabs
+  const [activeTab, setActiveTab] = useState<'plans' | 'config'>('plans');
+
   const totalAdditionalLines = Object.values(config.additionalLines).reduce((a, b) => a + b, 0);
   const canAddMore = totalAdditionalLines < 4;
 
@@ -108,13 +111,45 @@ export default function FibraMovilConfigurator() {
       transition={{ duration: 0.5 }}
       className="space-y-4 md:space-y-6"
     >
-      {/* Plan Selection */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
+      {/* Mobile Tabs - Only visible on mobile */}
+      <div className="md:hidden">
+        <div className="bg-slate-100/80 backdrop-blur-sm rounded-2xl p-1.5 flex justify-center gap-1 max-w-[95%] mx-auto mb-4">
+          <button
+            onClick={() => setActiveTab('plans')}
+            className={`flex-1 rounded-xl px-4 py-2 text-sm font-medium transition-all duration-300 ${
+              activeTab === 'plans'
+                ? 'bg-white shadow-sm text-[--quaternary]'
+                : 'text-gray-600 hover:text-gray-800'
+            }`}
+          >
+            Planes
+          </button>
+          <button
+            onClick={() => setActiveTab('config')}
+            className={`flex-1 rounded-xl px-4 py-2 text-sm font-medium transition-all duration-300 ${
+              activeTab === 'config'
+                ? 'bg-white shadow-sm text-[--quaternary]'
+                : 'text-gray-600 hover:text-gray-800'
+            }`}
+          >
+            Configuración
+          </button>
+        </div>
+      </div>
+
+      {/* Plan Selection - Hidden on mobile when config tab is active */}
+      <div className={`${activeTab === 'config' ? 'hidden md:grid' : ''} grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4`}>
         {FIBRA_MOVIL_PLANS.map((plan, index) => (
           <motion.button
             key={index}
-            onClick={() => setConfig(prev => ({ ...prev, selectedPlan: index }))}
-            className="group relative p-4 md:p-5 rounded-xl text-left transition-all duration-300"
+            onClick={() => {
+              setConfig(prev => ({ ...prev, selectedPlan: index }));
+              // On mobile, automatically switch to config tab after selecting a plan
+              if (window.innerWidth < 768) {
+                setActiveTab('config');
+              }
+            }}
+            className="group relative p-3 md:p-4 rounded-xl text-left transition-all duration-300"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -125,17 +160,25 @@ export default function FibraMovilConfigurator() {
             }}
           >
             {/* Selection/Hover Gradient */}
-            <div className={`absolute inset-[1px] rounded-[10px] bg-gradient-to-br from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 transition-opacity duration-300 ${
+            <div className={`absolute inset-[1px] rounded-[10px] bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 transition-opacity duration-300 ${
               config.selectedPlan === index ? 'opacity-100' : 'group-hover:opacity-100'
             }`} />
             
             {/* Content */}
             <div className="relative">
-              <h3 className="text-lg font-semibold mb-4 text-[#ed54ba]">
-                {plan.title}
-              </h3>
-              
-              <div className="space-y-4">
+              {/* Title and Icon at top - Updated to match PackCard */}
+              <div className="flex items-center justify-center gap-2 mb-4">
+                {plan.title === 'Básico' && <Lightning size={32} weight="duotone" className="text-[--primary]" />}
+                {plan.title === 'Estándar' && <Rocket size={32} weight="duotone" className="text-[--primary]" />}
+                {plan.title === 'Pro' && <Star size={32} weight="duotone" className="text-[--primary]" />}
+                {plan.title === 'Premium' && <Crown size={32} weight="duotone" className="text-[--primary]" />}
+                <h3 className="text-xl font-medium text-dark">{plan.title}</h3>
+              </div>
+
+              {/* Light Divider */}
+              <hr className="border-[#adadad] mb-4" />
+
+              <div className="space-y-3">
                 <div>
                   <div className="text-sm text-gray mb-1">Fibra</div>
                   <div className="flex items-center gap-2">
@@ -155,7 +198,7 @@ export default function FibraMovilConfigurator() {
                 </div>
 
                 {/* Features */}
-                <div className="space-y-2">
+                <div className="space-y-1.5">
                   {plan.features.map((feature, idx) => (
                     <div key={idx} className="flex items-center gap-2 text-sm text-gray">
                       <div className="w-1 h-1 rounded-full bg-[#ed54ba]" />
@@ -176,8 +219,8 @@ export default function FibraMovilConfigurator() {
         ))}
       </div>
 
-      {/* Additional Lines Section */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4">
+      {/* Additional Lines Section - Hidden on mobile when plans tab is active */}
+      <div className={`${activeTab === 'plans' ? 'hidden md:grid' : ''} grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4`}>
         <motion.div
           className="lg:col-span-2 relative rounded-xl p-4 md:p-5 shadow-sm"
           initial={{ opacity: 0, y: 20 }}

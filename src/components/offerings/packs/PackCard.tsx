@@ -34,7 +34,7 @@ export default function PackCard({
 }: PackCardProps) {
   const getPackIcon = () => {
     if (title.includes('Single')) return <Lightning size={32} weight="duotone" className="text-[--primary]" />;
-    if (title.includes('Duo')) return <UsersThree size={32} weight="duotone" className="text-[--primary]" />;
+    if (title.includes('Duo')) return <Users size={32} weight="duotone" className="text-[--primary]" />;
     if (title.includes('Tetra')) return <UsersFour size={32} weight="duotone" className="text-[--primary]" />;
     if (title.includes('Pro')) return <Crown size={32} weight="duotone" className="text-[--primary]" />;
     return null;
@@ -94,16 +94,16 @@ export default function PackCard({
         <div className="grid grid-cols-2 gap-x-6 gap-y-4 mb-6">
           <div className="flex items-center gap-2">
             {title.includes('Single') ? (
-              <User size={24} weight="duotone" className="text-[#79C4CD]" />
+              <User size={24} weight="duotone" className="text-[--primary]" />
             ) : title.includes('Tetra') ? (
-              <UsersFour size={24} weight="duotone" className="text-[#79C4CD]" />
+              <UsersFour size={24} weight="duotone" className="text-[--primary]" />
             ) : (
-              <Users size={24} weight="duotone" className="text-[#79C4CD]" />
+              <Users size={24} weight="duotone" className="text-[--primary]" />
             )}
             <span className="text-sm text-gray">{title.includes('Single') ? '1 Línea' : title.includes('Tetra') ? '4 Líneas' : '2 Líneas'}</span>
           </div>
           <div className="flex items-center gap-2">
-            <Phone size={24} weight="duotone" className="text-[#79C4CD]" />
+            <Phone size={24} weight="duotone" className="text-[--primary]" />
             <span className="text-sm text-gray">Llamadas Ilimitadas</span>
           </div>
         </div>
