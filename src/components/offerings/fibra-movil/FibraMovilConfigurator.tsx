@@ -275,6 +275,63 @@ export default function FibraMovilConfigurator() {
       transition={{ duration: 0.5 }}
       className="space-y-4 md:space-y-6"
     >
+      {/* Mobile Layout - Full Width Cards */}
+      <div className="md:hidden space-y-4">
+        {FIBRA_MOVIL_PLANS.map((plan, index) => (
+          <motion.button
+            key={index}
+            onClick={() => {
+              setConfig(prev => ({ ...prev, selectedPlan: index }));
+              setShowMobileConfig(true);
+            }}
+            className="w-full group relative p-4 rounded-xl text-left transition-all duration-300"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            style={{
+              border: '2px solid transparent',
+              background: 'linear-gradient(rgb(248 250 252), rgb(248 250 252)) padding-box, var(--gradient-primary) border-box'
+            }}
+          >
+            {/* Hover Gradient Only */}
+            <div className="absolute inset-[1px] rounded-[10px] bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 group-active:opacity-100 group-hover:opacity-100 transition-opacity duration-300" />
+            
+            <div className="relative">
+              {/* Title and Icon */}
+              <div className="flex items-center gap-2 mb-3">
+                <div className="flex-shrink-0">
+                  {plan.title === 'Básico' && <Lightning size={28} weight="duotone" className="text-[--primary]" />}
+                  {plan.title === 'Estándar' && <Rocket size={28} weight="duotone" className="text-[--primary]" />}
+                  {plan.title === 'Pro' && <Star size={28} weight="duotone" className="text-[--primary]" />}
+                  {plan.title === 'Premium' && <Crown size={28} weight="duotone" className="text-[--primary]" />}
+                </div>
+                <h3 className="text-lg font-medium text-dark">{plan.title}</h3>
+              </div>
+
+              {/* Features and Price */}
+              <div className="flex items-end justify-between">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-1">
+                    <WifiHigh size={16} weight="duotone" className="text-[#ed54ba]" />
+                    <span className="text-base font-medium text-[#79C4CD]">{plan.speed}<span className="text-sm text-gray">Mb</span></span>
+                  </div>
+                  <div className="flex items-center gap-1">
+                    <DeviceMobile size={16} weight="duotone" className="text-[#ed54ba]" />
+                    <span className="text-base font-medium text-[#79C4CD]">{plan.data}<span className="text-sm text-gray">GB</span></span>
+                  </div>
+                </div>
+                <div className="text-right">
+                  <div className="text-2xl font-bold text-[#79C4CD]">
+                    {plan.basePrice.toFixed(2)}€
+                    <span className="text-xs font-normal text-gray ml-1">/mes</span>
+                  </div>
+                  <span className="text-xs text-gray">IVA incluido</span>
+                </div>
+              </div>
+            </div>
+          </motion.button>
+        ))}
+      </div>
+
       {/* Desktop Layout - Unchanged */}
       <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-3 md:gap-4">
         {FIBRA_MOVIL_PLANS.map((plan, index) => (
@@ -344,65 +401,6 @@ export default function FibraMovilConfigurator() {
                     {plan.basePrice.toFixed(2)}€
                     <span className="text-sm font-normal text-gray ml-1">/mes</span>
                   </div>
-                </div>
-              </div>
-            </div>
-          </motion.button>
-        ))}
-      </div>
-
-      {/* Mobile Layout - Full Width Cards */}
-      <div className="md:hidden space-y-4">
-        {FIBRA_MOVIL_PLANS.map((plan, index) => (
-          <motion.button
-            key={index}
-            onClick={() => {
-              setConfig(prev => ({ ...prev, selectedPlan: index }));
-              setShowMobileConfig(true);
-            }}
-            className="w-full group relative p-4 rounded-xl text-left transition-all duration-300"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.3, delay: index * 0.1 }}
-            style={{
-              border: '2px solid transparent',
-              background: 'linear-gradient(rgb(248 250 252), rgb(248 250 252)) padding-box, var(--gradient-primary) border-box'
-            }}
-          >
-            <div className={`absolute inset-[1px] rounded-[10px] bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 transition-opacity duration-300 ${
-              config.selectedPlan === index ? 'opacity-100' : 'group-hover:opacity-100'
-            }`} />
-            
-            <div className="relative">
-              {/* Title and Icon */}
-              <div className="flex items-center gap-2 mb-3">
-                <div className="flex-shrink-0">
-                  {plan.title === 'Básico' && <Lightning size={28} weight="duotone" className="text-[--primary]" />}
-                  {plan.title === 'Estándar' && <Rocket size={28} weight="duotone" className="text-[--primary]" />}
-                  {plan.title === 'Pro' && <Star size={28} weight="duotone" className="text-[--primary]" />}
-                  {plan.title === 'Premium' && <Crown size={28} weight="duotone" className="text-[--primary]" />}
-                </div>
-                <h3 className="text-lg font-medium text-dark">{plan.title}</h3>
-              </div>
-
-              {/* Features and Price */}
-              <div className="flex items-end justify-between">
-                <div className="flex flex-col gap-2">
-                  <div className="flex items-center gap-1">
-                    <WifiHigh size={16} weight="duotone" className="text-[#ed54ba]" />
-                    <span className="text-base font-medium text-[#79C4CD]">{plan.speed}<span className="text-sm text-gray">Mb</span></span>
-                  </div>
-                  <div className="flex items-center gap-1">
-                    <DeviceMobile size={16} weight="duotone" className="text-[#ed54ba]" />
-                    <span className="text-base font-medium text-[#79C4CD]">{plan.data}<span className="text-sm text-gray">GB</span></span>
-                  </div>
-                </div>
-                <div className="text-right">
-                  <div className="text-2xl font-bold text-[#79C4CD]">
-                    {plan.basePrice.toFixed(2)}€
-                    <span className="text-xs font-normal text-gray ml-1">/mes</span>
-                  </div>
-                  <span className="text-xs text-gray">IVA incluido</span>
                 </div>
               </div>
             </div>
