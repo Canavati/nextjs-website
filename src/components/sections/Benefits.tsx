@@ -103,11 +103,11 @@ export default function Benefits() {
   };
 
   return (
-    <section className="pt-10 pb-6 bg-light-gray">
+    <section className="pt-16 pb-12 bg-light-gray">
       <div className="max-w-[1600px] mx-auto px-[5%]">
         <motion.h2
           {...motionConfig}
-          className="text-4xl font-bold text-center mb-12 text-shimmer"
+          className="text-4xl font-bold text-center mb-16 text-shimmer"
         >
           ¿Por qué elegirnos?
         </motion.h2>
@@ -118,7 +118,7 @@ export default function Benefits() {
               <motion.div
                 key={benefit.title}
                 {...motionConfig}
-                className="group card-interactive gradient-border bg-white rounded-3xl p-4 aspect-square text-center gradient-glow w-[260px] h-[260px] flex flex-col items-center justify-center"
+                className="group card-interactive gradient-border bg-white rounded-3xl p-6 aspect-square text-center gradient-glow w-[260px] h-[260px] flex flex-col items-center justify-center"
               >
                 <div className="inline-flex items-center justify-center w-20 h-20 mb-2 shrink-0 text-[--quaternary] group-hover:scale-110 transition-transform duration-300">
                   {renderIcon(benefit.icon)}
@@ -135,11 +135,11 @@ export default function Benefits() {
         </div>
 
         {/* Mobile Scrolling View */}
-        <div className="md:hidden">
+        <div className="md:hidden py-4">
           <div 
             ref={scrollRef}
             onTouchStart={handleTouchStart}
-            className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar"
+            className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar py-4"
             style={{ scrollSnapType: 'x mandatory' }}
           >
             {benefits.map((benefit, index) => (
@@ -148,7 +148,7 @@ export default function Benefits() {
                 {...motionConfig}
                 className="flex-none w-[260px] snap-center mx-2.5 first:ml-[5%] last:mr-[5%]"
               >
-                <div className="group card-interactive gradient-border bg-white rounded-3xl p-4 aspect-square text-center gradient-glow w-full h-[260px] flex flex-col items-center justify-center">
+                <div className="group card-interactive gradient-border bg-white rounded-3xl p-6 aspect-square text-center gradient-glow w-full h-[260px] flex flex-col items-center justify-center">
                   <div className="inline-flex items-center justify-center w-20 h-20 mb-2 shrink-0 text-[--quaternary] group-hover:scale-110 transition-transform duration-300">
                     {renderIcon(benefit.icon)}
                   </div>
