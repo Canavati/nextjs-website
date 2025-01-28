@@ -41,10 +41,9 @@ const motionConfig = {
 };
 
 export default function Benefits() {
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [activeIndex, setActiveIndex] = useState(0);
-  const [isAutoScrolling, setIsAutoScrolling] = useState(true);
-  const autoScrollInterval = useRef<NodeJS.Timeout>();
+  const [isPaused, setIsPaused] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const controls = useAnimation();
 
   const renderIcon = (iconName: string) => {
     switch (iconName) {
@@ -63,43 +62,55 @@ export default function Benefits() {
     }
   };
 
-  const scrollToCard = (index: number) => {
-    if (scrollRef.current) {
-      const cardWidth = 260; // Width of each card
-      const gap = 20; // Gap between cards
-      const scrollPosition = index * (cardWidth + gap);
-      scrollRef.current.scrollTo({
-        left: scrollPosition,
-        behavior: 'smooth'
-      });
-      setActiveIndex(index);
-    }
-  };
+  // Create three sets for smoother infinite scroll
+  const duplicatedBenefits = [...benefits, ...benefits, ...benefits];
 
   useEffect(() => {
-    const startAutoScroll = () => {
-      if (isAutoScrolling) {
-        autoScrollInterval.current = setInterval(() => {
-          const nextIndex = (activeIndex + 1) % benefits.length;
-          scrollToCard(nextIndex);
-        }, 3000);
-      }
+    const startAnimation = async () => {
+      if (isPaused) return;
+
+      // Calculate the width of one complete set of cards
+      const cardWidth = 260; // Width of each card
+      const gap = 20; // Gap between cards
+      const totalWidth = benefits.length * (cardWidth + gap);
+
+      await controls.start({
+        x: -totalWidth,
+        transition: {
+          duration: 15,
+          ease: "linear",
+          repeat: Infinity,
+          repeatType: "loop"
+        },
+      });
     };
 
-    startAutoScroll();
+    startAnimation();
 
+    // Reset animation when container becomes visible
     return () => {
-      if (autoScrollInterval.current) {
-        clearInterval(autoScrollInterval.current);
-      }
+      controls.stop();
     };
-  }, [activeIndex, isAutoScrolling]);
+  }, [controls, isPaused, benefits.length]);
 
-  const handleTouchStart = () => {
-    setIsAutoScrolling(false);
-    if (autoScrollInterval.current) {
-      clearInterval(autoScrollInterval.current);
-    }
+  const handleTouchStart = () => setIsPaused(true);
+  const handleTouchEnd = () => {
+    setIsPaused(false);
+    // Reset position and restart animation
+    controls.start({
+      x: 0,
+      transition: { duration: 0 }
+    }).then(() => {
+      controls.start({
+        x: -(260 + 20) * benefits.length,
+        transition: {
+          duration: 15,
+          ease: "linear",
+          repeat: Infinity,
+          repeatType: "loop"
+        }
+      });
+    });
   };
 
   return (
@@ -112,6 +123,7 @@ export default function Benefits() {
           ¿Por qué elegirnos?
         </motion.h2>
 
+        {/* Desktop Layout - Unchanged */}
         <div className="hidden md:flex justify-center">
           <div className="grid grid-cols-3 lg:grid-cols-5 gap-20">
             {benefits.map((benefit, index) => (
@@ -134,50 +146,37 @@ export default function Benefits() {
           </div>
         </div>
 
-        {/* Mobile Scrolling View */}
-        <div className="md:hidden py-4">
-          <div 
-            ref={scrollRef}
-            onTouchStart={handleTouchStart}
-            className="flex overflow-x-auto snap-x snap-mandatory hide-scrollbar py-4"
-            style={{ scrollSnapType: 'x mandatory' }}
-          >
-            {benefits.map((benefit, index) => (
-              <motion.div
-                key={benefit.title}
-                {...motionConfig}
-                className="flex-none w-[260px] snap-center mx-2.5 first:ml-[5%] last:mr-[5%]"
-              >
-                <div className="group card-interactive gradient-border bg-white rounded-3xl p-6 aspect-square text-center gradient-glow w-full h-[260px] flex flex-col items-center justify-center">
-                  <div className="inline-flex items-center justify-center w-20 h-20 mb-2 shrink-0 text-[--quaternary] group-hover:scale-110 transition-transform duration-300">
-                    {renderIcon(benefit.icon)}
+        {/* Mobile Infinite Scroll */}
+        <div className="md:hidden overflow-hidden py-4">
+          <div className="relative">
+            <motion.div
+              ref={containerRef}
+              className="flex gap-5"
+              animate={controls}
+              initial={{ x: 0 }}
+              onTouchStart={handleTouchStart}
+              onTouchEnd={handleTouchEnd}
+              style={{ touchAction: "pan-y" }}
+            >
+              {duplicatedBenefits.map((benefit, index) => (
+                <motion.div
+                  key={`${benefit.title}-${index}`}
+                  className="flex-none w-[260px]"
+                >
+                  <div className="group card-interactive gradient-border bg-white rounded-3xl p-6 aspect-square text-center gradient-glow w-full h-[260px] flex flex-col items-center justify-center">
+                    <div className="inline-flex items-center justify-center w-20 h-20 mb-2 shrink-0 text-[--quaternary] group-hover:scale-110 transition-transform duration-300">
+                      {renderIcon(benefit.icon)}
+                    </div>
+                    <h3 className="text-lg font-bold mb-1 text-dark group-hover:text-shimmer transition-all duration-normal">
+                      {benefit.title}
+                    </h3>
+                    <p className="text-gray text-sm group-hover:text-dark transition-colors duration-normal line-clamp-2">
+                      {benefit.description}
+                    </p>
                   </div>
-                  <h3 className="text-lg font-bold mb-1 text-dark group-hover:text-shimmer transition-all duration-normal">
-                    {benefit.title}
-                  </h3>
-                  <p className="text-gray text-sm group-hover:text-dark transition-colors duration-normal line-clamp-2">
-                    {benefit.description}
-                  </p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-
-          {/* Dots indicator */}
-          <div className="flex justify-center gap-2 mt-6">
-            {benefits.map((_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  scrollToCard(index);
-                  setIsAutoScrolling(false);
-                }}
-                className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                  activeIndex === index ? 'bg-[--quaternary] w-4' : 'bg-gray/30'
-                }`}
-                aria-label={`Go to slide ${index + 1}`}
-              />
-            ))}
+                </motion.div>
+              ))}
+            </motion.div>
           </div>
         </div>
 
