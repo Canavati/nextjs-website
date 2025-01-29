@@ -1,19 +1,17 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Image from 'next/image';
-import Link from 'next/link';
 import { 
-  Phone, WifiHigh, DeviceMobile, Rocket, Lightning, Crown, UsersThree, 
-  Cloud, Cpu, Database, Globe, Desktop, SimCard, Broadcast, WifiHigh as WifiSignal, 
-  GameController, House, ChatCircleDots
+  WifiHigh, Wrench, Cloud, Cpu, Database, Globe, Desktop, 
+  SimCard, Broadcast, WifiHigh as WifiSignal, House, ChatCircleDots 
 } from '@phosphor-icons/react';
+import Image from 'next/image';
 
-export default function Hero() {
+export const FibraHero = () => {
   const floatingIcons = [
     // Left side
     { Icon: WifiHigh, top: '15%', left: '10%', duration: 8, delay: 0, size: 42 },
-    { Icon: Lightning, top: '70%', left: '15%', duration: 10, delay: 1, size: 36 },
+    { Icon: Wrench, top: '70%', left: '15%', duration: 10, delay: 1, size: 36 },
     { Icon: Cloud, top: '40%', left: '8%', duration: 12, delay: 2, size: 48 },
     { Icon: Cpu, bottom: '15%', left: '20%', duration: 9, delay: 1.5, size: 32 },
     { Icon: Database, top: '25%', left: '22%', duration: 11, delay: 0.5, size: 38 },
@@ -24,18 +22,14 @@ export default function Hero() {
     { Icon: SimCard, top: '35%', left: '35%', duration: 10, delay: 3, size: 34 },
     
     // Right side
-    { Icon: DeviceMobile, top: '20%', right: '15%', duration: 9, delay: 2, size: 40 },
-    { Icon: Crown, bottom: '25%', right: '12%', duration: 11, delay: 3, size: 36 },
-    { Icon: UsersThree, top: '45%', right: '18%', duration: 12, delay: 1.5, size: 46 },
-    { Icon: Broadcast, top: '15%', right: '25%', duration: 14, delay: 0.8, size: 38 },
-    { Icon: WifiSignal, bottom: '35%', right: '22%', duration: 10, delay: 2.5, size: 42 },
-    { Icon: GameController, top: '60%', right: '15%', duration: 13, delay: 1.2, size: 36 },
-    { Icon: House, bottom: '15%', right: '28%', duration: 11, delay: 0.3, size: 44 },
-    { Icon: ChatCircleDots, top: '30%', right: '10%', duration: 12, delay: 1.8, size: 34 }
+    { Icon: WifiSignal, top: '20%', right: '15%', duration: 9, delay: 2, size: 40 },
+    { Icon: Broadcast, bottom: '25%', right: '12%', duration: 11, delay: 3, size: 36 },
+    { Icon: House, top: '45%', right: '18%', duration: 12, delay: 1.5, size: 46 },
+    { Icon: ChatCircleDots, top: '15%', right: '25%', duration: 14, delay: 0.8, size: 38 }
   ];
 
   return (
-    <section className="relative min-h-[50vh] bg-dark overflow-hidden">
+    <section className="relative min-h-[50vh] bg-dark overflow-hidden flex items-center">
       {/* Background Gradient Effect */}
       <div className="absolute inset-0 bg-gradient-new opacity-95" />
       
@@ -100,42 +94,57 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      <div className="relative container mx-auto px-4 pt-16 pb-12">
+      <div className="relative container mx-auto px-4 py-16">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Column - Repeating Text */}
+          {/* Left Column - Main Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-2"
+            className="space-y-4"
           >
-            {[...Array(4)].map((_, i) => (
-              <motion.h2
-                key={i}
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="text-[4rem] font-black leading-none"
-                style={{
-                  opacity: 1 - (i * 0.2),
-                  color: i === 0 ? '#51fcff' : '#ffffff'
-                }}
-              >
-                UNIMOVIL
-              </motion.h2>
-            ))}
-            
-            <motion.div
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="mt-8 text-white/80 text-xl"
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="text-[4rem] font-black leading-none text-white"
             >
-              Tu operador móvil de confianza
+              FIBRA ÓPTICA
+              <br />
+              <span className="bg-gradient-bright bg-clip-text text-transparent">ULTRA RÁPIDA</span>
+            </motion.h1>
+
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+              className="text-lg text-white/80 max-w-3xl whitespace-nowrap"
+            >
+              Disfruta de velocidad simétrica garantizada y con la última tecnología en WiFi 6.
+            </motion.p>
+
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+              className="flex flex-wrap gap-4 pt-2"
+            >
+              <a
+                href="#planes"
+                className="inline-block bg-gradient-new text-white px-8 py-3 rounded-xl font-semibold text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1"
+              >
+                Ver Planes
+              </a>
+              <a
+                href="#proceso"
+                className="inline-block bg-white/10 text-white px-8 py-3 rounded-xl font-semibold text-lg transition-all duration-300 hover:bg-white/20"
+              >
+                ¿Cómo Funciona?
+              </a>
             </motion.div>
           </motion.div>
 
-          {/* Right Column - Pack Details */}
+          {/* Right Column - Features */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -144,42 +153,35 @@ export default function Hero() {
           >
             <div className="space-y-4">
               <h2 className="text-5xl font-bold mb-4">
-                Pack
+                Plan
                 <span className="bg-gradient-bright bg-clip-text text-transparent"> Pro</span>
               </h2>
               
               <div className="space-y-3">
                 <div className="flex items-center gap-4 text-xl">
                   <WifiHigh size={32} weight="duotone" className="text-[#51fcff]" />
-                  <span>Fibra 1000Mb</span>
+                  <span>Fibra 1000Mb Simétricos</span>
                 </div>
                 <div className="flex items-center gap-4 text-xl">
-                  <DeviceMobile size={32} weight="duotone" className="text-[#51fcff]" />
-                  <span>2 Líneas Móvil 175GB Compartidos</span>
+                  <Broadcast size={32} weight="duotone" className="text-[#51fcff]" />
+                  <span>Router WiFi 6 Incluido</span>
                 </div>
                 <div className="flex items-center gap-4 text-xl">
-                  <Phone size={32} weight="duotone" className="text-[#51fcff]" />
-                  <span>Llamadas ilimitadas</span>
+                  <Wrench size={32} weight="duotone" className="text-[#51fcff]" />
+                  <span>Instalación Profesional</span>
                 </div>
               </div>
 
               <div className="flex items-end gap-4 mt-8">
                 <div className="text-[5rem] font-black leading-none text-[#51fcff] animate-pulse-subtle drop-shadow-[0_0_8px_rgba(81,252,255,0.5)]">
-                  67€
+                  30€
                   <span className="text-2xl text-white/60 ml-2">/mes</span>
                 </div>
               </div>
             </div>
-
-            <Link
-              href="#planes"
-              className="inline-block bg-gradient-new text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1"
-            >
-              ¡CONTRATAR AHORA!
-            </Link>
           </motion.div>
         </div>
       </div>
     </section>
   );
-} 
+}; 

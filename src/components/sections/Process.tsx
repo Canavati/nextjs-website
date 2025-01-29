@@ -7,27 +7,27 @@ import { Package, FileText, WifiHigh, DeviceMobile } from '@phosphor-icons/react
 
 export default function Process() {
   const steps = [
-    {
+  {
       Icon: Package,
-      title: 'Elige tu tarifa',
-      description: 'Selecciona tu tarifa de fibra y móvil pulsando el botón de "Lo quiero".',
-    },
-    {
+    title: 'Elige tu tarifa',
+    description: 'Selecciona tu tarifa de fibra y móvil pulsando el botón de "Lo quiero".',
+  },
+  {
       Icon: FileText,
-      title: 'Contrato',
-      description: 'Una vez elegida tu tarifa, te pediremos la dirección de instalación de la fibra, los datos personales del titular del contrato y domiciliación.',
-    },
-    {
+    title: 'Contrato',
+    description: 'Una vez elegida tu tarifa, te pediremos la dirección de instalación de la fibra, los datos personales del titular del contrato y domiciliación.',
+  },
+  {
       Icon: WifiHigh,
-      title: 'Instalación rápida',
-      description: 'Nos pondremos en contacto contigo en menos de 48 horas para que escojas el día y la hora de instalación.',
-    },
-    {
+    title: 'Instalación rápida',
+    description: 'Nos pondremos en contacto contigo en menos de 48 horas para que escojas el día y la hora de instalación.',
+  },
+  {
       Icon: DeviceMobile,
-      title: 'Altas líneas móviles',
-      description: 'El técnico te llevará gratuitamente las tarjetas SIM y gestionaremos la portabilidad.',
-    },
-  ];
+    title: 'Altas líneas móviles',
+    description: 'El técnico te llevará gratuitamente las tarjetas SIM y gestionaremos la portabilidad.',
+  },
+];
 
   return (
     <section id="proceso" className="py-20 px-4">

@@ -1,35 +1,48 @@
 'use client';
 
 import { motion, useAnimation } from 'framer-motion';
-import { Wrench, Headset, Gauge, CurrencyCircleDollar, LockOpen } from '@phosphor-icons/react'
+import { Wrench, Headset, Gauge, CurrencyCircleDollar, LockOpen, Broadcast, ShieldCheck, Clock, Rocket, Icon, Globe, Medal } from '@phosphor-icons/react'
+import { type IconProps } from '@phosphor-icons/react';
+import type { ComponentType } from 'react';
 import Link from 'next/link';
 import { useEffect, useRef, useState } from 'react';
 
-const benefits = [
+interface Benefit {
+  icon?: string;
+  Icon?: ComponentType<IconProps>;
+  title: string;
+  description: string;
+}
+
+interface BenefitsProps {
+  benefits?: Benefit[];
+}
+
+const defaultBenefits: Benefit[] = [
   {
-    icon: 'speed',
-    title: 'Conexión Ultra Rápida',
-    description: 'Velocidad garantizada y estable',
+    icon: 'gauge',
+    title: 'Alta Velocidad',
+    description: 'Velocidad simétrica garantizada',
   },
   {
-    icon: 'price',
-    title: 'Precios Transparentes',
-    description: 'Sin costes ocultos',
+    icon: 'globe',
+    title: 'Cobertura Total',
+    description: 'Red de fibra de última generación',
   },
   {
-    icon: 'headset',
-    title: 'Soporte 24/7',
-    description: 'Atención personalizada inmediata',
+    icon: 'medal',
+    title: 'Calidad Premium',
+    description: 'Servicio de máxima calidad',
   },
   {
-    icon: 'lock',
-    title: 'Sin Permanencia',
-    description: 'Libertad total sin compromisos',
+    Icon: Headset,
+    title: 'Atención 24/7',
+    description: 'Servicio de atención al cliente disponible todos los días del año.',
   },
   {
-    icon: 'wrench',
-    title: 'Instalación Gratis',
-    description: 'Servicio profesional incluido',
+    Icon: Wrench,
+    title: 'Instalación Profesional',
+    description: 'Instalación realizada por técnicos especializados para garantizar el mejor servicio.',
   },
 ];
 
@@ -40,23 +53,36 @@ const motionConfig = {
   transition: { duration: 0.5 }
 };
 
-export default function Benefits() {
+export default function Benefits({ benefits = defaultBenefits }: BenefitsProps) {
   const [isPaused, setIsPaused] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
 
-  const renderIcon = (iconName: string) => {
-    switch (iconName) {
-      case 'speed':
+  const renderIcon = (benefit: Benefit) => {
+    if (benefit.Icon) {
+      const IconComponent = benefit.Icon;
+      return <IconComponent size={56} weight="duotone" />;
+    }
+
+    if (!benefit.icon) return null;
+
+    switch (benefit.icon) {
+      case 'gauge':
         return <Gauge size={56} weight="duotone" />;
-      case 'price':
-        return <CurrencyCircleDollar size={56} weight="duotone" />;
-      case 'headset':
-        return <Headset size={56} weight="duotone" />;
-      case 'lock':
-        return <LockOpen size={56} weight="duotone" />;
+      case 'globe':
+        return <Globe size={56} weight="duotone" />;
+      case 'medal':
+        return <Medal size={56} weight="duotone" />;
       case 'wrench':
         return <Wrench size={56} weight="duotone" />;
+      case 'price':
+        return <CurrencyCircleDollar size={56} weight="duotone" />;
+      case 'lock':
+        return <LockOpen size={56} weight="duotone" />;
+      case 'router':
+        return <Broadcast size={56} weight="duotone" />;
+      case 'security':
+        return <ShieldCheck size={56} weight="duotone" />;
       default:
         return null;
     }
@@ -133,7 +159,7 @@ export default function Benefits() {
                 className="group card-interactive gradient-border bg-white rounded-3xl p-6 aspect-square text-center gradient-glow w-[260px] h-[260px] flex flex-col items-center justify-center"
               >
                 <div className="inline-flex items-center justify-center w-20 h-20 mb-2 shrink-0 text-[--quaternary] group-hover:scale-110 transition-transform duration-300">
-                  {renderIcon(benefit.icon)}
+                  {renderIcon(benefit)}
                 </div>
                 <h3 className="text-lg font-bold mb-1 text-dark group-hover:text-shimmer transition-all duration-normal">
                   {benefit.title}
@@ -165,7 +191,7 @@ export default function Benefits() {
                 >
                   <div className="group card-interactive gradient-border bg-white rounded-3xl p-6 aspect-square text-center gradient-glow w-full h-[260px] flex flex-col items-center justify-center">
                     <div className="inline-flex items-center justify-center w-20 h-20 mb-2 shrink-0 text-[--quaternary] group-hover:scale-110 transition-transform duration-300">
-                      {renderIcon(benefit.icon)}
+                      {renderIcon(benefit)}
                     </div>
                     <h3 className="text-lg font-bold mb-1 text-dark group-hover:text-shimmer transition-all duration-normal">
                       {benefit.title}

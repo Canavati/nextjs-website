@@ -1,62 +1,61 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import FAQItem from '@/components/ui/FAQItem';
-import Link from 'next/link';
+import FAQItem from '../ui/FAQItem';
 
-const faqs = [
+interface FAQ {
+  question: string;
+  answer: string;
+}
+
+interface FAQProps {
+  faqs?: FAQ[];
+}
+
+const defaultFAQs = [
   {
-    question: '¿Qué velocidad de fibra ofrecéis?',
-    answer: 'Ofrecemos diferentes velocidades de fibra óptica adaptadas a tus necesidades, desde 100Mb hasta 1Gb simétricos.'
+    question: '¿Hay permanencia en los servicios?',
+    answer: 'Nuestros planes tienen un compromiso de permanencia. Consulta las condiciones específicas con nuestro equipo comercial.',
   },
   {
-    question: '¿Hay permanencia en los contratos?',
-    answer: 'No, en Unimóvil no creemos en las permanencias. Eres libre de quedarte con nosotros el tiempo que quieras.'
+    question: '¿Cuánto tarda la instalación?',
+    answer: 'La instalación se realiza en un plazo máximo de 7 días laborables, aunque normalmente se completa en 2-3 días.',
   },
   {
-    question: '¿Cuánto tarda la instalación de fibra?',
-    answer: 'La instalación se realiza en un plazo máximo de 7 días laborables desde la confirmación del pedido.'
+    question: '¿Qué incluye la instalación?',
+    answer: 'La instalación incluye todo el equipamiento necesario: router WiFi 6, cableado y configuración profesional por nuestros técnicos especializados.',
   },
   {
-    question: '¿Puedo mantener mi número de teléfono actual?',
-    answer: 'Sí, puedes mantener tu número actual sin ningún problema. Nos encargamos de toda la gestión de la portabilidad.'
+    question: '¿Puedo mantener mi número?',
+    answer: 'Sí, puedes mantener tu número actual. Nosotros nos encargamos de todo el proceso de portabilidad sin coste adicional.',
   },
-  {
-    question: '¿Qué incluye el servicio móvil?',
-    answer: 'Nuestros servicios móviles incluyen llamadas ilimitadas, SMS y datos móviles según el plan elegido, con la mejor cobertura.'
-  }
 ];
 
-export default function FAQ() {
+export default function FAQ({ faqs = defaultFAQs }: FAQProps) {
   return (
-    <section className="py-24 bg-gray-50">
-      <div className="max-w-[1200px] mx-auto px-[5%]">
-        <motion.h2 
-          className="text-4xl font-bold text-center mb-12 text-shimmer"
+    <section className="py-20 bg-light-gray">
+      <div className="max-w-[800px] mx-auto px-[5%]">
+        <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
+          className="text-4xl font-bold text-center mb-16 text-shimmer"
         >
           Preguntas Frecuentes
         </motion.h2>
 
-        <div className="max-w-[800px] mx-auto space-y-4">
+        <div className="space-y-4">
           {faqs.map((faq, index) => (
-            <FAQItem key={index} question={faq.question} answer={faq.answer} />
+            <FAQItem
+              key={faq.question}
+              question={faq.question}
+              answer={faq.answer}
+              delay={index * 0.1}
+            />
           ))}
-        </div>
-
-        <div className="text-center mt-16">
-          <p className="text-xl mb-6">¿Tienes más preguntas?</p>
-          <Link 
-            href="#contacto"
-            className="inline-block text-center bg-gradient-new text-white py-3 px-8 rounded-xl font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
-          >
-            CONTÁCTANOS
-          </Link>
         </div>
       </div>
     </section>
   );
-} 
+}

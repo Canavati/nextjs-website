@@ -30,7 +30,7 @@ export default function ProcessStep({
     >
       <div className="paso-icon w-20 h-20 rounded-full bg-gradient-primary flex items-center justify-center mb-4 mx-auto shadow-lg">
         <Icon size={32} weight="duotone" className="text-white" />
-      </div>
+        </div>
 
       <h3 className="text-xl font-bold text-dark mb-2 text-center">{title}</h3>
       <p className="text-gray text-center max-w-sm mx-auto">{description}</p>
