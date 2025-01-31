@@ -2,48 +2,112 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
+import { User, Buildings, Phone, Article, Question, CaretDown } from '@phosphor-icons/react';
+import { useState, useRef, useEffect } from 'react';
 
 export default function TopBar() {
+  const [showHelpMenu, setShowHelpMenu] = useState(false);
+  const menuRef = useRef<HTMLDivElement>(null);
+  const buttonRef = useRef<HTMLAnchorElement>(null);
+  const topBarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        menuRef.current && 
+        buttonRef.current && 
+        !menuRef.current.contains(event.target as Node) && 
+        !buttonRef.current.contains(event.target as Node)
+      ) {
+        setShowHelpMenu(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+
   return (
     <motion.div
+      ref={topBarRef}
       initial={{ y: -50 }}
       animate={{ y: 0 }}
       className="fixed top-0 left-0 w-full h-top-bar bg-[#292cf6] z-[1001] shadow-sm"
+      onMouseLeave={() => setShowHelpMenu(false)}
     >
       <div className="max-w-[1400px] mx-auto px-4 h-full flex justify-between items-center">
-        <div className="hidden lg:flex gap-4 items-center pl-0">
-          <Link
-            href="/particular"
-            className="text-white no-underline text-sm font-medium opacity-90 hover:opacity-100 hover:text-[--secondary] hover:-translate-y-[1px] transition-all duration-300"
-          >
-            Soy Particular
-          </Link>
-          <span className="text-white opacity-50">|</span>
-          <Link
-            href="/empresa"
-            className="text-white no-underline text-sm font-medium opacity-90 hover:opacity-100 hover:text-[--secondary] hover:-translate-y-[1px] transition-all duration-300"
-          >
-            Soy empresa/autónomo
-          </Link>
-        </div>
+        {/* Left side */}
         <div className="flex items-center gap-6">
           <Link
-            href="/blog"
-            className="hidden lg:inline-block text-white no-underline text-sm font-medium opacity-90 hover:opacity-100 hover:text-[--secondary] hover:-translate-y-[1px] transition-all duration-300"
+            href="/particular"
+            className="flex items-center gap-2 text-white no-underline text-sm font-medium opacity-90 hover:opacity-100 hover:text-[--secondary] hover:-translate-y-[1px] transition-all duration-300"
           >
-            Blog-FAQ
+            <User size={18} weight="duotone" />
+            <span className="hidden lg:inline">Particulares</span>
           </Link>
           <Link
-            href="/ayuda"
-            className="hidden lg:inline-block text-white no-underline text-sm font-medium opacity-90 hover:opacity-100 hover:text-[--secondary] hover:-translate-y-[1px] transition-all duration-300"
+            href="/empresa"
+            className="flex items-center gap-2 text-white no-underline text-sm font-medium opacity-90 hover:opacity-100 hover:text-[--secondary] hover:-translate-y-[1px] transition-all duration-300"
           >
-            Ayuda
+            <Buildings size={18} weight="duotone" />
+            <span className="hidden lg:inline">Autónomos y Empresas</span>
           </Link>
+        </div>
+
+        {/* Right side */}
+        <div className="flex items-center gap-4">
+          <Link
+            href="/blog"
+            className="flex items-center gap-2 text-white no-underline text-sm font-medium opacity-90 hover:opacity-100 hover:text-[--secondary] hover:-translate-y-[1px] transition-all duration-300"
+          >
+            <Article size={18} weight="duotone" />
+            <span className="hidden lg:inline">Blog</span>
+          </Link>
+          <div className="relative">
+            <Link
+              ref={buttonRef}
+              href="/ayuda"
+              className="flex items-center gap-2 text-white no-underline text-sm font-medium opacity-90 hover:opacity-100 hover:text-[--secondary] hover:-translate-y-[1px] transition-all duration-300"
+              onMouseEnter={() => setShowHelpMenu(true)}
+            >
+              <Question size={18} weight="duotone" />
+              <span className="hidden lg:inline">Centro de Ayuda</span>
+              <CaretDown 
+                size={12} 
+                weight="bold" 
+                className={`hidden lg:inline transition-transform duration-200 ${showHelpMenu ? 'rotate-180' : ''}`} 
+              />
+            </Link>
+            <div 
+              ref={menuRef}
+              className={`absolute top-full right-0 mt-1 w-40 bg-white rounded-md shadow-lg transform transition-all duration-200 origin-top ${
+                showHelpMenu ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+              }`}
+              onMouseEnter={() => setShowHelpMenu(true)}
+              onMouseLeave={() => setShowHelpMenu(false)}
+            >
+              <Link
+                href="/ayuda"
+                className="block w-full px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-[--primary] transition-colors duration-200"
+                onClick={() => setShowHelpMenu(false)}
+              >
+                Centro de Ayuda
+              </Link>
+              <Link
+                href="/tarifas"
+                className="block w-full px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-[--primary] transition-colors duration-200"
+                onClick={() => setShowHelpMenu(false)}
+              >
+                Tarifas
+              </Link>
+            </div>
+          </div>
           <Link
             href="#contacto"
-            className="bg-[--quaternary] text-white px-6 py-1 rounded-full text-sm font-semibold uppercase tracking-wider leading-normal transition-all duration-300 shadow-md hover:-translate-y-[1px] hover:shadow-lg hover:bg-[--secondary] hover:text-dark"
+            className="bg-[--quaternary] text-white px-6 py-1.5 rounded-full text-sm font-semibold uppercase tracking-wider leading-normal transition-all duration-300 shadow-md hover:-translate-y-[1px] hover:shadow-lg hover:bg-[--secondary] hover:text-dark flex items-center gap-2"
           >
-            Llámanos
+            <Phone size={16} weight="duotone" />
+            <span>1777</span>
           </Link>
         </div>
       </div>
