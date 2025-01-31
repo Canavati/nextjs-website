@@ -84,7 +84,7 @@ export default function Header() {
               href="/unitv"
               className="text-dark hover:text-primary transition-colors duration-300"
             >
-              uniTV
+              UniTV
             </Link>
           </li>
 
@@ -167,7 +167,7 @@ export default function Header() {
                 className="block text-dark hover:text-primary transition-colors duration-300"
                 onClick={() => setIsMenuOpen(false)}
               >
-                uniTV
+                UniTV
               </Link>
             </li>
             <li>
