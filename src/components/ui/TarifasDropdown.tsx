@@ -1,108 +1,36 @@
 'use client';
 
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Link from 'next/link';
-import { Lightning, UsersThree, UsersFour, Crown, User, Users, Phone, FilePdf } from '@phosphor-icons/react';
-import PackCard from './PackCard';
-import { useState, useRef, useEffect } from 'react';
+import { CaretDown, FilePdf } from '@phosphor-icons/react';
 
-const packs = [
+const tarifasList = [
   {
-    id: 'single',
-    title: 'Pack Single',
-    description: 'Fibra 300 Megas + Llamadas Ilimitadas',
-    features: [
-      'Fibra 300 Megas + Llamadas Ilimitadas',
-      '1 línea móvil de 50GB'
-    ],
-    price: '33,00',
-    speed: '300',
-    gb: '50',
-    delay: 0.1
+    title: 'Tarifas Internacionales',
+    url: '/pdfs/tarifas/TARIFARIO_MMBB_TARIFAS_INTERNACIONALES.pdf',
+    isAvailable: true
   },
   {
-    id: 'duo',
-    title: 'Pack Duo',
-    description: 'FIBRA 500 Megas + Llamadas Ilimitadas',
-    features: [
-      'Fibra 500 Megas + Llamadas Ilimitadas',
-      '2 líneas móviles con 100GB compartidos'
-    ],
-    price: '50,00',
-    speed: '500',
-    gb: '100',
-    delay: 0.2
-  },
-  {
-    id: 'tetra',
-    title: 'Pack Tetra',
-    description: 'Fibra 500 Megas + Llamadas Ilimitadas',
-    features: [
-      'Fibra 500 Megas + Llamadas Ilimitadas',
-      '4 líneas móviles con 175GB compartidos'
-    ],
-    price: '60,00',
-    speed: '500',
-    gb: '175',
-    delay: 0.3
-  },
-  {
-    id: 'pro',
-    title: 'Pack Pro',
-    description: 'Fibra 1000 Megas + Llamadas Ilimitadas',
-    features: [
-      'Fibra 1000 Megas + Llamadas Ilimitadas',
-      '2 líneas móviles con 175GB compartidos'
-    ],
-    price: '67,00',
-    speed: '1000',
-    gb: '175',
-    isPopular: true,
-    delay: 0.4
+    title: 'Tarifas Roaming',
+    url: '/pdfs/tarifas/TARIFARIOS MMBB_ROAMING.pdf',
+    isAvailable: true
   }
 ];
 
-// Tarifas Dropdown Component
-const TarifasDropdown = () => {
+export const TarifasDropdown = () => {
   const [isOpen, setIsOpen] = useState(false);
-  const [sectionsOpen, setSectionsOpen] = useState(false);
+  const [openSections, setOpenSections] = useState<{[key: string]: boolean}>({
+    'Información General': false,
+    'Condiciones': false,
+    'Líneas Móviles': false
+  });
 
-  const toggleAllSections = () => {
-    setSectionsOpen(!sectionsOpen);
+  const toggleSection = (title: string) => {
+    setOpenSections(prev => ({
+      ...prev,
+      [title]: !prev[title]
+    }));
   };
-
-  const pdfLinks = [
-    {
-      title: 'Tarifas Principales',
-      url: '/pdfs/tarifas/pvp_normales.pdf',
-      description: 'Consulta nuestras tarifas estándar y planes principales',
-      isAvailable: false
-    },
-    {
-      title: 'Tarifas Red Inteligente',
-      url: '/pdfs/tarifas/pvp_red_inteligente.pdf',
-      description: 'Información sobre tarifas de servicios de red inteligente',
-      isAvailable: false
-    },
-    {
-      title: 'Tarifas Numeración Especial',
-      url: '/pdfs/tarifas/20240303_MMBB_Legales-Numeración-Especial.pdf',
-      description: 'Detalles de tarifas para números especiales',
-      isAvailable: true
-    },
-    {
-      title: 'Tarifas Internacionales',
-      url: '/pdfs/tarifas/TARIFARIO_MMBB_TARIFAS_INTERNACIONALES.pdf',
-      description: 'Consulta nuestras tarifas para llamadas internacionales',
-      isAvailable: true
-    },
-    {
-      title: 'Tarifas Roaming',
-      url: '/pdfs/tarifas/TARIFARIOS MMBB_ROAMING.pdf',
-      description: 'Información sobre tarifas en el extranjero',
-      isAvailable: true
-    }
-  ];
 
   const tarifasInfo = [
     {
@@ -137,12 +65,45 @@ const TarifasDropdown = () => {
     }
   ];
 
+  const pdfLinks = [
+    {
+      title: 'Tarifas Principales',
+      url: '/pdfs/tarifas/pvp_normales.pdf',
+      description: 'Consulta nuestras tarifas estándar y planes principales',
+      isAvailable: false
+    },
+    {
+      title: 'Tarifas Red Inteligente',
+      url: '/pdfs/tarifas/pvp_red_inteligente.pdf',
+      description: 'Información sobre tarifas de servicios de red inteligente',
+      isAvailable: false
+    },
+    {
+      title: 'Tarifas Numeración Especial',
+      url: '/pdfs/tarifas/20240303_MMBB_Legales-Numeración-Especial.pdf',
+      description: 'Detalles de tarifas para números especiales',
+      isAvailable: true
+    },
+    {
+      title: 'Tarifas Internacionales',
+      url: '/pdfs/tarifas/TARIFARIO_MMBB_TARIFAS_INTERNACIONALES.pdf',
+      description: 'Consulta nuestras tarifas para llamadas internacionales',
+      isAvailable: true
+    },
+    {
+      title: 'Tarifas Roaming',
+      url: '/pdfs/tarifas/TARIFARIOS MMBB_ROAMING.pdf',
+      description: 'Información sobre tarifas en el extranjero',
+      isAvailable: true
+    }
+  ];
+
   return (
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: 0.6 }}
-      className="mt-4 md:mt-8"
+      className="mt-8 md:mt-12"
     >
       <motion.button
         onClick={() => setIsOpen(!isOpen)}
@@ -256,30 +217,28 @@ const TarifasDropdown = () => {
               }}
             >
               <motion.button
-                onClick={toggleAllSections}
+                onClick={() => toggleSection(section.title)}
                 className="w-full p-4 flex items-center justify-between text-left relative"
               >
-                <div className="relative flex items-center justify-between w-full">
-                  <h3 className="text-lg font-medium text-dark">{section.title}</h3>
-                  <motion.span
-                    animate={{ rotate: sectionsOpen ? 180 : 0 }}
-                    transition={{ duration: 0.3 }}
-                    className="text-[#ed54ba]"
+                <h3 className="text-lg font-medium text-dark">{section.title}</h3>
+                <motion.span
+                  animate={{ rotate: openSections[section.title] ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                  className="text-[#ed54ba]"
+                >
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="currentColor"
+                    viewBox="0 0 256 256"
                   >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      fill="currentColor"
-                      viewBox="0 0 256 256"
-                    >
-                      <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
-                    </svg>
-                  </motion.span>
-                </div>
+                    <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+                  </svg>
+                </motion.span>
               </motion.button>
               <AnimatePresence initial={false}>
-                {sectionsOpen && (
+                {openSections[section.title] && (
                   <motion.div
                     initial={{ height: 0, opacity: 0 }}
                     animate={{ height: 'auto', opacity: 1 }}
@@ -313,76 +272,4 @@ const TarifasDropdown = () => {
       </motion.div>
     </motion.div>
   );
-};
-
-export default function PacksGrid() {
-  const [currentCard, setCurrentCard] = useState(0);
-  const scrollRef = useRef<HTMLDivElement>(null);
-
-  // Update current card based on scroll position
-  useEffect(() => {
-    const handleScroll = () => {
-      if (scrollRef.current) {
-        const scrollLeft = scrollRef.current.scrollLeft;
-        const cardWidth = 280 + 24; // card width + gap
-        const newCard = Math.round(scrollLeft / cardWidth);
-        setCurrentCard(newCard);
-      }
-    };
-
-    const scrollElement = scrollRef.current;
-    if (scrollElement) {
-      scrollElement.addEventListener('scroll', handleScroll);
-      return () => scrollElement.removeEventListener('scroll', handleScroll);
-    }
-  }, []);
-
-  // Handle dot click
-  const scrollToCard = (index: number) => {
-    if (scrollRef.current) {
-      const cardWidth = 280 + 24; // card width + gap
-      scrollRef.current.scrollTo({
-        left: index * cardWidth,
-        behavior: 'smooth'
-      });
-    }
-  };
-
-  return (
-    <div>
-      {/* Dots Navigation */}
-      <div className="flex justify-center gap-2 mb-4 md:hidden">
-        {packs.map((_, index) => (
-          <button
-            key={index}
-            onClick={() => scrollToCard(index)}
-            className="w-2 h-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ed54ba]"
-            style={{
-              background: currentCard === index ? 'var(--gradient-primary)' : '#E5E7EB',
-              transform: currentCard === index ? 'scale(1.2)' : 'scale(1)'
-            }}
-            aria-label={`Go to card ${index + 1}`}
-          />
-        ))}
-      </div>
-
-      <div 
-        ref={scrollRef}
-        className="flex overflow-x-auto pb-6 pt-4 gap-6 snap-x snap-mandatory hide-scrollbar"
-      >
-        <div className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 min-w-max md:min-w-0 md:w-full px-[10%] md:px-0">
-          {packs.map((pack) => (
-            <div key={pack.id} className="w-[280px] md:w-auto snap-center">
-              <PackCard {...pack} />
-            </div>
-          ))}
-        </div>
-      </div>
-      
-      {/* Add TarifasDropdown with adjusted padding */}
-      <div className="px-[5%] md:px-0">
-        <TarifasDropdown />
-      </div>
-    </div>
-  );
-} 
+}; 

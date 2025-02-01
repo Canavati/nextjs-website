@@ -6,7 +6,7 @@ import SoloMovilConfigurator from '@/components/offerings/solo-movil/SoloMovilCo
 export const MovilPlans = () => {
   return (
     <section id="planes" className="py-20 bg-light-gray">
-      <div className="max-w-[1400px] mx-auto px-[5%]">
+      <div className="container mx-auto px-4">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -17,7 +17,14 @@ export const MovilPlans = () => {
           Planes Móviles
         </motion.h2>
 
-        <SoloMovilConfigurator />
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+          className="relative w-full"
+        >
+          <SoloMovilConfigurator />
+        </motion.div>
       </div>
     </section>
   );

@@ -37,7 +37,7 @@ export default function TopBar() {
     >
       <div className="max-w-[1400px] mx-auto px-4 h-full flex justify-between items-center">
         {/* Left side */}
-        <div className="flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-6">
           <Link
             href="/particular"
             className="flex items-center gap-2 text-white no-underline text-sm font-medium opacity-90 hover:opacity-100 hover:text-[--secondary] hover:-translate-y-[1px] transition-all duration-300"
@@ -58,12 +58,12 @@ export default function TopBar() {
         <div className="flex items-center gap-4">
           <Link
             href="/blog"
-            className="flex items-center gap-2 text-white no-underline text-sm font-medium opacity-90 hover:opacity-100 hover:text-[--secondary] hover:-translate-y-[1px] transition-all duration-300"
+            className="hidden md:flex items-center gap-2 text-white no-underline text-sm font-medium opacity-90 hover:opacity-100 hover:text-[--secondary] hover:-translate-y-[1px] transition-all duration-300"
           >
             <Article size={18} weight="duotone" />
             <span className="hidden lg:inline">Blog</span>
           </Link>
-          <div className="relative">
+          <div className="relative hidden md:block">
             <Link
               ref={buttonRef}
               href="/ayuda"

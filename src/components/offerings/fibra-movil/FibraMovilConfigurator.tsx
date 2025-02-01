@@ -3,7 +3,9 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { WifiHigh, DeviceMobile, Plus, Minus, Lightning, Crown, Rocket, Star, ArrowLeft, X } from '@phosphor-icons/react';
+import { WifiHigh, DeviceMobile, Plus, Minus, Lightning, Crown, Rocket, Star, ArrowLeft, X, FilePdf } from '@phosphor-icons/react';
+import { InfoDropdown } from '@/components/ui/InfoDropdown';
+import { TarifasDropdown } from '@/components/ui/TarifasDropdown';
 
 interface FibraMovilConfig {
   selectedPlan: number;
@@ -229,6 +231,66 @@ const ConfigurationModal = ({
   </motion.div>
 );
 
+// Section Dropdown Component
+const SectionDropdown = ({ title, items, isOpen, onToggle, delay }: { 
+  title: string;
+  items: string[];
+  isOpen: boolean;
+  onToggle: () => void;
+  delay: number;
+}) => (
+  <motion.div
+    initial={{ opacity: 0, y: 20 }}
+    animate={{ opacity: 1, y: 0 }}
+    transition={{ duration: 0.3, delay }}
+    className="bg-white rounded-xl shadow-sm overflow-hidden"
+    style={{
+      border: '2px solid transparent',
+      background: 'linear-gradient(rgb(248 250 252), rgb(248 250 252)) padding-box, var(--gradient-primary) border-box'
+    }}
+  >
+    <motion.button
+      onClick={onToggle}
+      className="w-full p-4 flex items-center justify-between text-left relative"
+    >
+      <h3 className="text-lg font-medium text-dark">{title}</h3>
+      <motion.span
+        animate={{ rotate: isOpen ? 180 : 0 }}
+        transition={{ duration: 0.3 }}
+        className="text-[#ed54ba]"
+      >
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          width="24"
+          height="24"
+          fill="currentColor"
+          viewBox="0 0 256 256"
+        >
+          <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
+        </svg>
+      </motion.span>
+    </motion.button>
+    <motion.div
+      initial={false}
+      animate={{
+        height: isOpen ? 'auto' : 0,
+        opacity: isOpen ? 1 : 0
+      }}
+      transition={{ duration: 0.3 }}
+      className="overflow-hidden"
+    >
+      <ul className="p-4 pt-0 space-y-2">
+        {items.map((item, idx) => (
+          <li key={idx} className="flex items-center gap-2 text-sm text-gray">
+            <div className="w-1 h-1 rounded-full bg-[#ed54ba]" />
+            {item}
+          </li>
+        ))}
+      </ul>
+    </motion.div>
+  </motion.div>
+);
+
 export default function FibraMovilConfigurator() {
   const [config, setConfig] = useState<FibraMovilConfig>({
     selectedPlan: 0,
@@ -273,7 +335,7 @@ export default function FibraMovilConfigurator() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="space-y-4 md:space-y-6"
+      className="space-y-4 md:space-y-6 min-h-[650px] md:min-h-[750px]"
     >
       {/* Mobile Layout - Full Width Cards */}
       <div className="md:hidden space-y-4">
@@ -465,8 +527,8 @@ export default function FibraMovilConfigurator() {
                       }}
                       className={`w-7 h-7 rounded-lg flex items-center justify-center transition-colors ${
                         config.additionalLines[line.type as keyof typeof config.additionalLines] === 0
-                          ? 'bg-gray-100/80 text-gray-400'
-                          : 'bg-gray-100/80 hover:bg-gray-200/80 text-gray-600'
+                          ? 'bg-gray-100 text-gray-400'
+                          : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
                       }`}
                       disabled={config.additionalLines[line.type as keyof typeof config.additionalLines] === 0}
                       whileHover={{ scale: 1.05 }}
@@ -484,8 +546,8 @@ export default function FibraMovilConfigurator() {
                       }}
                       className={`w-7 h-7 rounded-lg flex items-center justify-center transition-colors ${
                         !canAddMore
-                          ? 'bg-gray-100/80 text-gray-400'
-                          : 'bg-gray-100/80 hover:bg-gray-200/80 text-gray-600'
+                          ? 'bg-gray-100 text-gray-400'
+                          : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
                       }`}
                       disabled={!canAddMore}
                       whileHover={{ scale: 1.05 }}
@@ -554,6 +616,9 @@ export default function FibraMovilConfigurator() {
           />
         )}
       </AnimatePresence>
+
+      {/* Add TarifasDropdown */}
+      <TarifasDropdown />
     </motion.div>
   );
 } 

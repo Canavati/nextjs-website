@@ -1,9 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { DeviceMobile, Phone, Lightning, Rocket, Star, Crown, Sparkle } from '@phosphor-icons/react';
+import { TarifasDropdown } from '@/components/ui/TarifasDropdown';
 
 const SOLO_MOVIL_PLANS = [
   {
@@ -40,14 +41,65 @@ const SOLO_MOVIL_PLANS = [
 
 export default function SoloMovilConfigurator() {
   const [selectedPlan, setSelectedPlan] = useState(0);
+  const [currentCard, setCurrentCard] = useState(0);
+  const scrollRef = useRef<HTMLDivElement>(null);
+
+  // Update current card based on scroll position
+  useEffect(() => {
+    const handleScroll = () => {
+      if (scrollRef.current) {
+        const scrollLeft = scrollRef.current.scrollLeft;
+        const cardWidth = 280 + 24; // card width + gap
+        const newCard = Math.round(scrollLeft / cardWidth);
+        setCurrentCard(newCard);
+      }
+    };
+
+    const scrollElement = scrollRef.current;
+    if (scrollElement) {
+      scrollElement.addEventListener('scroll', handleScroll);
+      return () => scrollElement.removeEventListener('scroll', handleScroll);
+    }
+  }, []);
+
+  // Handle dot click
+  const scrollToCard = (index: number) => {
+    if (scrollRef.current) {
+      const cardWidth = 280 + 24; // card width + gap
+      scrollRef.current.scrollTo({
+        left: index * cardWidth,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
+      className="w-full"
     >
-      <div className="flex overflow-x-auto pb-12 pt-8 gap-6 snap-x snap-mandatory hide-scrollbar">
+      {/* Dots Navigation */}
+      <div className="flex justify-center gap-2 mb-4 md:hidden">
+        {SOLO_MOVIL_PLANS.map((_, index) => (
+          <button
+            key={index}
+            onClick={() => scrollToCard(index)}
+            className="w-2 h-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ed54ba]"
+            style={{
+              background: currentCard === index ? 'var(--gradient-primary)' : '#E5E7EB',
+              transform: currentCard === index ? 'scale(1.2)' : 'scale(1)'
+            }}
+            aria-label={`Go to card ${index + 1}`}
+          />
+        ))}
+      </div>
+
+      <div 
+        ref={scrollRef}
+        className="flex overflow-x-auto pb-6 pt-4 gap-6 snap-x snap-mandatory hide-scrollbar"
+      >
         <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 min-w-max md:min-w-0 md:w-full px-[10%] md:px-0">
           {SOLO_MOVIL_PLANS.map((plan, index) => (
             <div key={index} className="w-[280px] md:w-auto snap-center">
@@ -139,6 +191,11 @@ export default function SoloMovilConfigurator() {
             </div>
           ))}
         </div>
+      </div>
+      
+      {/* Add TarifasDropdown with matching container */}
+      <div className="px-[5%] md:px-0">
+        <TarifasDropdown />
       </div>
     </motion.div>
   );

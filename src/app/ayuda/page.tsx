@@ -13,7 +13,8 @@ import {
   Lightning,
   Receipt,
   Wrench,
-  Package
+  Package,
+  CaretDown
 } from '@phosphor-icons/react';
 import { useState } from 'react';
 import Link from 'next/link';
@@ -462,6 +463,7 @@ const helpSections = [
 export default function AyudaPage() {
   const [activeSectionId, setActiveSection] = useState('atencion');
   const [currentPage, setCurrentPage] = useState(1);
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const questionsPerPage = 10;
 
   const getCurrentPageFaqs = (faqs: Array<{ question: string; answer: string }>) => {
@@ -536,26 +538,74 @@ export default function AyudaPage() {
         </div>
       </section>
 
-      {/* Help Sections with Pills */}
+      {/* Help Sections with Pills/Dropdown */}
       <section className="py-8 px-4">
         <div className="max-w-7xl mx-auto">
-          {/* Pills Navigation */}
-          <div className="flex justify-center mb-12">
-            <div className="bg-white rounded-2xl p-2 shadow-md flex flex-wrap justify-center gap-2 max-w-full overflow-x-auto">
-              {helpSections.map((section) => (
-                <button
-                  key={section.id}
-                  onClick={() => setActiveSection(section.id)}
-                  className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-all duration-300 whitespace-nowrap ${
-                    activeSectionId === section.id
-                      ? 'bg-gradient-new text-white shadow-sm'
-                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-                  }`}
-                >
-                  <section.icon size={20} weight="duotone" />
-                  {section.title}
-                </button>
-              ))}
+          {/* Mobile Dropdown */}
+          <div className="sm:hidden flex justify-center mb-12">
+            <div className="w-full max-w-[300px]">
+              <button
+                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                className="w-full bg-gradient-new text-white rounded-xl p-3 shadow-md flex items-center justify-between gap-2 text-sm font-medium"
+              >
+                <div className="flex items-center gap-2">
+                  {activeSection?.icon && (
+                    <activeSection.icon size={20} weight="duotone" className="text-white" />
+                  )}
+                  <span>{activeSection?.title || 'Seleccionar categoría'}</span>
+                </div>
+                <CaretDown
+                  size={16}
+                  weight="bold"
+                  className={`transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
+                />
+              </button>
+              
+              {isDropdownOpen && (
+                <div className="absolute mt-2 w-full max-w-[300px] bg-white rounded-xl shadow-lg overflow-hidden z-10">
+                  <div className="py-2 px-2">
+                    {helpSections.map((section) => (
+                      <button
+                        key={section.id}
+                        onClick={() => {
+                          setActiveSection(section.id);
+                          setIsDropdownOpen(false);
+                        }}
+                        className={`w-full flex items-center gap-2 py-2.5 px-4 text-sm font-medium transition-colors rounded-lg ${
+                          activeSectionId === section.id
+                            ? 'bg-gradient-new text-white'
+                            : 'text-gray-600 hover:bg-gray-50'
+                        }`}
+                      >
+                        <section.icon size={18} weight="duotone" />
+                        {section.title}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Desktop Pills */}
+          <div className="hidden sm:flex justify-center mb-12">
+            <div className="bg-white rounded-2xl p-2 shadow-md">
+              <div className="flex flex-row gap-2">
+                {helpSections.map((section) => (
+                  <button
+                    key={section.id}
+                    onClick={() => setActiveSection(section.id)}
+                    className={`flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+                      activeSectionId === section.id
+                        ? 'bg-gradient-new text-white shadow-sm'
+                        : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                    }`}
+                  >
+                    <section.icon size={20} weight="duotone" />
+                    {section.title}
+                  </button>
+                ))}
+              </div>
             </div>
           </div>
 

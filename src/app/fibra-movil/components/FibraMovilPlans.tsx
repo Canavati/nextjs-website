@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 import { useState, useEffect, useRef } from 'react';
 import FibraMovilConfigurator from '@/components/offerings/fibra-movil/FibraMovilConfigurator';
 import PacksGrid from '@/components/offerings/packs/PacksGrid';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 type ViewType = 'configurator' | 'packs';
 
@@ -20,10 +21,11 @@ export const FibraMovilPlans = () => {
   const [activeView, setActiveView] = useState<ViewType>('configurator');
   const autoSwitchTimer = useRef<NodeJS.Timeout>();
   const hasUserInteracted = useRef<boolean>(false);
+  const isMobile = useIsMobile();
 
   const views = [
-    { id: 'configurator', label: 'Configurador' },
-    { id: 'packs', label: 'Packs Predefinidos' }
+    { id: 'configurator', label: 'Configura tu Pack' },
+    { id: 'packs', label: 'Packs' }
   ];
 
   const handleViewChange = (view: ViewType) => {
@@ -38,10 +40,14 @@ export const FibraMovilPlans = () => {
   };
 
   useEffect(() => {
-    // Only start auto-switching if user hasn't interacted
-    if (!hasUserInteracted.current) {
+    // Only start auto-switching if user hasn't interacted and not on mobile
+    if (!hasUserInteracted.current && !isMobile) {
       autoSwitchTimer.current = setInterval(() => {
-        setActiveView(current => current === 'configurator' ? 'packs' : 'configurator');
+        setActiveView(current => {
+          const currentIndex = views.findIndex(v => v.id === current);
+          const nextIndex = (currentIndex + 1) % views.length;
+          return views[nextIndex].id as ViewType;
+        });
       }, AUTO_SWITCH_DELAY);
     }
 
@@ -50,7 +56,7 @@ export const FibraMovilPlans = () => {
         clearInterval(autoSwitchTimer.current);
       }
     };
-  }, []);
+  }, [isMobile]); // Add isMobile to dependencies
 
   return (
     <section id="planes" className="py-20 bg-light-gray">
@@ -63,7 +69,12 @@ export const FibraMovilPlans = () => {
         </motion.h2>
 
         <div className="flex justify-center mb-12">
-          <div className="bg-white rounded-2xl p-2 shadow-md flex flex-wrap justify-center gap-2">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="bg-white rounded-2xl p-2 shadow-md flex gap-2 md:flex-wrap md:justify-center overflow-x-auto hide-scrollbar md:overflow-visible"
+          >
             {views.map((view) => (
               <button
                 key={view.id}
@@ -77,7 +88,7 @@ export const FibraMovilPlans = () => {
                 {view.label}
               </button>
             ))}
-          </div>
+          </motion.div>
         </div>
 
         <motion.div

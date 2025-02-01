@@ -187,7 +187,7 @@ export default function Header() {
                 className="block text-dark hover:text-primary transition-colors duration-300"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Blog-FAQ
+                Blog
               </Link>
             </li>
             <li>
@@ -196,12 +196,21 @@ export default function Header() {
                 className="block text-dark hover:text-primary transition-colors duration-300"
                 onClick={() => setIsMenuOpen(false)}
               >
-                Ayuda
+                Centro de Ayuda
+              </Link>
+            </li>
+            <li>
+              <Link
+                href="/tarifas"
+                className="block text-dark hover:text-primary transition-colors duration-300"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Tarifas
               </Link>
             </li>
 
             {/* Customer Type Links */}
-            <li>
+            <li className="pt-4 border-t">
               <Link
                 href="/particular"
                 className="flex items-center gap-2 text-dark hover:text-primary transition-colors duration-300"

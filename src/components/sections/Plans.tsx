@@ -21,6 +21,7 @@ import PacksGrid from '../offerings/packs/PacksGrid';
 import FibraMovilConfigurator from '../offerings/fibra-movil/FibraMovilConfigurator';
 import SoloFibraConfigurator from '../offerings/solo-fibra/SoloFibraConfigurator';
 import SoloMovilConfigurator from '../offerings/solo-movil/SoloMovilConfigurator';
+import { useIsMobile } from '@/hooks/useIsMobile';
 
 type ViewType = 'packs' | 'fibra-movil' | 'solo-fibra' | 'solo-movil';
 
@@ -105,6 +106,7 @@ export default function Plans() {
   const [activeView, setActiveView] = useState<ViewType>('packs');
   const autoSwitchTimer = useRef<NodeJS.Timeout>();
   const hasUserInteracted = useRef<boolean>(false);
+  const isMobile = useIsMobile();
 
   const views = [
     { id: 'packs', label: 'Packs' },
@@ -125,8 +127,8 @@ export default function Plans() {
   };
 
   useEffect(() => {
-    // Only start auto-switching if user hasn't interacted
-    if (!hasUserInteracted.current) {
+    // Only start auto-switching if user hasn't interacted and not on mobile
+    if (!hasUserInteracted.current && !isMobile) {
       autoSwitchTimer.current = setInterval(() => {
         setActiveView(current => {
           const currentIndex = views.findIndex(v => v.id === current);
@@ -141,7 +143,7 @@ export default function Plans() {
         clearInterval(autoSwitchTimer.current);
       }
     };
-  }, []);
+  }, [isMobile]);
 
   return (
     <section className="py-20">
@@ -154,21 +156,28 @@ export default function Plans() {
         </motion.h2>
 
         <div className="flex justify-center mb-12">
-          <div className="bg-white rounded-2xl p-2 shadow-md flex flex-wrap justify-center gap-2">
-            {views.map((view) => (
-              <button
-                key={view.id}
-                onClick={() => handleViewChange(view.id as ViewType)}
-                className={`flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-all duration-300 whitespace-nowrap ${
-                  activeView === view.id
-                    ? 'bg-gradient-new text-white shadow-sm'
-                    : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-                }`}
-              >
-                {view.label}
-              </button>
-            ))}
-          </div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5, delay: 0.2 }}
+            className="bg-white rounded-2xl p-2 shadow-md w-full max-w-[400px] md:max-w-fit"
+          >
+            <div className="grid grid-cols-2 md:flex md:flex-row gap-2">
+              {views.map((view) => (
+                <button
+                  key={view.id}
+                  onClick={() => handleViewChange(view.id as ViewType)}
+                  className={`flex items-center justify-center gap-2 rounded-xl px-3 md:px-4 py-2 text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+                    activeView === view.id
+                      ? 'bg-gradient-new text-white shadow-sm'
+                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                  }`}
+                >
+                  {view.label}
+                </button>
+              ))}
+            </div>
+          </motion.div>
         </div>
 
         <motion.div
@@ -177,7 +186,7 @@ export default function Plans() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          className="relative w-full"
+          className="relative w-full min-h-[650px] md:min-h-[750px]"
         >
           {activeView === 'packs' && <PacksGrid />}
           {activeView === 'fibra-movil' && <FibraMovilConfigurator />}

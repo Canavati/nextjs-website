@@ -35,18 +35,18 @@ export default function Hero() {
   ];
 
   return (
-    <section className="relative min-h-[50vh] bg-dark overflow-hidden">
+    <section className="relative min-h-[50vh] md:min-h-[50vh] bg-dark overflow-hidden flex items-center">
       {/* Background Gradient Effect */}
       <div className="absolute inset-0 bg-gradient-new opacity-95" />
       
       {/* Dark Overlay */}
       <div className="absolute inset-0 bg-black/40" />
 
-      {/* Floating Icons */}
+      {/* Floating Icons - Hide some on mobile */}
       {floatingIcons.map(({ Icon, duration, delay, size, ...position }, index) => (
         <motion.div
           key={index}
-          className="absolute pointer-events-none"
+          className={`absolute pointer-events-none ${index > 7 ? 'hidden md:block' : ''}`}
           style={{ ...position }}
           animate={{
             y: [0, -20, 0],
@@ -100,36 +100,55 @@ export default function Hero() {
         </div>
       </motion.div>
 
-      <div className="relative container mx-auto px-4 pt-16 pb-12">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="relative container mx-auto px-4 pt-12 md:pt-16 pb-8 md:pb-12">
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
           {/* Left Column - Repeating Text */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-2"
+            className="space-y-2 md:space-y-4"
           >
-            {[...Array(4)].map((_, i) => (
-              <motion.h2
-                key={i}
-                initial={{ opacity: 0, x: -50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, delay: i * 0.1 }}
-                className="text-[4rem] font-black leading-none"
-                style={{
-                  opacity: 1 - (i * 0.2),
-                  color: i === 0 ? '#51fcff' : '#ffffff'
-                }}
-              >
-                UNIMOVIL
-              </motion.h2>
-            ))}
+            <div className="space-y-0">
+              {[...Array(4)].map((_, i) => (
+                <motion.h2
+                  key={i}
+                  initial={{ opacity: 0, x: -50 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.5, delay: i * 0.1 }}
+                  className="text-[3rem] md:text-[5rem] font-black leading-[0.85] md:leading-[0.85] flex"
+                  style={{
+                    opacity: 1 - (i * 0.25),
+                    color: i === 0 ? '#51fcff' : '#ffffff',
+                    textShadow: i === 0 ? '0 0 20px rgba(81, 252, 255, 0.3)' : 'none'
+                  }}
+                >
+                  {i === 0 ? (
+                    <>
+                      <span 
+                        className="text-[--primary]"
+                        style={{
+                          textShadow: '0 0 20px rgba(255, 49, 98, 0.5)'
+                        }}
+                      >UNI</span>
+                      <span
+                        style={{
+                          textShadow: '0 0 20px rgba(81, 252, 255, 0.3)'
+                        }}
+                      >MOVIL</span>
+                    </>
+                  ) : (
+                    'UNIMOVIL'
+                  )}
+                </motion.h2>
+              ))}
+            </div>
             
             <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="mt-8 text-white/80 text-xl"
+              className="mt-6 md:mt-8 text-white/80 text-lg md:text-xl"
             >
               Tu operador móvil de confianza
             </motion.div>
@@ -140,40 +159,40 @@ export default function Hero() {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-white space-y-6"
+            className="text-white space-y-4 md:space-y-6"
           >
             <div className="space-y-4">
-              <h2 className="text-5xl font-bold mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">
                 Pack
                 <span className="bg-gradient-bright bg-clip-text text-transparent"> Pro</span>
               </h2>
               
               <div className="space-y-3">
-                <div className="flex items-center gap-4 text-xl">
-                  <WifiHigh size={32} weight="duotone" className="text-[#51fcff]" />
+                <div className="flex items-center gap-4 text-lg md:text-xl">
+                  <WifiHigh size={32} weight="duotone" className="text-[#51fcff] shrink-0" />
                   <span>Fibra 1000Mb</span>
                 </div>
-                <div className="flex items-center gap-4 text-xl">
-                  <DeviceMobile size={32} weight="duotone" className="text-[#51fcff]" />
+                <div className="flex items-center gap-4 text-lg md:text-xl">
+                  <DeviceMobile size={32} weight="duotone" className="text-[#51fcff] shrink-0" />
                   <span>2 Líneas Móvil 175GB Compartidos</span>
                 </div>
-                <div className="flex items-center gap-4 text-xl">
-                  <Phone size={32} weight="duotone" className="text-[#51fcff]" />
+                <div className="flex items-center gap-4 text-lg md:text-xl">
+                  <Phone size={32} weight="duotone" className="text-[#51fcff] shrink-0" />
                   <span>Llamadas ilimitadas</span>
                 </div>
               </div>
 
-              <div className="flex items-end gap-4 mt-8">
-                <div className="text-[5rem] font-black leading-none text-[#51fcff] animate-pulse-subtle drop-shadow-[0_0_8px_rgba(81,252,255,0.5)]">
+              <div className="flex items-end gap-4 mt-6 md:mt-8">
+                <div className="text-[3.5rem] md:text-[5rem] font-black leading-none text-[#51fcff] animate-pulse-subtle drop-shadow-[0_0_8px_rgba(81,252,255,0.5)]">
                   67€
-                  <span className="text-2xl text-white/60 ml-2">/mes</span>
+                  <span className="text-xl md:text-2xl text-white/60 ml-2">/mes</span>
                 </div>
               </div>
             </div>
 
             <Link
               href="#planes"
-              className="inline-block bg-gradient-new text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1"
+              className="inline-block bg-gradient-new text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1"
             >
               ¡CONTRATAR AHORA!
             </Link>

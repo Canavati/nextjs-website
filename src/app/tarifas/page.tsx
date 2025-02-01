@@ -52,47 +52,57 @@ export default function TarifasPage() {
           {tarifasList.map((tarifa, index) => (
             <motion.div
               key={index}
-              className={`bg-white rounded-xl p-6 shadow-sm transition-all duration-300 flex items-center gap-6 group ${
-                tarifa.isAvailable ? 'hover:shadow-md cursor-pointer' : 'opacity-50 cursor-not-allowed'
-              }`}
+              className="relative"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: index * 0.1 }}
             >
-              {tarifa.isAvailable ? (
-                <a 
-                  href={tarifa.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-6 w-full"
-                >
-                  <div className="bg-blue-50 p-4 rounded-lg group-hover:bg-blue-100 transition-colors duration-300">
-                    <FilePdf size={32} weight="duotone" className="text-[--primary]" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-semibold text-gray-900 mb-1 group-hover:text-[--primary] transition-colors duration-300">
-                      {tarifa.title}
-                    </h2>
-                    <p className="text-gray-600">
-                      {tarifa.description}
-                    </p>
-                  </div>
-                </a>
-              ) : (
-                <>
-                  <div className="bg-gray-100 p-4 rounded-lg">
-                    <FilePdf size={32} weight="duotone" className="text-gray-400" />
-                  </div>
-                  <div>
-                    <h2 className="text-xl font-semibold text-gray-900 mb-1">
-                      {tarifa.title}
-                    </h2>
-                    <p className="text-gray-500">
-                      Próximamente disponible
-                    </p>
-                  </div>
-                </>
-              )}
+              <div className={`absolute -inset-[1px] bg-gradient-new rounded-xl opacity-70 transition-opacity duration-300 ${
+                tarifa.isAvailable ? 'opacity-70' : 'opacity-20'
+              }`} />
+              <div
+                className={`relative bg-white rounded-xl p-6 shadow-sm transition-all duration-300 flex items-center gap-6 group ${
+                  tarifa.isAvailable ? 'cursor-pointer hover:shadow-md' : 'opacity-50 cursor-not-allowed'
+                }`}
+              >
+                {tarifa.isAvailable ? (
+                  <a 
+                    href={tarifa.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-6 w-full"
+                  >
+                    <div className="relative">
+                      <div className="absolute -inset-[1px] bg-gradient-new rounded-lg opacity-70" />
+                      <div className="relative bg-transparent p-4 rounded-lg">
+                        <FilePdf size={32} weight="duotone" className="text-white transition-colors duration-300" />
+                      </div>
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-semibold text-gray-900 mb-1 group-hover:text-[--primary] transition-colors duration-300">
+                        {tarifa.title}
+                      </h2>
+                      <p className="text-gray-600">
+                        {tarifa.description}
+                      </p>
+                    </div>
+                  </a>
+                ) : (
+                  <>
+                    <div className="bg-gray-100 p-4 rounded-lg">
+                      <FilePdf size={32} weight="duotone" className="text-gray-400" />
+                    </div>
+                    <div>
+                      <h2 className="text-xl font-semibold text-gray-900 mb-1">
+                        {tarifa.title}
+                      </h2>
+                      <p className="text-gray-500">
+                        Próximamente disponible
+                      </p>
+                    </div>
+                  </>
+                )}
+              </div>
             </motion.div>
           ))}
         </div>

@@ -41,7 +41,7 @@ export const MovilHero = () => {
       {floatingIcons.map(({ Icon, duration, delay, size, ...position }, index) => (
         <motion.div
           key={index}
-          className="absolute pointer-events-none"
+          className={`absolute pointer-events-none ${index > 7 ? 'hidden md:block' : ''}`}
           style={{ ...position }}
           animate={{
             y: [0, -20, 0],
@@ -95,20 +95,20 @@ export const MovilHero = () => {
         </div>
       </motion.div>
 
-      <div className="relative container mx-auto px-4 py-16">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
+      <div className="relative container mx-auto px-4 pt-12 md:pt-16 pb-8 md:pb-12">
+        <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
           {/* Left Column - Main Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="space-y-4"
+            className="space-y-2 md:space-y-4"
           >
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-[4rem] font-black leading-none text-white"
+              className="text-[2.5rem] md:text-[4rem] font-black leading-none text-white"
             >
               LÍNEAS MÓVILES
               <br />
@@ -119,7 +119,7 @@ export const MovilHero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-lg text-white/80 max-w-3xl whitespace-nowrap"
+              className="text-base md:text-lg text-white/80 max-w-3xl"
             >
               Disfruta de la mejor cobertura móvil con llamadas ilimitadas y datos 5G.
             </motion.p>
@@ -132,13 +132,13 @@ export const MovilHero = () => {
             >
               <a
                 href="#planes"
-                className="inline-block bg-gradient-new text-white px-8 py-3 rounded-xl font-semibold text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1"
+                className="inline-block bg-gradient-new text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1"
               >
                 Ver Planes
               </a>
               <a
                 href="#proceso"
-                className="inline-block bg-white/10 text-white px-8 py-3 rounded-xl font-semibold text-lg transition-all duration-300 hover:bg-white/20"
+                className="inline-block bg-white/10 text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg transition-all duration-300 hover:bg-white/20"
               >
                 ¿Cómo Funciona?
               </a>
@@ -153,31 +153,31 @@ export const MovilHero = () => {
             className="text-white space-y-6"
           >
             <div className="space-y-4">
-              <h2 className="text-5xl font-bold mb-4">
+              <h2 className="text-4xl md:text-5xl font-bold mb-4">
                 Móvil
-                <span className="bg-gradient-bright bg-clip-text text-transparent"> Pro</span>
+                <span className="bg-gradient-bright bg-clip-text text-transparent"> Premium+</span>
               </h2>
               
               <div className="space-y-3">
-                <div className="flex items-center gap-4 text-xl">
+                <div className="flex items-center gap-4 text-lg md:text-xl">
                   <DeviceMobile size={32} weight="duotone" className="text-[#51fcff]" />
                   <span>175GB Datos 5G</span>
                 </div>
-                <div className="flex items-center gap-4 text-xl">
+                <div className="flex items-center gap-4 text-lg md:text-xl">
                   <Phone size={32} weight="duotone" className="text-[#51fcff]" />
                   <span>Llamadas Ilimitadas</span>
                 </div>
-                <div className="flex items-center gap-4 text-xl">
+                <div className="flex items-center gap-4 text-lg md:text-xl">
                   <CellSignalFull size={32} weight="duotone" className="text-[#51fcff]" />
                   <span>Máxima Cobertura</span>
                 </div>
               </div>
 
 
-              <div className="flex items-end gap-4 mt-8">
-                <div className="text-[5rem] font-black leading-none text-[#51fcff] animate-pulse-subtle drop-shadow-[0_0_8px_rgba(81,252,255,0.5)]">
+              <div className="flex items-end gap-4 mt-6 md:mt-8">
+                <div className="text-[3.5rem] md:text-[5rem] font-black leading-none text-[#51fcff] animate-pulse-subtle drop-shadow-[0_0_8px_rgba(81,252,255,0.5)]">
                   20€
-                  <span className="text-2xl text-white/60 ml-2">/mes</span>
+                  <span className="text-xl md:text-2xl text-white/60 ml-2">/mes</span>
                 </div>
               </div>
             </div>
