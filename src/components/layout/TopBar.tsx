@@ -104,10 +104,10 @@ export default function TopBar() {
           </div>
           <Link
             href="#contacto"
-            className="bg-[--quaternary] text-white px-6 py-1.5 rounded-full text-sm font-semibold uppercase tracking-wider leading-normal transition-all duration-300 shadow-md hover:-translate-y-[1px] hover:shadow-lg hover:bg-[--secondary] hover:text-dark flex items-center gap-2"
+            className="bg-[--quaternary] text-white px-4 py-0.5 rounded-full text-xs font-medium tracking-wide leading-normal transition-all duration-300 shadow-sm hover:-translate-y-[1px] hover:shadow-md hover:bg-[--secondary] hover:text-dark flex items-center gap-1.5"
           >
-            <Phone size={16} weight="duotone" />
-            <span>1777</span>
+            <Phone size={12} weight="duotone" />
+            <span>7890</span>
           </Link>
         </div>
       </div>
