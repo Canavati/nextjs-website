@@ -2,8 +2,6 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faHome, faBars, faXmark, faUser, faBuilding } from '@fortawesome/free-solid-svg-icons';
 import { useState } from 'react';
 import { 
   House, 
@@ -12,6 +10,7 @@ import {
   List, 
   X 
 } from '@phosphor-icons/react';
+import { getBlurDataURL } from '@/utils/images';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -27,6 +26,9 @@ export default function Header() {
               width={200}
               height={53}
               priority
+              placeholder="blur"
+              blurDataURL={getBlurDataURL(200, 53)}
+              className="object-contain"
             />
           </Link>
         </div>

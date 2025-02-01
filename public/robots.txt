@@ -1,0 +1,14 @@
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Sitemap location
+Sitemap: https://unimovil-demo.vercel.app/sitemap.xml
+
+# Disallow crawling of error pages
+Disallow: /404
+Disallow: /500
+Disallow: /_error
+
+# Prevent crawling of search pages with query parameters
+Disallow: /*?* 
