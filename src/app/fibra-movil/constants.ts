@@ -1,4 +1,4 @@
-import { Package, FileText, WifiHigh, DeviceMobile, Phone, Signal, Crown, ShieldCheck, Headset, Lightning, Broadcast } from '@phosphor-icons/react';
+import { Package, FileText, WifiHigh, DeviceMobile, Phone, Crown, ShieldCheck, Headset, Lightning, Broadcast } from '@phosphor-icons/react';
 import { type IconProps } from '@phosphor-icons/react';
 
 // Types

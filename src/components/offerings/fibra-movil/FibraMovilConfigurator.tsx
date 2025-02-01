@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { WifiHigh, DeviceMobile, Plus, Minus, Lightning, Crown, Rocket, Star, ArrowLeft, X, FilePdf } from '@phosphor-icons/react';
-import { InfoDropdown } from '@/components/ui/InfoDropdown';
 import { TarifasDropdown } from '@/components/ui/TarifasDropdown';
 
 interface FibraMovilConfig {
