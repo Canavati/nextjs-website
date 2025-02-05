@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { WifiHigh, DeviceMobile } from '@phosphor-icons/react';
+import { WifiHigh, DeviceMobile, Phone, Envelope } from '@phosphor-icons/react';
 
 export default function Revolution() {
   return (
@@ -49,7 +49,7 @@ export default function Revolution() {
         </motion.p>
 
         <motion.div 
-          className="flex flex-wrap justify-center gap-4 md:gap-6"
+          className="flex flex-wrap justify-center gap-4 md:gap-6 mb-8"
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -66,6 +66,29 @@ export default function Revolution() {
             className="inline-block text-center bg-white/10 backdrop-blur-sm text-white py-3.5 md:py-4 px-8 md:px-10 rounded-xl font-medium text-base md:text-lg transition-all duration-300 hover:bg-white/20 hover:shadow-lg hover:shadow-white/5 hover:-translate-y-1"
           >
             VER PLANES
+          </Link>
+        </motion.div>
+
+        <motion.div
+          className="flex flex-col md:flex-row items-center justify-center gap-4 md:gap-8"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.8 }}
+        >
+          <Link 
+            href="tel:604451989"
+            className="flex items-center gap-2 text-white/90 hover:text-white transition-colors"
+          >
+            <Phone size={20} weight="duotone" className="text-[#51fcff]" />
+            <span className="text-lg">604 451 989</span>
+          </Link>
+          <Link 
+            href="mailto:hola@unimovil.tel"
+            className="flex items-center gap-2 text-white/90 hover:text-white transition-colors"
+          >
+            <Envelope size={20} weight="duotone" className="text-[#51fcff]" />
+            <span className="text-lg">hola@unimovil.tel</span>
           </Link>
         </motion.div>
       </div>

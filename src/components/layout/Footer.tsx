@@ -43,8 +43,8 @@ export default function Footer() {
               </div>
               <div className="flex items-center gap-1.5 text-gray-300">
                 <Envelope size={14} />
-                <a href="mailto:info@unimovil.com" className="text-xs hover:text-[--secondary] transition-colors">
-                  info@unimovil.com
+                <a href="mailto:hola@unimovil.tel" className="text-xs hover:text-[--secondary] transition-colors">
+                  hola@unimovil.tel
                 </a>
               </div>
               <div className="flex items-center gap-1.5 text-gray-300">
