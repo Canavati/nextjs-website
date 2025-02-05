@@ -119,73 +119,55 @@ export default function SoloMovilConfigurator() {
                 
                 {/* Content */}
                 <div className="relative flex flex-col h-full">
-                  {/* Title and Icon at top - Updated to match PackCard */}
-                  <div className="flex items-center justify-center gap-2 mb-6">
-                    {plan.title === 'Básico' && <Lightning size={32} weight="duotone" className="text-[--primary]" />}
-                    {plan.title === 'Estándar' && <Rocket size={32} weight="duotone" className="text-[--primary]" />}
-                    {plan.title === 'Pro' && <Star size={32} weight="duotone" className="text-[--primary]" />}
-                    {plan.title === 'Premium' && <Sparkle size={32} weight="duotone" className="text-[--primary]" />}
-                    {plan.title === 'Premium+' && <Crown size={32} weight="duotone" className="text-[--primary]" />}
-                    <h3 className="text-xl font-medium text-dark">{plan.title}</h3>
+                  {/* Title and Icon at top */}
+                  <div className="flex items-center justify-center gap-3 mb-6 min-h-[40px]">
+                    {plan.title === 'Básico' && <Lightning size={32} weight="duotone" className="text-[#ed54ba]" />}
+                    {plan.title === 'Estándar' && <Rocket size={32} weight="duotone" className="text-[#ed54ba]" />}
+                    {plan.title === 'Pro' && <Crown size={32} weight="duotone" className="text-[#ed54ba]" />}
+                    {plan.title === 'Premium' && <Crown size={32} weight="duotone" className="text-[#ed54ba]" />}
+                    {plan.title === 'Premium+' && <Crown size={32} weight="duotone" className="text-[#ed54ba]" />}
+                    <h3 className="text-2xl font-medium text-dark">{plan.title}</h3>
                   </div>
 
                   {/* Light Divider */}
                   <hr className="border-[#adadad] mb-6" />
 
                   {/* Main Feature - Data */}
-                  <div className="text-center mb-3">
-                    <div className="inline-flex items-center justify-center gap-2">
+                  <div className="text-center mb-6">
+                    <div className="inline-flex items-center justify-center gap-3">
                       <DeviceMobile size={32} weight="duotone" className="text-[#ed54ba]" />
-                      <span className="text-5xl font-bold text-[#79C4CD]">{plan.data}</span>
-                      <span className="text-xl font-bold text-gray">GB</span>
+                      <span className="text-4xl font-medium text-[#79C4CD]">{plan.data}</span>
+                      <span className="text-lg text-[#666666]">GB</span>
                     </div>
                   </div>
 
-                  {/* Secondary Feature - Calls */}
-                  <div className="text-center mb-4">
-                    <div className="inline-flex items-center justify-center gap-2">
+                  {/* Features */}
+                  <div className="text-center mb-6">
+                    <div className="flex flex-col items-center justify-center gap-2 min-h-[80px] px-4">
                       <Phone size={32} weight="duotone" className="text-[#ed54ba]" />
-                      <div className="flex items-baseline">
-                        <span className="text-3xl font-bold text-[#79C4CD]">
-                          {plan.calls.startsWith('1000') ? '1000' : '∞'}
-                        </span>
-                        <span className="text-lg font-bold text-gray ml-1">mins</span>
-                      </div>
+                      <span className="text-lg text-[#444444] max-w-[180px] leading-tight">{plan.calls}</span>
                     </div>
-                    {plan.calls.startsWith('1000') ? (
-                      <span className="text-base text-gray block mt-1">
-                        <span className="text-xl font-bold text-[#79C4CD]">+150</span>
-                        <span className="text-base font-bold text-gray"> mins </span>
-                        <span className="text-base text-gray">otros operadores</span>
-                      </span>
-                    ) : (
-                      <span className="text-base text-gray block mt-1">
-                        Llamadas ilimitadas
-                      </span>
-                    )}
                   </div>
 
-                  {/* Price Section */}
-                  <div className="text-center mt-auto mb-4">
-                    <div className="text-3xl font-bold text-[#79C4CD]">
+                  {/* Light Divider */}
+                  <hr className="border-[#adadad] mb-6" />
+
+                  {/* Price */}
+                  <div className="text-center mt-auto">
+                    <div className="text-6xl font-medium text-[#79C4CD]">
                       {plan.basePrice.toFixed(2)}€
-                      <span className="text-sm font-normal text-gray ml-1">/mes</span>
+                      <span className="text-2xl font-normal text-[#666666] ml-1">/mes</span>
                     </div>
-                    <p className="text-xs text-gray mt-1">IVA incluido</p>
+                    <p className="text-sm text-[#666666] mt-1">IVA incluido</p>
                   </div>
 
                   {/* Action Button */}
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
+                  <Link
+                    href="#contacto"
+                    className="block text-center bg-gradient-new text-white py-3 px-8 rounded-xl font-medium text-base mt-6 transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
                   >
-                    <Link
-                      href="#contacto"
-                      className="block text-center bg-gradient-new text-white py-2.5 px-6 rounded-xl font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
-                    >
-                      ¡Lo quiero!
-                    </Link>
-                  </motion.div>
+                    ¡Lo quiero!
+                  </Link>
                 </div>
               </motion.div>
             </div>

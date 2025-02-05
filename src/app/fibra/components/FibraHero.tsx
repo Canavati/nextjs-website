@@ -120,7 +120,7 @@ export const FibraHero = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-base md:text-lg text-white/80 max-w-3xl"
             >
-              Disfruta de velocidad simétrica garantizada y con la última tecnología en WiFi 6.
+              Experimenta velocidades ultrarrápidas con nuestra fibra óptica simétrica. Streaming, gaming y trabajo remoto sin interrupciones.
             </motion.p>
 
             <motion.div

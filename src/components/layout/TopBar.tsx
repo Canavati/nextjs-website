@@ -35,25 +35,7 @@ export default function TopBar() {
       className="fixed top-0 left-0 w-full h-top-bar bg-[#292cf6] z-[1001] shadow-sm"
       onMouseLeave={() => setShowHelpMenu(false)}
     >
-      <div className="max-w-[1400px] mx-auto px-4 h-full flex justify-between items-center">
-        {/* Left side */}
-        <div className="hidden md:flex items-center gap-6">
-          <Link
-            href="/particular"
-            className="flex items-center gap-2 text-white no-underline text-sm font-medium opacity-90 hover:opacity-100 hover:text-[--secondary] hover:-translate-y-[1px] transition-all duration-300"
-          >
-            <User size={18} weight="duotone" />
-            <span className="hidden lg:inline">Particulares</span>
-          </Link>
-          <Link
-            href="/empresa"
-            className="flex items-center gap-2 text-white no-underline text-sm font-medium opacity-90 hover:opacity-100 hover:text-[--secondary] hover:-translate-y-[1px] transition-all duration-300"
-          >
-            <Buildings size={18} weight="duotone" />
-            <span className="hidden lg:inline">Autónomos y Empresas</span>
-          </Link>
-        </div>
-
+      <div className="max-w-[1400px] mx-auto px-4 h-full flex justify-end items-center">
         {/* Right side */}
         <div className="flex items-center gap-4">
           <Link

@@ -85,90 +85,118 @@ export default function SoloFibraConfigurator() {
         ))}
       </div>
 
-      <div 
-        ref={scrollRef}
-        className="flex overflow-x-auto pb-12 pt-8 gap-6 snap-x snap-mandatory hide-scrollbar"
-      >
-        <div className="flex md:grid md:grid-cols-2 gap-6 min-w-max md:min-w-0 md:w-full px-[10%] md:px-0">
-          {SOLO_FIBRA_PLANS.map((plan, index) => (
-            <div key={index} className="w-[280px] md:w-auto snap-center">
-              <motion.div
-                className="group relative p-3 md:p-4 rounded-xl text-left transition-all duration-300"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                whileHover={{ y: -4 }}
-                style={{
-                  border: '2px solid transparent',
-                  background: 'linear-gradient(rgb(248 250 252), rgb(248 250 252)) padding-box, var(--gradient-primary) border-box'
-                }}
-              >
-                {/* Selection/Hover Gradient */}
-                <div className="absolute inset-[1px] rounded-[10px] bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-                
-                {/* Content */}
-                <div className="relative flex flex-col h-full">
-                  {/* Title and Icon at top */}
-                  <div className="flex items-center justify-center gap-2 mb-6">
-                    {plan.title === 'Estándar' && <Rocket size={32} weight="duotone" className="text-[--primary]" />}
-                    {plan.title === 'Pro' && <Crown size={32} weight="duotone" className="text-[--primary]" />}
-                    <h3 className="text-xl font-medium text-dark">{plan.title}</h3>
-                  </div>
-
-                  {/* Light Divider */}
-                  <hr className="border-[#adadad] mb-6" />
-
-                  {/* Main Feature - Speed */}
-                  <div className="text-center mb-3">
-                    <div className="inline-flex items-center justify-center gap-2">
-                      <WifiHigh size={32} weight="duotone" className="text-[#ed54ba]" />
-                      <span className="text-5xl font-bold text-[#79C4CD]">{plan.speed}</span>
-                      <span className="text-xl font-bold text-gray">Mb</span>
-                    </div>
-                  </div>
-
-                  {/* Router Icon */}
-                  <div className="flex items-center justify-center gap-2 text-[#79C4CD] mb-4">
-                    <Broadcast size={32} weight="duotone" />
-                    <span className="text-base text-gray">Router WiFi 6</span>
-                  </div>
-
-                  {/* Features */}
-                  <div className="space-y-2 mb-4">
-                    {plan.features.map((feature, idx) => (
-                      <div key={idx} className="flex items-center gap-2 text-sm text-gray">
-                        <div className="w-1 h-1 rounded-full bg-[#ed54ba]" />
-                        {feature}
-                      </div>
-                    ))}
-                  </div>
-
-                  {/* Price Section */}
-                  <div className="text-center mt-auto mb-4">
-                    <div className="text-3xl font-bold text-[#79C4CD]">
-                      {plan.basePrice.toFixed(2)}€
-                      <span className="text-sm font-normal text-gray ml-1">/mes</span>
-                    </div>
-                    <p className="text-xs text-gray mt-1">IVA incluido</p>
-                  </div>
-
-                  {/* Action Button */}
-                  <motion.div
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <Link
-                      href="#contacto"
-                      className="block text-center bg-gradient-new text-white py-2.5 px-6 rounded-xl font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
-                    >
-                      ¡Lo quiero!
-                    </Link>
-                  </motion.div>
-                </div>
-              </motion.div>
+      {/* Mobile Layout */}
+      <div className="md:hidden">
+        {SOLO_FIBRA_PLANS.map((plan, index) => (
+          <div key={index} className="relative">
+            {/* Title and Icon */}
+            <div className="flex items-center gap-2 mb-3">
+              <div className="flex-shrink-0">
+                {plan.title === 'Estándar' && <Rocket size={28} weight="duotone" className="text-[#ed54ba]" />}
+                {plan.title === 'Pro' && <Crown size={28} weight="duotone" className="text-[#ed54ba]" />}
+              </div>
+              <h3 className="text-xl font-medium text-dark">{plan.title}</h3>
             </div>
-          ))}
-        </div>
+
+            {/* Features and Price */}
+            <div className="flex items-end justify-between">
+              <div className="flex flex-col gap-2">
+                <div className="flex items-center gap-2">
+                  <WifiHigh size={20} weight="duotone" className="text-[#ed54ba]" />
+                  <span className="text-lg font-medium text-[#79C4CD]">{plan.speed}<span className="text-base text-[#666666]">Mb</span></span>
+                </div>
+              </div>
+              <div className="text-right">
+                <div className="text-3xl font-medium text-[#79C4CD]">
+                  {plan.basePrice.toFixed(2)}€
+                  <span className="text-base font-normal text-[#666666] ml-1">/mes</span>
+                </div>
+                <span className="text-sm text-[#666666]">IVA incluido</span>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Desktop Layout */}
+      <div className="hidden md:grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+        {SOLO_FIBRA_PLANS.map((plan, index) => (
+          <motion.div
+            key={index}
+            className="group relative p-6 rounded-xl text-left transition-all duration-300"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.3, delay: index * 0.1 }}
+            whileHover={{ y: -4 }}
+            style={{
+              border: '2px solid transparent',
+              background: 'linear-gradient(rgb(248 250 252), rgb(248 250 252)) padding-box, var(--gradient-primary) border-box'
+            }}
+          >
+            {/* Selection/Hover Gradient */}
+            <div className="absolute inset-[1px] rounded-[10px] bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            
+            {/* Content */}
+            <div className="relative">
+              {/* Title and Icon at top */}
+              <div className="flex items-center justify-center gap-3">
+                {plan.title === 'Estándar' && <Rocket size={32} weight="duotone" className="text-[#ed54ba]" />}
+                {plan.title === 'Pro' && <Crown size={32} weight="duotone" className="text-[#ed54ba]" />}
+                <h3 className="text-2xl font-medium text-dark">{plan.title}</h3>
+              </div>
+
+              {/* Light Divider */}
+              <hr className="border-[#adadad] my-6" />
+
+              <div className="space-y-8">
+                {/* Main Feature - Speed */}
+                <div className="text-center">
+                  <div className="text-xl font-medium text-[#444444] mb-3">Fibra</div>
+                  <div className="flex items-center justify-center gap-3">
+                    <span className="text-4xl font-medium text-[#79C4CD]">{plan.speed}</span>
+                    <span className="text-lg text-[#666666]">Mb</span>
+                  </div>
+                </div>
+
+                {/* Router Icon */}
+                <div className="flex items-center justify-center gap-3">
+                  <Broadcast size={28} weight="duotone" className="text-[#ed54ba]" />
+                  <span className="text-lg text-[#666666]">Router WiFi 6</span>
+                </div>
+
+                {/* Features */}
+                <div className="flex flex-col items-start mx-auto w-fit space-y-4">
+                  {plan.features.map((feature, idx) => (
+                    <div key={idx} className="flex items-center gap-4">
+                      <div className="w-3.5 h-3.5 rounded-full bg-[#ed54ba]/40 flex-shrink-0" />
+                      <span className="text-lg text-[#444444] max-w-[180px] leading-tight">{feature}</span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Light Divider */}
+                <hr className="border-[#adadad]" />
+
+                {/* Price */}
+                <div className="text-center">
+                  <div className="text-6xl font-medium text-[#79C4CD]">
+                    {plan.basePrice.toFixed(2)}€
+                    <span className="text-2xl font-normal text-[#666666] ml-1">/mes</span>
+                  </div>
+                  <p className="text-sm text-[#666666] mt-1">IVA incluido</p>
+                </div>
+
+                {/* Action Button */}
+                <Link
+                  href="#contacto"
+                  className="block text-center bg-gradient-new text-white py-3 px-8 rounded-xl font-medium text-base transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+                >
+                  ¡Lo quiero!
+                </Link>
+              </div>
+            </div>
+          </motion.div>
+        ))}
       </div>
     </motion.div>
   );

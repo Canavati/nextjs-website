@@ -121,7 +121,7 @@ export const MovilHero = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-base md:text-lg text-white/80 max-w-3xl"
             >
-              Disfruta de la mejor cobertura móvil con llamadas ilimitadas y datos 5G.
+              Mantente conectado con planes móviles flexibles que se adaptan a ti. Disfruta de la mejor cobertura 5G y llamadas ilimitadas.
             </motion.p>
 
             <motion.div

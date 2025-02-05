@@ -34,7 +34,7 @@ export default function Contact() {
                   viewport={{ once: true }}
                   className="text-[2.75rem] font-bold mb-4 px-8"
                 >
-                  ¡Únete a la revolución digital!
+                  Empieza tu experiencia digital
                 </motion.h2>
                 <motion.p
                   initial={{ opacity: 0, y: 20 }}
@@ -43,7 +43,7 @@ export default function Contact() {
                   viewport={{ once: true }}
                   className="text-xl px-12"
                 >
-                  Estamos aquí para ayudarte a elegir el mejor plan para ti
+                  Nuestro equipo está listo para asesorarte y encontrar tu plan ideal
                 </motion.p>
               </div>
             </motion.div>

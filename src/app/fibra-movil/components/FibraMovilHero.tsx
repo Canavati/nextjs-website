@@ -120,7 +120,7 @@ export const FibraMovilHero = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-base md:text-lg text-white/80 max-w-3xl"
             >
-              Internet de alta velocidad y líneas móviles con datos ilimitados en un solo pack.
+              Combina la potencia de la fibra óptica con la libertad de datos móviles ilimitados. La solución completa para tu hogar y tu vida en movimiento.
             </motion.p>
 
             <motion.div
