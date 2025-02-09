@@ -334,10 +334,10 @@ export default function FibraMovilConfigurator() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
-      className="space-y-4 md:space-y-6 min-h-[650px] md:min-h-[750px]"
+      className="space-y-3 md:space-y-4 min-h-[600px] md:min-h-[680px]"
     >
       {/* Mobile Layout - Full Width Cards */}
-      <div className="md:hidden space-y-4">
+      <div className="md:hidden space-y-3">
         {FIBRA_MOVIL_PLANS.map((plan, index) => (
           <motion.button
             key={index}
@@ -345,13 +345,9 @@ export default function FibraMovilConfigurator() {
               setConfig(prev => ({ ...prev, selectedPlan: index }));
               setShowMobileConfig(true);
             }}
-            className="w-full group relative p-4 rounded-xl text-left transition-all duration-300"
+            className="w-full group relative p-3 rounded-xl text-left transition-all duration-300 bg-slate-50"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            style={{
-              border: '2px solid transparent',
-              background: 'linear-gradient(rgb(248 250 252), rgb(248 250 252)) padding-box, var(--gradient-primary) border-box'
-            }}
           >
             {/* Hover Gradient Only */}
             <div className="absolute inset-[1px] rounded-[10px] bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 group-active:opacity-100 group-hover:opacity-100 transition-opacity duration-300" />
@@ -359,18 +355,25 @@ export default function FibraMovilConfigurator() {
             <div className="relative">
               {/* Title and Icon */}
               <div className="flex items-center gap-2 mb-3">
-                <div className="flex-shrink-0">
+                <div className="flex items-center gap-2">
                   {plan.title === 'Básico' && <Lightning size={28} weight="duotone" className="text-[#ed54ba]" />}
                   {plan.title === 'Estándar' && <Rocket size={28} weight="duotone" className="text-[#ed54ba]" />}
                   {plan.title === 'Pro' && <Star size={28} weight="duotone" className="text-[#ed54ba]" />}
                   {plan.title === 'Premium' && <Crown size={28} weight="duotone" className="text-[#ed54ba]" />}
+                  <h3 className="text-xl font-medium text-dark">{plan.title}</h3>
+                  {config.selectedPlan === index && (
+                    <div className="w-5 h-5 rounded-full bg-gradient-new flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  )}
                 </div>
-                <h3 className="text-xl font-medium text-dark">{plan.title}</h3>
               </div>
 
               {/* Features and Price */}
-              <div className="flex items-end justify-between">
-                <div className="grid grid-cols-2 gap-4 w-full">
+              <div className="mt-2">
+                <div className="grid grid-cols-2 gap-3">
                   <div className="text-center">
                     <div className="text-base font-medium text-[#444444] mb-2">Fibra</div>
                     <div className="flex items-center justify-center gap-2">
@@ -386,13 +389,13 @@ export default function FibraMovilConfigurator() {
                     </div>
                   </div>
                 </div>
-              </div>
-              <div className="text-right mt-4">
-                <div className="text-3xl font-medium text-[#79C4CD]">
-                  {plan.basePrice.toFixed(2)}€
-                  <span className="text-base font-normal text-[#666666] ml-1">/mes</span>
+                <div className="text-right mt-4">
+                  <div className="text-3xl font-medium text-[#79C4CD]">
+                    {plan.basePrice.toFixed(2)}€
+                    <span className="text-base font-normal text-[#666666] ml-1">/mes</span>
+                  </div>
+                  <span className="text-sm text-[#666666]">IVA incluido</span>
                 </div>
-                <span className="text-sm text-[#666666]">IVA incluido</span>
               </div>
             </div>
           </motion.button>
@@ -405,7 +408,7 @@ export default function FibraMovilConfigurator() {
           <motion.button
             key={index}
             onClick={() => setConfig(prev => ({ ...prev, selectedPlan: index }))}
-            className="group relative p-3 md:p-4 rounded-xl text-left transition-all duration-300"
+            className="group relative p-3 rounded-xl text-left transition-all duration-300"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -423,38 +426,47 @@ export default function FibraMovilConfigurator() {
             {/* Content */}
             <div className="relative">
               {/* Title and Icon at top */}
-              <div className="flex items-center justify-center gap-3">
-                {plan.title === 'Básico' && <Lightning size={32} weight="duotone" className="text-[#ed54ba]" />}
-                {plan.title === 'Estándar' && <Rocket size={32} weight="duotone" className="text-[#ed54ba]" />}
-                {plan.title === 'Pro' && <Star size={32} weight="duotone" className="text-[#ed54ba]" />}
-                {plan.title === 'Premium' && <Crown size={32} weight="duotone" className="text-[#ed54ba]" />}
-                <h3 className="text-2xl font-medium text-dark">{plan.title}</h3>
+              <div className="flex items-center justify-center gap-2 mb-4">
+                {plan.title === 'Básico' && <Lightning size={28} weight="duotone" className="text-[#ed54ba]" />}
+                {plan.title === 'Estándar' && <Rocket size={28} weight="duotone" className="text-[#ed54ba]" />}
+                {plan.title === 'Pro' && <Star size={28} weight="duotone" className="text-[#ed54ba]" />}
+                {plan.title === 'Premium' && <Crown size={28} weight="duotone" className="text-[#ed54ba]" />}
+                <div className="flex items-center gap-2">
+                  <h3 className="text-2xl font-medium text-dark">{plan.title}</h3>
+                  {config.selectedPlan === index && (
+                    <div className="w-5 h-5 rounded-full bg-gradient-new flex items-center justify-center">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3 text-white" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                      </svg>
+                    </div>
+                  )}
+                </div>
               </div>
 
               {/* Light Divider */}
-              <hr className="border-[#adadad] mb-8" />
+              <hr className="border-[#adadad] mb-4" />
 
-              <div className="space-y-6">
+              <div className="space-y-4">
                 {/* Grid for Fibra and Datos Móvil */}
-                <div className="grid grid-cols-2 gap-8">
+                <div className="grid grid-cols-2 gap-4">
                   <div className="text-center">
-                    <div className="text-xl font-medium text-[#444444] mb-2">Fibra</div>
-                    <div className="flex items-center justify-center gap-3">
-                      <span className="text-4xl font-medium text-[#79C4CD]">{plan.speed}</span>
-                      <span className="text-lg text-[#666666]">Mb</span>
+                    <div className="text-lg font-medium text-[#444444] mb-1">Fibra</div>
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="text-3xl font-medium text-[#79C4CD]">{plan.speed}</span>
+                      <span className="text-base text-[#666666]">Mb</span>
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-xl font-medium text-[#444444] mb-2">Datos Móvil</div>
-                    <div className="flex items-center justify-center gap-3">
-                      <span className="text-4xl font-medium text-[#79C4CD]">{plan.data}</span>
-                      <span className="text-lg text-[#666666]">GB</span>
+                    <div className="text-lg font-medium text-[#444444] mb-1">Datos Móvil</div>
+                    <div className="flex items-center justify-center gap-2">
+                      <span className="text-3xl font-medium text-[#79C4CD]">{plan.data}</span>
+                      <span className="text-base text-[#666666]">GB</span>
                     </div>
                   </div>
                 </div>
 
                 {/* Features */}
-                <div className="flex flex-col items-start mx-auto w-fit space-y-4">
+                <div className="flex flex-col items-start mx-auto w-fit space-y-2">
                   {plan.features.map((feature, idx) => (
                     <div key={idx} className="flex items-center gap-4">
                       <div className="w-3.5 h-3.5 rounded-full bg-[#ed54ba]/40 flex-shrink-0" />
@@ -464,24 +476,16 @@ export default function FibraMovilConfigurator() {
                 </div>
 
                 {/* Light Divider */}
-                <hr className="border-[#adadad] mb-8" />
+                <hr className="border-[#adadad] mb-4" />
 
                 {/* Price */}
                 <div className="text-center">
-                  <div className="text-6xl font-medium text-[#79C4CD]">
+                  <div className="text-5xl font-medium text-[#79C4CD]">
                     {plan.basePrice.toFixed(2)}€
                     <span className="text-2xl font-normal text-[#666666] ml-1">/mes</span>
                   </div>
                   <p className="text-sm text-[#666666] mt-1">IVA incluido</p>
                 </div>
-
-                {/* Action Button */}
-                <Link
-                  href="#contacto"
-                  className="block text-center bg-gradient-new text-white py-3 px-8 rounded-xl font-medium text-base transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
-                >
-                  ¡Lo quiero!
-                </Link>
               </div>
             </div>
           </motion.button>
@@ -491,7 +495,7 @@ export default function FibraMovilConfigurator() {
       {/* Desktop Configuration Section - Unchanged */}
       <div className="hidden md:grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4">
         <motion.div
-          className="lg:col-span-2 relative rounded-xl p-4 md:p-5 shadow-sm"
+          className="lg:col-span-2 relative rounded-xl p-3 md:p-4 shadow-sm"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.4 }}
