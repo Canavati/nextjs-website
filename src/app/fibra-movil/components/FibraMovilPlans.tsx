@@ -60,7 +60,7 @@ export const FibraMovilPlans = () => {
 
   return (
     <section id="planes" className="py-20 bg-light-gray">
-      <div className="max-w-[1400px] mx-auto px-[5%]">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
         <motion.h2
           {...motionConfig}
           className="text-4xl font-bold text-center mb-12 text-shimmer"
