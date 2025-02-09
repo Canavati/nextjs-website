@@ -79,25 +79,17 @@ export default function Hero() {
       
       {/* Animated Background Pattern */}
       <motion.div
-        className="absolute w-[200%] h-[200%] top-[-50%] left-[-50%] pointer-events-none"
-        animate={{ 
-          rotate: 360,
-          scale: [1, 1.1, 1],
+        className="absolute inset-0 w-full h-full"
+        animate={{
+          backgroundPosition: ["0px 0px", "100px 100px"],
         }}
-        transition={{ 
-          duration: 30, 
-          repeat: Infinity, 
+        transition={{
+          duration: 20,
+          repeat: Infinity,
           ease: "linear",
         }}
       >
-        <div className="absolute inset-0 opacity-5">
-          <Image
-            src="/images/grid-pattern.png"
-            alt=""
-            fill
-            className="object-cover"
-          />
-        </div>
+        {/* Grid pattern removed */}
       </motion.div>
 
       <div className="relative container mx-auto px-4 pt-12 md:pt-16 pb-8 md:pb-12">
