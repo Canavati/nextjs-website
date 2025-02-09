@@ -16,25 +16,25 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="bg-dark text-white pt-6 pb-4">
+    <footer className="bg-dark text-white pt-0 pb-2">
       <div className="max-w-[1200px] mx-auto px-[5%]">
         {/* Main Footer Content */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-4">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-2 mb-1">
           {/* Company Info */}
-          <div className="space-y-2">
-            <div className="mb-2">
+          <div className="space-y-1.5">
+            <div className="mb-0.5">
               <Image
                 src="/images/logo.png"
                 alt="Unimóvil Logo"
-                width={120}
-                height={32}
+                width={200}
+                height={53}
                 className="brightness-0 invert"
               />
             </div>
             <p className="text-gray-300 text-xs leading-tight">
               Tu proveedor de confianza para servicios de fibra y móvil. Conectando hogares y empresas con la mejor tecnología.
             </p>
-            <div className="space-y-1">
+            <div className="space-y-0.5">
               <div className="flex items-center gap-1.5 text-gray-300">
                 <Phone size={14} />
                 <a href="tel:900123456" className="text-xs hover:text-[--secondary] transition-colors">
@@ -55,9 +55,9 @@ export default function Footer() {
           </div>
 
           {/* Products */}
-          <div>
-            <h3 className="text-sm font-bold mb-2">Productos</h3>
-            <ul className="space-y-1">
+          <div className="mt-16">
+            <h3 className="text-sm font-bold">Productos</h3>
+            <ul className="space-y-[1px] mt-1">
               <li>
                 <Link 
                   href="/fibra-movil"
@@ -102,9 +102,9 @@ export default function Footer() {
           </div>
 
           {/* Company */}
-          <div>
-            <h3 className="text-sm font-bold mb-2">Empresa</h3>
-            <ul className="space-y-1">
+          <div className="mt-16">
+            <h3 className="text-sm font-bold">Empresa</h3>
+            <ul className="space-y-[1px] mt-1">
               <li>
                 <Link 
                   href="/sobre-nosotros"
@@ -157,9 +157,9 @@ export default function Footer() {
           </div>
 
           {/* Legal */}
-          <div>
-            <h3 className="text-sm font-bold mb-2">Legal</h3>
-            <ul className="space-y-1">
+          <div className="mt-16">
+            <h3 className="text-sm font-bold">Legal</h3>
+            <ul className="space-y-[1px] mt-1">
               <li>
                 <Link 
                   href="/aviso-legal"
@@ -197,7 +197,7 @@ export default function Footer() {
         </div>
 
         {/* Social Media & Copyright */}
-        <div className="pt-3 border-t border-gray-800">
+        <div className="pt-1.5 border-t border-gray-800">
           <div className="flex flex-col md:flex-row justify-between items-center gap-2">
             {/* Social Media Icons */}
             <div className="flex gap-2">
