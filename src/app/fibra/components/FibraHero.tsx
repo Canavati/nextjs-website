@@ -146,13 +146,13 @@ export const FibraHero = () => {
             <div className="space-y-4">
               <h2 className="text-4xl md:text-5xl font-bold mb-4">
                 Plan
-                <span className="bg-gradient-bright bg-clip-text text-transparent"> Pro</span>
+                <span className="bg-gradient-bright bg-clip-text text-transparent"> Estándar</span>
               </h2>
               
               <div className="space-y-3">
                 <div className="flex items-center gap-4 text-lg md:text-xl">
                   <WifiHigh size={32} weight="duotone" className="text-[#51fcff]" />
-                  <span>Fibra 1000Mb Simétricos</span>
+                  <span>Fibra 500Mb Simétricos</span>
                 </div>
                 <div className="flex items-center gap-4 text-lg md:text-xl">
                   <Broadcast size={32} weight="duotone" className="text-[#51fcff]" />

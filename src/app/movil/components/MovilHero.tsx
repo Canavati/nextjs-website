@@ -147,13 +147,13 @@ export const MovilHero = () => {
             <div className="space-y-4">
               <h2 className="text-4xl md:text-5xl font-bold mb-4">
                 Móvil
-                <span className="bg-gradient-bright bg-clip-text text-transparent"> Premium+</span>
+                <span className="bg-gradient-bright bg-clip-text text-transparent"> Estándar</span>
               </h2>
               
               <div className="space-y-3">
                 <div className="flex items-center gap-4 text-lg md:text-xl">
                   <DeviceMobile size={32} weight="duotone" className="text-[#51fcff]" />
-                  <span>175GB Datos 5G</span>
+                  <span>25GB Datos 5G</span>
                 </div>
                 <div className="flex items-center gap-4 text-lg md:text-xl">
                   <Phone size={32} weight="duotone" className="text-[#51fcff]" />
@@ -165,10 +165,9 @@ export const MovilHero = () => {
                 </div>
               </div>
 
-
               <div className="flex items-end gap-4 mt-6 md:mt-8">
                 <div className="text-[3.5rem] md:text-[5rem] font-black leading-none text-[#51fcff] animate-pulse-subtle drop-shadow-[0_0_8px_rgba(81,252,255,0.5)]">
-                  20€
+                  7€
                   <span className="text-xl md:text-2xl text-white/60 ml-2">/mes</span>
                 </div>
               </div>
