@@ -38,7 +38,7 @@ export default function Footer() {
               <div className="flex items-center gap-1.5 text-gray-300">
                 <Phone size={14} />
                 <a href="tel:900123456" className="text-xs hover:text-[--secondary] transition-colors">
-                  900 123 456
+                  604 451 989
                 </a>
               </div>
               <div className="flex items-center gap-1.5 text-gray-300">

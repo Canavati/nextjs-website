@@ -84,13 +84,15 @@ export default function TopBar() {
               </Link>
             </div>
           </div>
-          <Link
-            href="#contacto"
+          <a
+            href="tel:+34604451989"
+            aria-label="Llamar al 604 451 989"
             className="bg-[--quaternary] text-white px-4 py-0.5 rounded-full text-xs font-medium tracking-wide leading-normal transition-all duration-300 shadow-sm hover:-translate-y-[1px] hover:shadow-md hover:bg-[--secondary] hover:text-dark flex items-center gap-1.5"
+            title="Llamar al 604 451 989"
           >
             <Phone size={12} weight="duotone" />
-            <span>7890</span>
-          </Link>
+            <span>1989</span>
+          </a>
         </div>
       </div>
     </motion.div>
