@@ -19,20 +19,20 @@ const FIBRA_MOVIL_PLANS = [
   {
     title: 'Básico',
     speed: '300',
-    data: '25',
-    basePrice: 29.90,
+    data: '45',
+    basePrice: 33.00,
     features: [
       'Fibra simétrica garantizada',
       'Router WiFi 6 incluido',
       '1 línea móvil con llamadas ilimitadas',
-      '25GB de datos móviles incluidos'
+      '45GB de datos móviles incluidos'
     ]
   },
   {
     title: 'Estándar',
     speed: '500',
     data: '50',
-    basePrice: 34.90,
+    basePrice: 40.00,
     features: [
       'Fibra simétrica garantizada',
       'Router WiFi 6 incluido',
@@ -42,26 +42,26 @@ const FIBRA_MOVIL_PLANS = [
   },
   {
     title: 'Pro',
-    speed: '1000',
-    data: '100',
-    basePrice: 39.90,
+    speed: '500',
+    data: '115',
+    basePrice: 45.00,
     features: [
       'Fibra simétrica garantizada',
       'Router WiFi 6 incluido',
       '1 línea móvil con llamadas ilimitadas',
-      '100GB de datos móviles incluidos'
+      '115GB de datos móviles incluidos'
     ]
   },
   {
     title: 'Premium',
     speed: '1000',
-    data: '150',
-    basePrice: 44.90,
+    data: '115',
+    basePrice: 55.00,
     features: [
       'Fibra simétrica garantizada',
       'Router WiFi 6 incluido',
       '1 línea móvil con llamadas ilimitadas',
-      '150GB de datos móviles incluidos'
+      '115GB de datos móviles incluidos'
     ]
   }
 ];

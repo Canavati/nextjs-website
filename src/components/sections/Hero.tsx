@@ -164,17 +164,17 @@ export default function Hero() {
             <div className="space-y-4">
               <h2 className="text-4xl md:text-5xl font-bold mb-4">
                 Pack
-                <span className="bg-gradient-bright bg-clip-text text-transparent"> Pro</span>
+                <span className="bg-gradient-bright bg-clip-text text-transparent"> Single</span>
               </h2>
               
               <div className="space-y-3">
                 <div className="flex items-center gap-4 text-lg md:text-xl">
                   <WifiHigh size={32} weight="duotone" className="text-[#51fcff] shrink-0" />
-                  <span>Fibra 1000Mb</span>
+                  <span>Fibra 500Mb</span>
                 </div>
                 <div className="flex items-center gap-4 text-lg md:text-xl">
                   <DeviceMobile size={32} weight="duotone" className="text-[#51fcff] shrink-0" />
-                  <span>2 Líneas Móvil 175GB Compartidos</span>
+                  <span>1 Línea Móvil 50GB</span>
                 </div>
                 <div className="flex items-center gap-4 text-lg md:text-xl">
                   <Phone size={32} weight="duotone" className="text-[#51fcff] shrink-0" />
@@ -184,7 +184,7 @@ export default function Hero() {
 
               <div className="flex items-end gap-4 mt-6 md:mt-8">
                 <div className="text-[3.5rem] md:text-[5rem] font-black leading-none text-[#51fcff] animate-pulse-subtle drop-shadow-[0_0_8px_rgba(81,252,255,0.5)]">
-                  67€
+                  33€
                   <span className="text-xl md:text-2xl text-white/60 ml-2">/mes</span>
                 </div>
               </div>

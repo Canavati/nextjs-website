@@ -143,7 +143,7 @@ export default function SoloMovilConfigurator() {
 
                   {/* Features */}
                   <div className="text-center mb-6">
-                    <div className="flex flex-col items-center justify-center gap-2 min-h-[80px] px-4">
+                    <div className="flex items-center justify-center gap-4">
                       <Phone size={32} weight="duotone" className="text-[#ed54ba]" />
                       <span className="text-lg text-[#444444] max-w-[180px] leading-tight">{plan.calls}</span>
                     </div>
