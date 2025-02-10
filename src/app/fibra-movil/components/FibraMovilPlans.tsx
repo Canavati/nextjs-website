@@ -19,8 +19,6 @@ const AUTO_SWITCH_DELAY = 5000; // 5 seconds
 
 export const FibraMovilPlans = () => {
   const [activeView, setActiveView] = useState<ViewType>('configurator');
-  const autoSwitchTimer = useRef<NodeJS.Timeout>();
-  const hasUserInteracted = useRef<boolean>(false);
   const isMobile = useIsMobile();
 
   const views = [
@@ -30,33 +28,7 @@ export const FibraMovilPlans = () => {
 
   const handleViewChange = (view: ViewType) => {
     setActiveView(view);
-    hasUserInteracted.current = true;
-    
-    // Clear the interval when user interacts
-    if (autoSwitchTimer.current) {
-      clearInterval(autoSwitchTimer.current);
-      autoSwitchTimer.current = undefined;
-    }
   };
-
-  useEffect(() => {
-    // Only start auto-switching if user hasn't interacted and not on mobile
-    if (!hasUserInteracted.current && !isMobile) {
-      autoSwitchTimer.current = setInterval(() => {
-        setActiveView(current => {
-          const currentIndex = views.findIndex(v => v.id === current);
-          const nextIndex = (currentIndex + 1) % views.length;
-          return views[nextIndex].id as ViewType;
-        });
-      }, AUTO_SWITCH_DELAY);
-    }
-
-    return () => {
-      if (autoSwitchTimer.current) {
-        clearInterval(autoSwitchTimer.current);
-      }
-    };
-  }, [isMobile]); // Add isMobile to dependencies
 
   return (
     <section id="planes" className="py-20 bg-light-gray">

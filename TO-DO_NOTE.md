@@ -12,9 +12,9 @@ Web:
 
 - prueba a poner un fondo más oscuro en general (que podría ser el verde, o el azul) 
 
-- Quitar seccions automaticas del pillbar.
+- Quitar seccions automaticas del pillbar. ✅
 
-- Los sliders me gustarían que llevaran mensajes "marketinianos" como los del documento adjunto (marketing-mensajes-1)
+- Los sliders me gustarían que llevaran mensajes "marketinianos" como los del documento adjunto (marketing-mensajes-1) 
 
 - Ten en cuenta que en el slider inicial (el primero) no pongas el pack más caro sino el más barato)
 
