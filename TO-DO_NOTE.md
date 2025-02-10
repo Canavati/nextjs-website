@@ -8,9 +8,9 @@ Web:
 - Cambiar numero de contacto: 604 451 989 ✅
 - Mail: hola@unimovil.tel ✅
 
-- Los menús de inicio son perfectos, pero me gustaría un slider por cada menú en donde en cada slider si haces click llevaría a los menús correspondientes: Fibra+movil, Movil, TV, etc...
+- Los menús de inicio son perfectos, pero me gustaría un slider por cada menú en donde en cada slider si haces click llevaría a los menús correspondientes: Fibra+movil, Movil, TV, etc... ❓
 
-- prueba a poner un fondo más oscuro en general (que podría ser el verde, o el azul)
+- prueba a poner un fondo más oscuro en general (que podría ser el verde, o el azul) 
 
 - Los sliders me gustarían que llevaran mensajes "marketinianos" como los del documento adjunto (marketing-mensajes-1)
 
