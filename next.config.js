@@ -62,13 +62,7 @@ const nextConfig = {
           },
           lib: {
             test: /[\\/]node_modules[\\/]/,
-            name(module, chunks, cacheGroupKey) {
-              const moduleFileName = module
-                .identifier()
-                .split('/')
-                .reduceRight((item) => item);
-              return `${cacheGroupKey}-${moduleFileName}`;
-            },
+            name: 'lib',
             chunks: 'all',
             priority: 30,
             minChunks: 1,
