@@ -112,7 +112,7 @@ export const FibraHero = () => {
               transition={{ duration: 0.6, delay: 0.4 }}
               className="text-base md:text-lg text-white/80 max-w-3xl"
             >
-              Experimenta velocidades ultrarrápidas con nuestra fibra óptica simétrica. Streaming, gaming y trabajo remoto sin interrupciones.
+              ¿Tu internet va más lento que un caracol? ¡Nosotros te llevamos a la velocidad de la luz! En UNIMOVIL, te ofrecemos fibra óptica de alta velocidad para que navegues, trabajes y disfrutes sin límites.
             </motion.p>
 
             <motion.div

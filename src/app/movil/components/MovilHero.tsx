@@ -100,20 +100,20 @@ export const MovilHero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.2 }}
-              className="text-[2.5rem] md:text-[4rem] font-black leading-none text-white"
+              className="text-[2rem] md:text-[3.5rem] font-black leading-none text-white"
             >
               LÍNEAS MÓVILES
               <br />
-              <span className="bg-gradient-bright bg-clip-text text-transparent">SIN LÍMITES</span>
+              <span className="bg-gradient-bright bg-clip-text text-transparent">¿Harto de pagar de más?</span>
             </motion.h1>
 
             <motion.p
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.4 }}
-              className="text-base md:text-lg text-white/80 max-w-3xl"
+              className="text-sm md:text-lg text-white/80 max-w-3xl"
             >
-              Mantente conectado con planes móviles flexibles que se adaptan a ti. Disfruta de la mejor cobertura 5G y llamadas ilimitadas.
+              Con nosotros, calidad y ahorro van de la mano. Disfruta de la mejor cobertura 5G y llamadas ilimitadas a precios que te sorprenderán.
             </motion.p>
 
             <motion.div

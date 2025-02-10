@@ -35,7 +35,7 @@ export default function Revolution() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
         >
-          Internet que va más allá
+          La velocidad que necesitas, al precio que mereces
         </motion.h2>
 
         <motion.p 
@@ -45,7 +45,7 @@ export default function Revolution() {
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.4 }}
         >
-          Velocidad ultrarrápida y datos ilimitados. La mejor tecnología para tu vida digital.
+          En UNIMOVIL, no creemos en cobrar de más por menos. Ofrecemos fibra óptica de alta velocidad, telefonía móvil y fija con un servicio confiable y precios que te sorprenderán.
         </motion.p>
 
         <motion.div 
