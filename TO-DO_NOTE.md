@@ -19,4 +19,4 @@ Web:
 
 - Puedes dejar el menú arriba de Centro de Ayuda y luego los 2 submenús como Blog y Tarifas
 
-- Agregar Los bonos
+- Agregar Los bonos (afirmar donde)
