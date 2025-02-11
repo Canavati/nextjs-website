@@ -32,6 +32,18 @@
     --ease-default: cubic-bezier(0.4, 0, 0.2, 1);
   }
 
+  /* Dark Mode Colors */
+  [data-theme='dark'] {
+    --bg-main: #0f172a;
+    --bg-secondary: #1e293b;
+    --bg-card: #1e293b;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --border-color: #334155;
+    --nav-bg: rgba(15, 23, 42, 0.8);
+    --topbar-bg: #1e293b;
+  }
+
   html {
     scroll-behavior: smooth;
     scroll-padding-top: var(--total-nav-height);
@@ -330,9 +342,9 @@
     background: linear-gradient(
       to right,
       #ffffff 0%,
-      #ffffff 20%,
-      var(--primary) 40%,
-      var(--quinary) 50%,
+      #ffffff 10%,
+      var(--quinary) 30%,
+      var(--primary) 50%,
       var(--secondary) 60%,
       #ffffff 100%
     );
@@ -340,7 +352,7 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: shimmer 3s linear infinite;
+    animation: shimmer 4s linear infinite;
   }
 
   .text-shimmer-dark {
@@ -348,8 +360,8 @@
       to right,
       var(--dark) 0%,
       var(--dark) 10%,
-      var(--primary) 30%,
-      var(--quinary) 50%,
+      var(--quinary) 30%,
+      var(--primary) 50%,
       var(--secondary) 60%,
       var(--dark) 100%
     );
@@ -357,7 +369,7 @@
     background-clip: text;
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
-    animation: shimmer 3s linear infinite;
+    animation: shimmer 4s linear infinite;
   }
 
   /* Enhanced Gradient Effects */

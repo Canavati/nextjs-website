@@ -102,8 +102,8 @@ export default function SoloFibraConfigurator() {
             <div className="flex items-end justify-between">
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
-                  <WifiHigh size={20} weight="duotone" className="text-[#ed54ba]" />
-                  <span className="text-lg font-medium text-[#79C4CD]">{plan.speed}<span className="text-base text-[#666666]">Mb</span></span>
+                  <WifiHigh size={24} weight="duotone" className="text-[#ed54ba]" />
+                  <span className="text-3xl font-medium text-[#79C4CD]">{plan.speed}<span className="text-xl text-[#666666]">Mb</span></span>
                 </div>
               </div>
               <div className="text-right">
@@ -151,17 +151,11 @@ export default function SoloFibraConfigurator() {
               <div className="space-y-8">
                 {/* Main Feature - Speed */}
                 <div className="text-center">
-                  <div className="text-xl font-medium text-[#444444] mb-3">Fibra</div>
+                  <div className="text-2xl font-medium text-[#444444] mb-3">Fibra</div>
                   <div className="flex items-center justify-center gap-3">
-                    <span className="text-4xl font-medium text-[#79C4CD]">{plan.speed}</span>
-                    <span className="text-lg text-[#666666]">Mb</span>
+                    <span className="text-6xl font-medium text-[#79C4CD]">{plan.speed}</span>
+                    <span className="text-2xl text-[#666666]">Mb</span>
                   </div>
-                </div>
-
-                {/* Router Icon */}
-                <div className="flex items-center justify-center gap-3">
-                  <Broadcast size={28} weight="duotone" className="text-[#ed54ba]" />
-                  <span className="text-lg text-[#666666]">Router WiFi 6</span>
                 </div>
 
                 {/* Features */}
