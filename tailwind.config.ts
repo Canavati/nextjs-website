@@ -34,6 +34,8 @@ const config: Config = {
         "gradient-primary": "var(--gradient-primary)",
         "gradient-hover": "var(--gradient-hover)",
         "gradient-cta": "var(--gradient-cta)",
+        "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
+        "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
       animation: {
         "scroll-progress": "progress 1s ease-in-out infinite",
@@ -56,7 +58,9 @@ const config: Config = {
       },
     },
   },
-  plugins: [],
+  plugins: [
+    require('@tailwindcss/typography'),
+  ],
 } satisfies Config;
 
 export default config;
