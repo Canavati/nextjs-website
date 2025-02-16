@@ -355,6 +355,22 @@
     animation: shimmer 4s linear infinite;
   }
 
+  .text-shimmer-blue {
+    background: linear-gradient(
+      to right,
+      #ffffff 0%,
+      #ffffff 10%,
+      var(--quinary) 30%,
+      var(--secondary) 60%,
+      #ffffff 100%
+    );
+    background-size: 200% auto;
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: shimmer 4s linear infinite;
+  }
+
   .text-shimmer-dark {
     background: linear-gradient(
       to right,

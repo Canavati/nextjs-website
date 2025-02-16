@@ -41,6 +41,12 @@ const config: Config = {
         "scroll-progress": "progress 1s ease-in-out infinite",
         "slide-up": "slideUp 1s ease forwards",
         rotate: "rotate 30s linear infinite",
+        'gradient-xy': 'gradient-xy 15s ease infinite',
+        'float': 'float 6s ease-in-out infinite',
+        'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+        'cosmic-shift': 'cosmicShift 20s ease infinite',
+        'network-flow': 'networkFlow 15s linear infinite',
+        'particle-wave': 'particleWave 8s ease-in-out infinite'
       },
       keyframes: {
         progress: {
@@ -55,6 +61,50 @@ const config: Config = {
           "0%": { transform: "rotate(0deg)" },
           "100%": { transform: "rotate(360deg)" },
         },
+        'gradient-xy': {
+          '0%, 100%': {
+            'background-size': '400% 400%',
+            'background-position': 'left center'
+          },
+          '50%': {
+            'background-size': '200% 200%',
+            'background-position': 'right center'
+          }
+        },
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' }
+        },
+        cosmicShift: {
+          '0%': { transform: 'rotate(0deg) scale(1)' },
+          '33%': { transform: 'rotate(120deg) scale(1.2)' },
+          '66%': { transform: 'rotate(240deg) scale(0.8)' },
+          '100%': { transform: 'rotate(360deg) scale(1)' }
+        },
+        networkFlow: {
+          '0%': { 
+            'background-position': '0% 50%',
+            'transform': 'perspective(500px) rotateX(10deg)'
+          },
+          '50%': { 
+            'background-position': '100% 50%',
+            'transform': 'perspective(500px) rotateX(-10deg)'
+          },
+          '100%': { 
+            'background-position': '0% 50%',
+            'transform': 'perspective(500px) rotateX(10deg)'
+          }
+        },
+        particleWave: {
+          '0%, 100%': { 
+            'transform': 'translateY(0) scale(1)',
+            'opacity': '0.3'
+          },
+          '50%': { 
+            'transform': 'translateY(-20px) scale(1.2)',
+            'opacity': '0.8'
+          }
+        }
       },
     },
   },
