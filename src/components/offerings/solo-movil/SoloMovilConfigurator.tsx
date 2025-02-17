@@ -5,6 +5,7 @@ import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { DeviceMobile, Phone, Lightning, Rocket, Star, Crown, Sparkle } from '@phosphor-icons/react';
 import { TarifasDropdown } from '@/components/ui/TarifasDropdown';
+import MovilBonos from './MovilBonos';
 
 const SOLO_MOVIL_PLANS = [
   {
@@ -175,8 +176,11 @@ export default function SoloMovilConfigurator() {
         </div>
       </div>
       
+      {/* Add MovilBonos component */}
+      <MovilBonos />
+      
       {/* Add TarifasDropdown with matching container */}
-      <div className="px-[5%] md:px-0">
+      <div className="px-[5%] md:px-0 mt-12">
         <TarifasDropdown />
       </div>
     </motion.div>
