@@ -140,16 +140,22 @@ export default function Hero() {
       <div className="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
         {/* Background UNIMOVIL Text - Fixed Layer */}
         <div className="fixed inset-0 pointer-events-none overflow-visible">
-          {[...Array(12)].map((_, i) => (
+          {[
+            { top: '20%', left: '15%', scale: 0.9, delay: 0 },
+            { top: '65%', left: '25%', scale: 1.1, delay: 0.5 },
+            { top: '35%', left: '65%', scale: 0.85, delay: 1 },
+            { top: '70%', left: '70%', scale: 1.2, delay: 1.5 },
+            { top: '15%', left: '85%', scale: 0.95, delay: 2 }
+          ].map((position, i) => (
             <motion.div
               key={`bg-text-${i}`}
-              className="absolute"
+              className="absolute whitespace-nowrap text-[3rem] sm:text-[4rem] font-black"
               initial={{ opacity: 0 }}
               animate={{ opacity: 0.12 }}
               style={{
-                top: `${15 + (Math.random() * 70)}%`,
-                left: `${10 + (Math.random() * 80)}%`,
-                transform: `scale(${0.8 + (Math.random() * 0.4)})`,
+                top: position.top,
+                left: position.left,
+                transform: `scale(${position.scale})`,
               }}
             >
               <motion.div
@@ -160,18 +166,18 @@ export default function Hero() {
                   scale: [1, 1.05, 1],
                 }}
                 transition={{
-                  duration: 8 + (Math.random() * 7),
-                  delay: i * 0.2,
+                  duration: 8,
+                  delay: position.delay,
                   repeat: Infinity,
                   ease: "easeInOut"
                 }}
-                className="flex items-center whitespace-nowrap text-[3rem] sm:text-[4rem] font-black"
+                className="flex items-center"
               >
                 <span 
                   className="text-[--primary] relative mr-0"
                   style={{
                     filter: 'drop-shadow(0 0 15px rgba(255, 49, 179, 0.5))',
-                    textShadow: '0 0 30px rgba(255, 49, 179, 0.8), 0 0 60px rgba(255, 49, 179, 0.4)'
+                    textShadow: '0 0 30px rgba(255, 49, 179, 0.8)'
                   }}
                 >
                   UNI
@@ -180,7 +186,7 @@ export default function Hero() {
                   className="text-[--secondary] relative"
                   style={{
                     filter: 'drop-shadow(0 0 15px rgba(81, 252, 255, 0.5))',
-                    textShadow: '0 0 30px rgba(81, 252, 255, 0.8), 0 0 60px rgba(81, 252, 255, 0.4)'
+                    textShadow: '0 0 30px rgba(81, 252, 255, 0.8)'
                   }}
                 >
                   MOVIL
