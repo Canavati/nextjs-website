@@ -138,7 +138,59 @@ export default function Hero() {
       </motion.div>
 
       <div className="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-        <div className="grid lg:grid-cols-[1fr,1.2fr] gap-8 lg:gap-12 items-center">
+        {/* Background UNIMOVIL Text - Fixed Layer */}
+        <div className="fixed inset-0 pointer-events-none overflow-visible">
+          {[...Array(12)].map((_, i) => (
+            <motion.div
+              key={`bg-text-${i}`}
+              className="absolute"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 0.12 }}
+              style={{
+                top: `${15 + (Math.random() * 70)}%`,
+                left: `${10 + (Math.random() * 80)}%`,
+                transform: `scale(${0.8 + (Math.random() * 0.4)})`,
+              }}
+            >
+              <motion.div
+                animate={{
+                  y: [0, -20, 0],
+                  x: [-5, 5, -5],
+                  rotate: [-3, 3, -3],
+                  scale: [1, 1.05, 1],
+                }}
+                transition={{
+                  duration: 8 + (Math.random() * 7),
+                  delay: i * 0.2,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+                className="flex items-center whitespace-nowrap text-[3rem] sm:text-[4rem] font-black"
+              >
+                <span 
+                  className="text-[--primary] relative mr-0"
+                  style={{
+                    filter: 'drop-shadow(0 0 15px rgba(255, 49, 179, 0.5))',
+                    textShadow: '0 0 30px rgba(255, 49, 179, 0.8), 0 0 60px rgba(255, 49, 179, 0.4)'
+                  }}
+                >
+                  UNI
+                </span>
+                <span
+                  className="text-[--secondary] relative"
+                  style={{
+                    filter: 'drop-shadow(0 0 15px rgba(81, 252, 255, 0.5))',
+                    textShadow: '0 0 30px rgba(81, 252, 255, 0.8), 0 0 60px rgba(81, 252, 255, 0.4)'
+                  }}
+                >
+                  MOVIL
+                </span>
+              </motion.div>
+            </motion.div>
+          ))}
+        </div>
+
+        <div className="grid lg:grid-cols-[1fr,1fr] gap-8 lg:gap-12 items-center">
           {/* Left Column - Main Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
@@ -146,72 +198,101 @@ export default function Hero() {
             transition={{ duration: 0.8 }}
             className="space-y-4 sm:space-y-6 lg:space-y-8"
           >
-            <div className="space-y-0">
-              {[...Array(4)].map((_, i) => (
-                <motion.h2
-                  key={i}
-                  initial={{ opacity: 0, x: -50 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  transition={{ duration: 0.5, delay: i * 0.1 }}
-                  className="text-[2.5rem] sm:text-[3.5rem] lg:text-[5rem] font-black leading-[0.85] flex"
-                  style={{
-                    opacity: 1 - (i * 0.25),
-                    color: i === 0 ? '#51fcff' : '#ffffff',
-                    textShadow: i === 0 ? '0 0 20px rgba(81, 252, 255, 0.3)' : 'none'
-                  }}
-                >
-                  {i === 0 ? (
-                    <>
-                      <span 
-                        className="text-[--primary]"
-                        style={{
-                          textShadow: '0 0 20px rgba(255, 49, 98, 0.5)'
-                        }}
-                      >UNI</span>
-                      <span
-                        style={{
-                          textShadow: '0 0 20px rgba(81, 252, 255, 0.3)'
-                        }}
-                      >MOVIL</span>
-                    </>
-                  ) : (
-                    'UNIMOVIL'
-                  )}
-                </motion.h2>
-              ))}
-            </div>
-
-            <motion.p
+            {/* Main UNIMOVIL text with white copies below */}
+            <motion.div
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
-              transition={{ delay: 0.5 }}
-              className="text-white/80 text-lg lg:text-xl"
+              className="relative mb-6"
             >
-              Tu operador móvil de confianza
-            </motion.p>
+              {/* Main glowing text */}
+              <div className="flex flex-col items-start text-[4.5rem] font-black leading-[0.8]">
+                <div className="flex items-center">
+                  <span 
+                    className="text-[--primary] relative mr-0"
+                    style={{
+                      filter: 'drop-shadow(0 0 10px rgba(255, 49, 179, 0.8))',
+                      textShadow: '0 0 0px rgba(255, 49, 179, 0.8)'
+                    }}
+                  >
+                    UNI
+                  </span>
+                  <span
+                    className="text-[--secondary] relative"
+                    style={{
+                      filter: 'drop-shadow(0 0 10px rgba(81, 252, 255, 0.8))',
+                      textShadow: '0 0 0px rgba(81, 252, 255, 0.8)'
+                    }}
+                  >
+                    MOVIL
+                  </span>
+                </div>
+                <span className="text-white leading-[1]">UNIMOVIL</span>
+                <span className="text-white leading-[0.8]">UNIMOVIL</span>
+              </div>
+            </motion.div>
 
-            {/* Offerings Menu - Enhanced Menu Design */}
+            {/* Dynamic Marketing Message based on selected offering */}
+            <motion.div
+              key={selectedOffering.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="relative mb-8"
+            >
+              <h2 className="text-4xl md:text-5xl lg:text-6xl font-black text-white leading-tight">
+                {selectedOffering.id === 'fibra-movil' ? (
+                  <>
+                    Todo lo que necesitas
+                    <br />
+                    <span className="bg-gradient-bright bg-clip-text text-transparent">en un solo pack</span>
+                  </>
+                ) : selectedOffering.id === 'fibra' ? (
+                  <>
+                    Velocidad sin
+                    <br />
+                    <span className="bg-gradient-bright bg-clip-text text-transparent">interrupciones</span>
+                  </>
+                ) : (
+                  <>
+                    Libertad sin
+                    <br />
+                    <span className="bg-gradient-bright bg-clip-text text-transparent">límites</span>
+                  </>
+                )}
+              </h2>
+              <p className="text-xl text-white/80 mt-4">
+                {selectedOffering.id === 'fibra-movil' ? (
+                  'Combina fibra y móvil al mejor precio'
+                ) : selectedOffering.id === 'fibra' ? (
+                  'Navega a la velocidad de la luz'
+                ) : (
+                  'Datos y llamadas sin preocupaciones'
+                )}
+              </p>
+            </motion.div>
+
+            {/* Offerings Menu - Vertical Redesign */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="relative mt-12"
+              className="relative max-w-[400px]"
             >
               {/* Menu Container */}
-              <div className="relative flex flex-col sm:flex-row gap-2 p-2 bg-[#1a1f35]/30 backdrop-blur-md rounded-2xl border border-white/5">
+              <div className="relative flex flex-col gap-3 p-3 bg-[#1a1f35]/30 backdrop-blur-md rounded-3xl border border-white/5">
                 {offerings.map((offering) => (
                   <Link
                     key={offering.id}
                     href={`/${offering.id}`}
                     onMouseEnter={() => setSelectedOffering(offering)}
-                    className={`group relative flex items-center gap-3 px-6 py-4 rounded-xl text-base font-medium transition-all duration-300 ${
+                    className={`group relative flex items-center gap-4 px-6 py-5 rounded-2xl text-lg font-medium transition-all duration-300 ${
                       selectedOffering.id === offering.id
-                        ? 'text-white bg-gradient-to-r from-[#4361ee] to-[#51fcff] shadow-lg shadow-[#51fcff]/20'
+                        ? 'text-white bg-gradient-to-r from-[#4361ee] to-[#51fcff] shadow-lg shadow-[#51fcff]/20 scale-[1.02]'
                         : 'text-white/70 hover:text-white'
                     }`}
                   >
                     {/* Button Background */}
-                    <div className={`absolute inset-0 rounded-xl transition-all duration-300 ${
+                    <div className={`absolute inset-0 rounded-2xl transition-all duration-300 ${
                       selectedOffering.id === offering.id
                         ? 'opacity-100'
                         : 'bg-white/5 opacity-0 group-hover:opacity-100'
@@ -220,7 +301,7 @@ export default function Hero() {
                     {/* Icon Container */}
                     <div className="relative flex items-center justify-center">
                       {/* Icon Background Glow */}
-                      <div className={`absolute inset-[-6px] rounded-full transition-all duration-300 ${
+                      <div className={`absolute inset-[-8px] rounded-full transition-all duration-300 ${
                         selectedOffering.id === offering.id
                           ? 'bg-white/20'
                           : 'bg-white/0 group-hover:bg-white/10'
@@ -228,7 +309,7 @@ export default function Hero() {
                       
                       {/* Icon */}
                       <offering.Icon 
-                        size={24} 
+                        size={32} 
                         weight={selectedOffering.id === offering.id ? "fill" : "duotone"} 
                         className={`relative z-10 transition-all duration-300 ${
                           selectedOffering.id === offering.id
@@ -240,7 +321,7 @@ export default function Hero() {
 
                     {/* Text Container */}
                     <div className="relative flex-1">
-                      <span className="relative">
+                      <span className="relative text-xl">
                         {offering.title}
                         {/* Animated underline */}
                         <div className={`absolute -bottom-1 left-0 h-px bg-gradient-to-r from-white/0 via-white to-white/0 transition-all duration-300 ${
@@ -252,13 +333,13 @@ export default function Hero() {
                     </div>
 
                     {/* Arrow indicator */}
-                    <div className={`ml-2 transition-all duration-300 ${
+                    <div className={`transition-all duration-300 ${
                       selectedOffering.id === offering.id
                         ? 'opacity-100 translate-x-0'
                         : 'opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'
                     }`}>
                       <svg 
-                        className="w-4 h-4 text-white"
+                        className="w-6 h-6 text-white"
                         fill="none"
                         viewBox="0 0 24 24"
                         stroke="currentColor"
@@ -273,10 +354,10 @@ export default function Hero() {
                     </div>
 
                     {/* Hover Glow Effect */}
-                    <div className={`absolute inset-0 rounded-xl transition-all duration-300 opacity-0 group-hover:opacity-100 ${
+                    <div className={`absolute inset-0 rounded-2xl transition-all duration-300 opacity-0 group-hover:opacity-100 ${
                       selectedOffering.id === offering.id
-                        ? 'shadow-[0_0_20px_rgba(81,252,255,0.3)]'
-                        : 'shadow-[0_0_15px_rgba(81,252,255,0.1)]'
+                        ? 'shadow-[0_0_30px_rgba(81,252,255,0.3)]'
+                        : 'shadow-[0_0_20px_rgba(81,252,255,0.1)]'
                     }`} />
                   </Link>
                 ))}
