@@ -139,7 +139,7 @@ export default function Plans() {
   return (
     <section ref={sectionRef} className="py-20 relative overflow-hidden">
       {/* Main Gradient Background */}
-      <div className="absolute inset-0 bg-gradient-to-r from-[#d5f2f5] via-[#f8fbfc] to-[#d5f2f5]" />
+      <div className="absolute inset-0 bg-gradient-to-r from-[#b8e5ea] via-[#dbeef2] to-[#b8e5ea]" />
 
       {/* Deep Blue Base Layer */}
       <motion.div 
@@ -201,7 +201,7 @@ export default function Plans() {
       <div className="container mx-auto px-4 relative">
         <motion.h2
           {...motionConfig}
-          className="text-4xl md:text-5xl font-bold text-center mb-12 text-shimmer-dark relative z-10 drop-shadow-[0_2px_10px_rgba(41,44,246,0.4)] [text-shadow:0_2px_15px_rgba(255,255,255,0.5),0_-1px_1px_rgba(0,0,0,0.2)]"
+          className="text-4xl md:text-5xl font-bold text-center mb-12 text-shimmer-dark relative z-10 drop-shadow-[0_2px_10px_rgba(255,255,255,1)] [text-shadow:0_2px_15px_rgba(255,255,255,0.3),0_-1px_1px_rgba(0,0,0,0)]"
         >
           Nuestros Planes
         </motion.h2>
