@@ -190,30 +190,95 @@ export default function Hero() {
               Tu operador móvil de confianza
             </motion.p>
 
-            {/* Offerings Menu - Redesigned */}
+            {/* Offerings Menu - Enhanced Menu Design */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.3 }}
               className="relative mt-12"
             >
-              <div className="flex flex-col sm:flex-row gap-3">
+              {/* Menu Container */}
+              <div className="relative flex flex-col sm:flex-row gap-2 p-2 bg-[#1a1f35]/30 backdrop-blur-md rounded-2xl border border-white/5">
                 {offerings.map((offering) => (
-                  <button
+                  <Link
                     key={offering.id}
-                    onClick={() => {
-                      setSelectedOffering(offering);
-                      setIsMenuOpen(true);
-                    }}
-                    className={`flex items-center gap-3 px-6 py-4 rounded-2xl text-base font-medium transition-all duration-300 ${
+                    href={`/${offering.id}`}
+                    onMouseEnter={() => setSelectedOffering(offering)}
+                    className={`group relative flex items-center gap-3 px-6 py-4 rounded-xl text-base font-medium transition-all duration-300 ${
                       selectedOffering.id === offering.id
-                        ? 'bg-gradient-to-r from-[#4361ee] to-[#51fcff] text-white shadow-lg shadow-[#51fcff]/20'
-                        : 'bg-white/5 backdrop-blur-sm text-white/80 hover:bg-white/10 hover:text-white'
+                        ? 'text-white bg-gradient-to-r from-[#4361ee] to-[#51fcff] shadow-lg shadow-[#51fcff]/20'
+                        : 'text-white/70 hover:text-white'
                     }`}
                   >
-                    <offering.Icon size={24} weight="duotone" />
-                    <span>{offering.title}</span>
-                  </button>
+                    {/* Button Background */}
+                    <div className={`absolute inset-0 rounded-xl transition-all duration-300 ${
+                      selectedOffering.id === offering.id
+                        ? 'opacity-100'
+                        : 'bg-white/5 opacity-0 group-hover:opacity-100'
+                    }`} />
+
+                    {/* Icon Container */}
+                    <div className="relative flex items-center justify-center">
+                      {/* Icon Background Glow */}
+                      <div className={`absolute inset-[-6px] rounded-full transition-all duration-300 ${
+                        selectedOffering.id === offering.id
+                          ? 'bg-white/20'
+                          : 'bg-white/0 group-hover:bg-white/10'
+                      }`} />
+                      
+                      {/* Icon */}
+                      <offering.Icon 
+                        size={24} 
+                        weight={selectedOffering.id === offering.id ? "fill" : "duotone"} 
+                        className={`relative z-10 transition-all duration-300 ${
+                          selectedOffering.id === offering.id
+                            ? 'text-white scale-110'
+                            : 'text-[#51fcff] group-hover:text-white group-hover:scale-110'
+                        }`}
+                      />
+                    </div>
+
+                    {/* Text Container */}
+                    <div className="relative flex-1">
+                      <span className="relative">
+                        {offering.title}
+                        {/* Animated underline */}
+                        <div className={`absolute -bottom-1 left-0 h-px bg-gradient-to-r from-white/0 via-white to-white/0 transition-all duration-300 ${
+                          selectedOffering.id === offering.id
+                            ? 'w-full opacity-50'
+                            : 'w-0 opacity-0 group-hover:w-full group-hover:opacity-30'
+                        }`} />
+                      </span>
+                    </div>
+
+                    {/* Arrow indicator */}
+                    <div className={`ml-2 transition-all duration-300 ${
+                      selectedOffering.id === offering.id
+                        ? 'opacity-100 translate-x-0'
+                        : 'opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0'
+                    }`}>
+                      <svg 
+                        className="w-4 h-4 text-white"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path 
+                          strokeLinecap="round" 
+                          strokeLinejoin="round" 
+                          strokeWidth={2} 
+                          d="M9 5l7 7-7 7"
+                        />
+                      </svg>
+                    </div>
+
+                    {/* Hover Glow Effect */}
+                    <div className={`absolute inset-0 rounded-xl transition-all duration-300 opacity-0 group-hover:opacity-100 ${
+                      selectedOffering.id === offering.id
+                        ? 'shadow-[0_0_20px_rgba(81,252,255,0.3)]'
+                        : 'shadow-[0_0_15px_rgba(81,252,255,0.1)]'
+                    }`} />
+                  </Link>
                 ))}
               </div>
             </motion.div>
@@ -231,40 +296,98 @@ export default function Hero() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.3 }}
-              className="p-8 lg:p-10 rounded-3xl bg-[#1a1f35]/40 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300"
+              className="relative p-8 lg:p-10 rounded-3xl overflow-hidden group"
             >
-              <div className="space-y-6 lg:space-y-8">
+              {/* Card Background with Gradient */}
+              <div className="absolute inset-0 bg-[#1a1f35]/40 backdrop-blur-sm border border-white/10 group-hover:border-white/20 transition-all duration-300 rounded-3xl" />
+              
+              {/* Animated Gradient Background */}
+              <div className="absolute inset-0 bg-gradient-to-br from-[#4361ee]/5 via-transparent to-[#51fcff]/5 opacity-0 group-hover:opacity-100 transition-all duration-500 rounded-3xl" />
+              
+              {/* Glowing Orbs */}
+              <div className="absolute -top-20 -right-20 w-60 h-60 bg-[#4361ee] rounded-full mix-blend-soft-light filter blur-[80px] opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
+              <div className="absolute -bottom-20 -left-20 w-60 h-60 bg-[#51fcff] rounded-full mix-blend-soft-light filter blur-[80px] opacity-30 group-hover:opacity-50 transition-opacity duration-500" />
+
+              <div className="relative space-y-6 lg:space-y-8">
+                {/* Title Section with Enhanced Design */}
                 <div className="space-y-2">
-                  <h2 className="text-4xl lg:text-5xl font-bold flex items-baseline gap-3">
-                    <span className="text-white">{selectedOffering.displayTitle.split(' ')[0]}</span>
-                    <span className="bg-gradient-to-r from-[#4361ee] to-[#51fcff] bg-clip-text text-transparent">
-                      {selectedOffering.displayTitle.split(' ')[1]}
-                    </span>
-                  </h2>
+                  <motion.div 
+                    className="flex flex-col"
+                    initial={{ opacity: 0, y: 20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                  >
+                    <h2 className="text-4xl lg:text-5xl font-bold">
+                      <span className="text-white/90">{selectedOffering.displayTitle.split(' ')[0]}</span>
+                      <span className="bg-gradient-to-r from-[#4361ee] to-[#51fcff] bg-clip-text text-transparent ml-3">
+                        {selectedOffering.displayTitle.split(' ')[1]}
+                      </span>
+                    </h2>
+                  </motion.div>
                 </div>
                 
+                {/* Features with Enhanced Animations */}
                 <div className="space-y-4">
                   {selectedOffering.features.map((feature, index) => (
-                    <div key={index} className="flex items-center gap-4 text-lg lg:text-xl">
-                      <feature.icon size={32} weight="duotone" className="text-[#51fcff]" />
-                      <span className="text-white/90">{feature.text}</span>
-                    </div>
+                    <motion.div
+                      key={index}
+                      initial={{ opacity: 0, x: -20 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.5, delay: index * 0.1 }}
+                      className="flex items-center gap-4 text-lg lg:text-xl group/feature"
+                    >
+                      <div className="relative">
+                        <div className="absolute inset-0 bg-[#51fcff]/20 rounded-full blur-md opacity-0 group-hover/feature:opacity-100 transition-opacity duration-300" />
+                        <feature.icon 
+                          size={32} 
+                          weight="duotone" 
+                          className="text-[#51fcff] relative z-10 transform group-hover/feature:scale-110 transition-transform duration-300" 
+                        />
+                      </div>
+                      <span className="text-white/90 group-hover/feature:text-white transition-colors duration-300">
+                        {feature.text}
+                      </span>
+                    </motion.div>
                   ))}
                 </div>
 
-                <div className="pt-4">
-                  <div className="text-[4rem] lg:text-[5rem] font-black leading-none text-[#51fcff] animate-pulse-subtle drop-shadow-[0_0_8px_rgba(81,252,255,0.5)]">
-                    {selectedOffering.price}€
-                    <span className="text-xl lg:text-2xl text-white/60 ml-2">/mes</span>
-                  </div>
-                </div>
-
-                <Link
-                  href="#planes"
-                  className="inline-block w-full text-center bg-gradient-to-r from-[#4361ee] to-[#51fcff] text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1"
+                {/* Price Section with Enhanced Animation */}
+                <motion.div 
+                  className="relative pt-4"
+                  initial={{ opacity: 0, scale: 0.8 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  transition={{ duration: 0.5, delay: 0.3 }}
                 >
-                  ¡CONTRATAR AHORA!
-                </Link>
+                  <div className="relative">
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#4361ee]/20 to-[#51fcff]/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                    <div className="relative">
+                      <div className="text-[4rem] lg:text-[5rem] font-black leading-none">
+                        <span className="text-[#51fcff] drop-shadow-[0_0_8px_rgba(81,252,255,0.5)]">
+                          {selectedOffering.price}€
+                        </span>
+                        <span className="text-xl lg:text-2xl text-white/60 ml-2">/mes</span>
+                      </div>
+                    </div>
+                  </div>
+                </motion.div>
+
+                {/* CTA Button with Enhanced Animation */}
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.5, delay: 0.4 }}
+                >
+                  <Link
+                    href="#planes"
+                    className="relative inline-block w-full group/button"
+                  >
+                    <div className="absolute inset-0 bg-gradient-to-r from-[#4361ee] to-[#51fcff] rounded-xl opacity-90 group-hover/button:opacity-100 transition-opacity duration-300" />
+                    <div className="relative text-center px-8 py-4 text-white font-semibold text-lg transform group-hover/button:-translate-y-1 transition-transform duration-300">
+                      ¡CONTRATAR AHORA!
+                    </div>
+                    <div className="absolute inset-0 rounded-xl shadow-lg shadow-[#51fcff]/20 group-hover/button:shadow-[#51fcff]/30 transition-shadow duration-300" />
+                  </Link>
+                </motion.div>
               </div>
             </motion.div>
           </motion.div>
