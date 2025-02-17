@@ -11,6 +11,8 @@ Web:
 - Ten en cuenta que en el slider inicial (el primero) no pongas el pack más caro sino el más barato) ✅
 - Los sliders me gustarían que llevaran mensajes "marketinianos" como los del documento adjunto (marketing-mensajes-1) ⛔ (Needs review)
 
+- Agregar Los bonos (afirmar donde) ⛔ (Color Configuration)
+
 - Te adjunto también algunos artículos (3/4 artículos) para incluir en el blog, que puedes ponerlo también antes del final y después de Preguntas frecuentes como enlace en la página de home. ⛔ (Blog Page needs review and add the articles. ALSO, make sure to change credentials in env.local file)
 
 - prueba a poner un fondo más oscuro en general (que podría ser el verde, o el azul) ⛔ (HALF DONE. Need to add the changes to the rest of the pages' sections)
@@ -19,4 +21,3 @@ Web:
 
 - Puedes dejar el menú arriba de Centro de Ayuda y luego los 2 submenús como Blog y Tarifas
 
-- Agregar Los bonos (afirmar donde)
