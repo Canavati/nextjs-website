@@ -88,7 +88,7 @@ export default function Contact() {
               className="relative min-h-[600px]"
             >
               <Image
-                src="/images/feature-visual.png"
+                src="/images/feature-visual.webp"
                 alt="Únete a la revolución digital"
                 fill
                 className="object-cover"

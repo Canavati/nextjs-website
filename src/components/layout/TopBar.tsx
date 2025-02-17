@@ -2,14 +2,34 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { User, Buildings, Phone, Article, Question, CaretDown } from '@phosphor-icons/react';
+import { Phone, Article, Question, CaretDown } from '@phosphor-icons/react';
 import { useState, useRef, useEffect } from 'react';
 
 export default function TopBar() {
   const [showHelpMenu, setShowHelpMenu] = useState(false);
+  const [isOverHero, setIsOverHero] = useState(true);
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLAnchorElement>(null);
   const topBarRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const heroSection = document.querySelector('#hero'); // Make sure your hero has this ID
+    if (!heroSection || !topBarRef.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        // When topbar and hero are intersecting, we're over the hero
+        setIsOverHero(entry.isIntersecting);
+      },
+      {
+        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
+        rootMargin: '-35px 0px 0px 0px' // Adjust based on your topbar height
+      }
+    );
+
+    observer.observe(heroSection);
+    return () => observer.disconnect();
+  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -32,10 +52,11 @@ export default function TopBar() {
       ref={topBarRef}
       initial={{ y: -50 }}
       animate={{ y: 0 }}
-      className="fixed top-0 left-0 w-full h-top-bar bg-[#292cf6] z-[1001] shadow-sm"
-      onMouseLeave={() => setShowHelpMenu(false)}
+      className={`fixed top-0 left-0 w-full h-[35px] z-[1001] transition-colors duration-300 ${
+        isOverHero ? 'bg-black/80 backdrop-blur-sm' : 'bg-[#292cf6]'
+      }`}
     >
-      <div className="max-w-[1400px] mx-auto px-4 h-full flex justify-end items-center">
+      <div className="w-full h-full px-[5%] flex justify-end items-center">
         {/* Right side */}
         <div className="flex items-center gap-4">
           <Link
@@ -51,6 +72,7 @@ export default function TopBar() {
               href="/ayuda"
               className="flex items-center gap-2 text-white no-underline text-sm font-medium opacity-90 hover:opacity-100 hover:text-[--secondary] hover:-translate-y-[1px] transition-all duration-300"
               onMouseEnter={() => setShowHelpMenu(true)}
+              onMouseLeave={() => setShowHelpMenu(false)}
             >
               <Question size={18} weight="duotone" />
               <span className="hidden lg:inline">Centro de Ayuda</span>

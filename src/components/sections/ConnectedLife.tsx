@@ -30,7 +30,7 @@ export default function ConnectedLife() {
   ];
 
   return (
-    <section id="vida-conectada" className="py-20 px-4 relative overflow-hidden bg-[#f5f7ff]">
+    <section id="vida-conectada" className="py-20 px-[5%] relative overflow-hidden bg-[#f5f7ff]">
       {/* Main Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#e8eeff] via-[#d1d6ff] to-[#c5cbff]" />
 
@@ -128,18 +128,18 @@ export default function ConnectedLife() {
         ))}
       </div>
 
-      <div className="max-w-7xl mx-auto relative z-10">
+      <div className="max-w-[1400px] mx-auto relative z-10">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
           viewport={{ once: true }}
-          className="text-4xl font-bold text-center mb-16 text-shimmer-dark relative"
+          className="text-4xl md:text-5xl lg:text-5xl font-bold text-center mb-14 lg:mb-20 text-shimmer-dark relative"
         >
           Tu Vida Conectada
         </motion.h2>
 
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
           <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -147,13 +147,13 @@ export default function ConnectedLife() {
             viewport={{ once: true }}
             className="vida-conectada-text"
           >
-            <h3 className="text-2xl font-bold mb-4 text-[--quinary]">
+            <h3 className="text-2xl lg:text-3xl font-bold mb-5 text-[--quinary]">
               Conectividad que se adapta a tu estilo de vida
             </h3>
-            <p className="text-gray-600 mb-8">
+            <p className="text-lg text-gray-600 mb-10 lg:mb-12">
               Disfruta de una conexión estable y rápida para todo lo que necesitas hacer en tu día a día.
             </p>
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-5 lg:gap-7">
               {features.map((feature, index) => (
                 <motion.div
                   key={feature.title}
@@ -161,7 +161,7 @@ export default function ConnectedLife() {
                   whileInView={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: index * 0.1 }}
                   viewport={{ once: true }}
-                  className="feature bg-white/30 backdrop-blur-sm p-6 rounded-xl hover:bg-white/40 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group border border-white/10 relative overflow-hidden"
+                  className="feature bg-white/30 backdrop-blur-sm p-5 lg:p-7 rounded-xl hover:bg-white/40 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 group border border-white/10 relative overflow-hidden"
                 >
                   {/* Card Background Animation */}
                   <div className="absolute inset-0 bg-gradient-to-r from-[#292cf6]/5 to-[#ed54ba]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -170,15 +170,15 @@ export default function ConnectedLife() {
                   <div className="relative">
                     <div className="absolute -inset-1 bg-gradient-to-r from-[#292cf6]/20 to-[#ed54ba]/20 rounded-lg blur opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <feature.Icon
-                      size={32}
+                      size={28}
                       weight="duotone"
                       className="text-[--quinary] mb-3 group-hover:scale-110 transition-transform duration-300 relative"
                     />
                   </div>
-                  <h4 className="text-lg font-semibold mb-2 text-[--quinary] group-hover:text-shimmer transition-colors duration-300">
+                  <h4 className="text-base lg:text-lg font-semibold mb-2 text-[--quinary] group-hover:text-shimmer transition-colors duration-300">
                     {feature.title}
                   </h4>
-                  <p className="text-gray-600 relative z-10">{feature.description}</p>
+                  <p className="text-sm lg:text-base text-gray-600 relative z-10">{feature.description}</p>
                   
                   {/* Card Corner Accent */}
                   <div className="absolute -bottom-4 -right-4 w-12 h-12 bg-gradient-to-br from-[#292cf6]/10 to-transparent rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -192,7 +192,7 @@ export default function ConnectedLife() {
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.5 }}
             viewport={{ once: true }}
-            className="vida-conectada-image relative rounded-2xl overflow-hidden shadow-lg group"
+            className="vida-conectada-image relative rounded-xl overflow-hidden shadow-lg group aspect-[4/3] lg:aspect-[16/10]"
           >
             <motion.div 
               className="absolute inset-0 bg-gradient-to-br from-[#292cf6]/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"
@@ -202,7 +202,7 @@ export default function ConnectedLife() {
             />
             <div className="aspect-w-4 aspect-h-3 relative">
               <Image
-                src="/images/conectividad-bg.jpg"
+                src="/images/conectividad-bg.webp"
                 alt="Persona disfrutando de conectividad sin límites"
                 width={800}
                 height={600}
@@ -223,11 +223,11 @@ export default function ConnectedLife() {
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5, delay: 0.4 }}
           viewport={{ once: true }}
-          className="text-center mt-12"
+          className="text-center mt-12 lg:mt-16"
         >
           <Link
             href="#contacto"
-            className="inline-block text-center bg-gradient-new text-white py-3 px-8 rounded-xl font-medium transition-all duration-300 hover:shadow-lg hover:-translate-y-1 relative group overflow-hidden"
+            className="inline-block text-center bg-gradient-new text-white py-3 px-8 text-base lg:text-lg rounded-lg font-medium transition-all duration-300 hover:shadow-lg hover:-translate-y-1 relative group overflow-hidden"
           >
             <span className="relative z-10">¡QUIERO CONECTARME!</span>
             <div className="absolute inset-0 bg-gradient-to-r from-[#292cf6] to-[#ed54ba] opacity-0 group-hover:opacity-100 transition-opacity duration-300" />

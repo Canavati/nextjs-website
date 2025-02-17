@@ -1,7 +1,7 @@
 'use client';
 
 import { motion, useAnimation } from 'framer-motion';
-import { Wrench, Headset, Gauge, CurrencyCircleDollar, LockOpen, Broadcast, ShieldCheck, Clock, Rocket, Icon, Globe, Medal } from '@phosphor-icons/react'
+import { Wrench, Headset, Gauge, CurrencyCircleDollar, LockOpen, Broadcast, ShieldCheck,Globe, Medal } from '@phosphor-icons/react'
 import { type IconProps } from '@phosphor-icons/react';
 import type { ComponentType } from 'react';
 import Link from 'next/link';
@@ -37,12 +37,12 @@ const defaultBenefits: Benefit[] = [
   {
     Icon: Headset,
     title: 'Atención 24/7',
-    description: 'Servicio de atención al cliente disponible todos los días del año.',
+    description: 'Atención al cliente disponible todos los días.',
   },
   {
     Icon: Wrench,
     title: 'Instalación Profesional',
-    description: 'Instalación realizada por técnicos especializados para garantizar el mejor servicio.',
+    description: 'Para garantizar el mejor servicio.',
   },
 ];
 
@@ -140,7 +140,7 @@ export default function Benefits({ benefits = defaultBenefits }: BenefitsProps) 
   };
 
   return (
-    <section className="pt-16 pb-12 relative overflow-hidden bg-gradient-to-b from-[#0a1930] to-[#152442] perspective-1000">
+    <section className="pt-24 lg:pt-32 pb-20 lg:pb-28 relative overflow-hidden bg-gradient-to-b from-[#0a1930] to-[#152442] perspective-1000">
       {/* Cosmic background layer */}
       <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,#4361ee10_0%,transparent_70%)] animate-cosmic-shift"></div>
 
@@ -186,34 +186,30 @@ export default function Benefits({ benefits = defaultBenefits }: BenefitsProps) 
 
       {/* Content wrapper */}
       <div className="relative z-10 backdrop-blur-[2px]">
-        <div className="max-w-[1600px] mx-auto px-[5%]">
+        <div className="max-w-[1500px] mx-auto px-[5%]">
           <motion.h2
             {...motionConfig}
-            className="text-4xl font-bold text-center mb-16 text-shimmer-blue"
+            className="text-4xl md:text-5xl lg:text-5xl font-bold text-center mb-16 lg:mb-20 text-shimmer-blue leading-tight py-2"
           >
             ¿Por qué elegirnos?
           </motion.h2>
 
           {/* Desktop Layout */}
           <div className="hidden md:flex justify-center">
-            <div className="grid grid-cols-3 lg:grid-cols-5 gap-20">
+            <div className="grid grid-cols-3 lg:grid-cols-5 gap-8 lg:gap-10">
               {benefits.map((benefit, index) => (
                 <motion.div
                   key={benefit.title}
                   {...motionConfig}
                   className="group relative card-interactive"
                 >
-                  {/* Card background animation */}
-                  <div className="relative inset-0 bg-gradient-to-br from-[#4361ee]/10 via-transparent to-[#0ea5e9]/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-gradient-xy"></div>
-                  
-                  {/* Card content */}
-                  <div className="relative bg-[#1a2942]/50 backdrop-blur-sm border border-[#4361ee]/20 rounded-3xl p-6 aspect-square text-center group-hover:border-[#0ea5e9]/40 w-[260px] h-[260px] flex flex-col items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_30px_-10px_#0ea5e9] group-hover:scale-105 overflow-hidden">
+                  <div className="relative bg-[#1a2942]/50 backdrop-blur-sm border border-[#4361ee]/20 rounded-3xl p-6 aspect-square text-center group-hover:border-[#0ea5e9]/40 w-[240px] h-[240px] flex flex-col items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_30px_-10px_#0ea5e9] group-hover:scale-105 overflow-hidden">
                     {/* Inner glow effect - updated for better centering */}
                     <div className="absolute inset-0 bg-gradient-to-b from-[#4361ee]/5 via-transparent to-[#4361ee]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div className="absolute inset-0 bg-gradient-to-r from-[#4361ee]/5 to-[#4361ee]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     <div className="absolute inset-[-100%] bg-[radial-gradient(circle_at_center,#4361ee10_0%,transparent_75%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                     
-                    <div className="relative inline-flex items-center justify-center w-20 h-20 mb-2 shrink-0">
+                    <div className="relative inline-flex items-center justify-center w-14 h-14 mb-2 shrink-0">
                       {/* Icon background glow - updated for consistency */}
                       <div className="absolute inset-[-50%] bg-[radial-gradient(circle_at_center,#4361ee15_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                       {/* Icon */}
@@ -222,10 +218,10 @@ export default function Benefits({ benefits = defaultBenefits }: BenefitsProps) 
                       </div>
                     </div>
 
-                    <h3 className="relative text-lg font-bold mb-1 text-white/90 group-hover:text-[#0ea5e9] transition-all duration-normal">
+                    <h3 className="relative text-sm lg:text-base font-bold mb-1 text-white/90 group-hover:text-[#0ea5e9] transition-all duration-normal">
                       {benefit.title}
                     </h3>
-                    <p className="relative text-white/60 text-sm group-hover:text-white/80 transition-colors duration-normal line-clamp-2">
+                    <p className="relative text-xs lg:text-sm text-white/60 group-hover:text-white/80 transition-colors duration-normal line-clamp-2">
                       {benefit.description}
                     </p>
                   </div>
@@ -234,12 +230,12 @@ export default function Benefits({ benefits = defaultBenefits }: BenefitsProps) 
             </div>
           </div>
 
-          {/* Mobile Layout - Update with same styling */}
+          {/* Mobile Layout */}
           <div className="md:hidden overflow-hidden py-4">
             <div className="relative">
               <motion.div
                 ref={containerRef}
-                className="flex gap-5"
+                className="flex gap-6"
                 animate={controls}
                 initial={{ x: 0 }}
                 onTouchStart={handleTouchStart}
@@ -249,18 +245,16 @@ export default function Benefits({ benefits = defaultBenefits }: BenefitsProps) 
                 {duplicatedBenefits.map((benefit, index) => (
                   <motion.div
                     key={`${benefit.title}-${index}`}
-                    className="flex-none w-[260px]"
+                    className="flex-none w-[240px]"
                   >
                     <div className="group relative">
-                      <div className="absolute inset-0 bg-gradient-to-br from-[#4361ee]/10 via-transparent to-[#0ea5e9]/10 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 animate-gradient-xy"></div>
-                      
-                      <div className="relative bg-[#1a2942]/50 backdrop-blur-sm border border-[#4361ee]/20 rounded-3xl p-6 aspect-square text-center group-hover:border-[#0ea5e9]/40 w-full h-[260px] flex flex-col items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_30px_-10px_#0ea5e9] group-hover:scale-105 overflow-hidden">
+                      <div className="relative bg-[#1a2942]/50 backdrop-blur-sm border border-[#4361ee]/20 rounded-3xl p-6 aspect-square text-center group-hover:border-[#0ea5e9]/40 w-full h-[240px] flex flex-col items-center justify-center transition-all duration-300 group-hover:shadow-[0_0_30px_-10px_#0ea5e9] group-hover:scale-105 overflow-hidden">
                         {/* Inner glow effect - updated for better centering */}
                         <div className="absolute inset-0 bg-gradient-to-b from-[#4361ee]/5 via-transparent to-[#4361ee]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div className="absolute inset-0 bg-gradient-to-r from-[#4361ee]/5 to-[#4361ee]/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         <div className="absolute inset-[-100%] bg-[radial-gradient(circle_at_center,#4361ee10_0%,transparent_75%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                         
-                        <div className="relative inline-flex items-center justify-center w-20 h-20 mb-2 shrink-0">
+                        <div className="relative inline-flex items-center justify-center w-14 h-14 mb-2 shrink-0">
                           {/* Icon background glow - updated for consistency */}
                           <div className="absolute inset-[-50%] bg-[radial-gradient(circle_at_center,#4361ee15_0%,transparent_70%)] opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                           {/* Icon */}
@@ -269,10 +263,10 @@ export default function Benefits({ benefits = defaultBenefits }: BenefitsProps) 
                           </div>
                         </div>
 
-                        <h3 className="relative text-lg font-bold mb-1 text-white/90 group-hover:text-[#0ea5e9] transition-all duration-normal">
+                        <h3 className="relative text-sm lg:text-base font-bold mb-1 text-white/90 group-hover:text-[#0ea5e9] transition-all duration-normal">
                           {benefit.title}
                         </h3>
-                        <p className="relative text-white/60 text-sm group-hover:text-white/80 transition-colors duration-normal line-clamp-2">
+                        <p className="relative text-xs lg:text-sm text-white/60 group-hover:text-white/80 transition-colors duration-normal line-clamp-2">
                           {benefit.description}
                         </p>
                       </div>

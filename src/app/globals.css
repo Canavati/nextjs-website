@@ -46,13 +46,17 @@
 
   html {
     scroll-behavior: smooth;
-    scroll-padding-top: var(--total-nav-height);
+    scroll-padding-top: 115px; /* Accounts for TopBar (35px) + Header (80px) */
+    @media (prefers-reduced-motion: reduce) {
+      scroll-behavior: auto;
+    }
   }
 
   body {
     @apply antialiased;
     color: var(--dark);
     padding-top: var(--total-nav-height);
+    overflow-y: scroll; /* Ensures consistent scrollbar presence */
   }
 }
 
