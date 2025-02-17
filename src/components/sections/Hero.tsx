@@ -8,8 +8,51 @@ import {
   Cloud, Cpu, Database, Globe, Desktop, SimCard, Broadcast, WifiHigh as WifiSignal, 
   GameController, House, ChatCircleDots
 } from '@phosphor-icons/react';
+import { useState } from 'react';
+
+const offerings = [
+  {
+    id: 'fibra-movil',
+    title: 'Fibra + Móvil',
+    displayTitle: 'Pack Single',
+    Icon: WifiHigh,
+    price: '33,00',
+    features: [
+      { icon: WifiHigh, text: 'Fibra 300Mb' },
+      { icon: DeviceMobile, text: '1 Línea Móvil 50GB' },
+      { icon: Phone, text: 'Llamadas ilimitadas' }
+    ]
+  },
+  {
+    id: 'fibra',
+    title: 'Solo Fibra',
+    displayTitle: 'Fibra Estándar',
+    Icon: Broadcast,
+    price: '30,00',
+    features: [
+      { icon: WifiHigh, text: 'Fibra 500Mb' },
+      { icon: Broadcast, text: 'Router WiFi 6' },
+      { icon: Rocket, text: 'Instalación profesional' }
+    ]
+  },
+  {
+    id: 'movil',
+    title: 'Solo Móvil',
+    displayTitle: 'Móvil Básico',
+    Icon: DeviceMobile,
+    price: '4,90',
+    features: [
+      { icon: DeviceMobile, text: '10GB Datos' },
+      { icon: Phone, text: '1000 min + 150 otros operadores' },
+      { icon: WifiSignal, text: 'Cobertura 5G' }
+    ]
+  }
+];
 
 export default function Hero() {
+  const [selectedOffering, setSelectedOffering] = useState(offerings[0]);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   const floatingIcons = [
     // Left side
     { Icon: WifiHigh, top: '15%', left: '10%', duration: 8, delay: 0, size: 42 },
@@ -95,8 +138,8 @@ export default function Hero() {
       </motion.div>
 
       <div className="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center">
-          {/* Left Column - Improved Typography Scaling */}
+        <div className="grid lg:grid-cols-[1fr,1.2fr] gap-8 lg:gap-12 items-center">
+          {/* Left Column - Main Content */}
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             animate={{ opacity: 1, x: 0 }}
@@ -137,59 +180,93 @@ export default function Hero() {
                 </motion.h2>
               ))}
             </div>
-            
-            <motion.div
+
+            <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 0.5 }}
-              className="mt-4 sm:mt-6 lg:mt-8 text-white/80 text-base sm:text-lg lg:text-xl"
+              className="text-white/80 text-lg lg:text-xl"
             >
               Tu operador móvil de confianza
+            </motion.p>
+
+            {/* Offerings Menu - Redesigned */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.3 }}
+              className="relative mt-12"
+            >
+              <div className="flex flex-col sm:flex-row gap-3">
+                {offerings.map((offering) => (
+                  <button
+                    key={offering.id}
+                    onClick={() => {
+                      setSelectedOffering(offering);
+                      setIsMenuOpen(true);
+                    }}
+                    className={`flex items-center gap-3 px-6 py-4 rounded-2xl text-base font-medium transition-all duration-300 ${
+                      selectedOffering.id === offering.id
+                        ? 'bg-gradient-to-r from-[#4361ee] to-[#51fcff] text-white shadow-lg shadow-[#51fcff]/20'
+                        : 'bg-white/5 backdrop-blur-sm text-white/80 hover:bg-white/10 hover:text-white'
+                    }`}
+                  >
+                    <offering.Icon size={24} weight="duotone" />
+                    <span>{offering.title}</span>
+                  </button>
+                ))}
+              </div>
             </motion.div>
           </motion.div>
 
-          {/* Right Column - Improved Card Layout */}
+          {/* Right Column - Selected Offering */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-white space-y-6 sm:space-y-8 p-6 sm:p-8 rounded-2xl bg-white/5 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-colors duration-300"
+            className="text-white"
           >
-            <div className="space-y-6">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">
-                Pack
-                <span className="bg-gradient-bright bg-clip-text text-transparent"> Single</span>
-              </h2>
-              
-              <div className="space-y-4">
-                <div className="flex items-center gap-3 sm:gap-4 text-base sm:text-lg lg:text-xl">
-                  <WifiHigh size={32} weight="duotone" className="text-[#51fcff] shrink-0" />
-                  <span>Fibra 500Mb</span>
-                </div>
-                <div className="flex items-center gap-3 sm:gap-4 text-base sm:text-lg lg:text-xl">
-                  <DeviceMobile size={32} weight="duotone" className="text-[#51fcff] shrink-0" />
-                  <span>1 Línea Móvil 50GB</span>
-                </div>
-                <div className="flex items-center gap-3 sm:gap-4 text-base sm:text-lg lg:text-xl">
-                  <Phone size={32} weight="duotone" className="text-[#51fcff] shrink-0" />
-                  <span>Llamadas ilimitadas</span>
-                </div>
-              </div>
-
-              <div className="flex items-end gap-4">
-                <div className="text-[2.5rem] sm:text-[3.5rem] lg:text-[5rem] font-black leading-none text-[#51fcff] animate-pulse-subtle drop-shadow-[0_0_8px_rgba(81,252,255,0.5)]">
-                  33€
-                  <span className="text-lg sm:text-xl lg:text-2xl text-white/60 ml-2">/mes</span>
-                </div>
-              </div>
-            </div>
-
-            <Link
-              href="#planes"
-              className="inline-block w-full sm:w-auto text-center bg-gradient-new text-white px-6 sm:px-8 py-3 sm:py-4 rounded-xl font-semibold text-base sm:text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1"
+            <motion.div
+              key={selectedOffering.id}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+              className="p-8 lg:p-10 rounded-3xl bg-[#1a1f35]/40 backdrop-blur-sm border border-white/10 hover:border-white/20 transition-all duration-300"
             >
-              ¡CONTRATAR AHORA!
-            </Link>
+              <div className="space-y-6 lg:space-y-8">
+                <div className="space-y-2">
+                  <h2 className="text-4xl lg:text-5xl font-bold flex items-baseline gap-3">
+                    <span className="text-white">{selectedOffering.displayTitle.split(' ')[0]}</span>
+                    <span className="bg-gradient-to-r from-[#4361ee] to-[#51fcff] bg-clip-text text-transparent">
+                      {selectedOffering.displayTitle.split(' ')[1]}
+                    </span>
+                  </h2>
+                </div>
+                
+                <div className="space-y-4">
+                  {selectedOffering.features.map((feature, index) => (
+                    <div key={index} className="flex items-center gap-4 text-lg lg:text-xl">
+                      <feature.icon size={32} weight="duotone" className="text-[#51fcff]" />
+                      <span className="text-white/90">{feature.text}</span>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="pt-4">
+                  <div className="text-[4rem] lg:text-[5rem] font-black leading-none text-[#51fcff] animate-pulse-subtle drop-shadow-[0_0_8px_rgba(81,252,255,0.5)]">
+                    {selectedOffering.price}€
+                    <span className="text-xl lg:text-2xl text-white/60 ml-2">/mes</span>
+                  </div>
+                </div>
+
+                <Link
+                  href="#planes"
+                  className="inline-block w-full text-center bg-gradient-to-r from-[#4361ee] to-[#51fcff] text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1"
+                >
+                  ¡CONTRATAR AHORA!
+                </Link>
+              </div>
+            </motion.div>
           </motion.div>
         </div>
       </div>

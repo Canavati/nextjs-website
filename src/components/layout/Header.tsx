@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState, useEffect, useRef } from 'react';
+import { useState, useRef } from 'react';
 import { 
   House, 
   User, 
@@ -11,30 +11,12 @@ import {
   X 
 } from '@phosphor-icons/react';
 import { getBlurDataURL } from '@/utils/images';
+import { useHero } from '@/contexts/HeroContext';
 
 export default function Header() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isOverHero, setIsOverHero] = useState(true);
+  const { isOverHero } = useHero();
   const headerRef = useRef<HTMLElement>(null);
-
-  useEffect(() => {
-    const heroSection = document.querySelector('#hero'); // Make sure your hero has this ID
-    if (!heroSection || !headerRef.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // When header and hero are intersecting, we're over the hero
-        setIsOverHero(entry.isIntersecting);
-      },
-      {
-        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-        rootMargin: '-80px 0px 0px 0px' // Adjust based on your header height
-      }
-    );
-
-    observer.observe(heroSection);
-    return () => observer.disconnect();
-  }, []);
 
   return (
     <header 

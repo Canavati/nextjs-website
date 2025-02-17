@@ -6,7 +6,7 @@ import FibraMovilConfigurator from '@/components/offerings/fibra-movil/FibraMovi
 import PacksGrid from '@/components/offerings/packs/PacksGrid';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
-type ViewType = 'configurator' | 'packs';
+type ViewType = 'packs' | 'configurator';
 
 const motionConfig = {
   initial: { opacity: 0, y: 20 },
@@ -22,8 +22,8 @@ export const FibraMovilPlans = () => {
   const isMobile = useIsMobile();
 
   const views = [
-    { id: 'configurator', label: 'Configura tu Pack' },
-    { id: 'packs', label: 'Packs' }
+    { id: 'packs', label: 'Packs' },
+    { id: 'configurator', label: 'Configura tu Pack' }
   ];
 
   const handleViewChange = (view: ViewType) => {

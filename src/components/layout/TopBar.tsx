@@ -4,32 +4,14 @@ import Link from 'next/link';
 import { motion } from 'framer-motion';
 import { Phone, Article, Question, CaretDown } from '@phosphor-icons/react';
 import { useState, useRef, useEffect } from 'react';
+import { useHero } from '@/contexts/HeroContext';
 
 export default function TopBar() {
   const [showHelpMenu, setShowHelpMenu] = useState(false);
-  const [isOverHero, setIsOverHero] = useState(true);
+  const { isOverHero } = useHero();
   const menuRef = useRef<HTMLDivElement>(null);
   const buttonRef = useRef<HTMLAnchorElement>(null);
   const topBarRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const heroSection = document.querySelector('#hero'); // Make sure your hero has this ID
-    if (!heroSection || !topBarRef.current) return;
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // When topbar and hero are intersecting, we're over the hero
-        setIsOverHero(entry.isIntersecting);
-      },
-      {
-        threshold: [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1],
-        rootMargin: '-35px 0px 0px 0px' // Adjust based on your topbar height
-      }
-    );
-
-    observer.observe(heroSection);
-    return () => observer.disconnect();
-  }, []);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

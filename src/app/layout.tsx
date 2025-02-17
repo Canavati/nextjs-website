@@ -4,6 +4,7 @@ import "./globals.css";
 import TopBar from "@/components/layout/TopBar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import { HeroProvider } from '@/contexts/HeroContext';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -86,11 +87,15 @@ export default function RootLayout({
     <html lang="es" className="scroll-smooth">
       <body className={`${inter.className} pt-total-nav min-h-screen relative overflow-x-hidden`}>
         <ErrorBoundary>
-          <div className="h-1 bg-primary fixed top-0 left-0 z-[1002] transition-all duration-300" id="scroll-progress" />
-          <TopBar />
-          <Header />
-          {children}
-          <Footer />
+          <HeroProvider>
+            <div className="h-1 bg-primary fixed top-0 left-0 z-[1002] transition-all duration-300" id="scroll-progress" />
+            <TopBar />
+            <Header />
+            <main>
+              {children}
+            </main>
+            <Footer />
+          </HeroProvider>
         </ErrorBoundary>
       </body>
     </html>

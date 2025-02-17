@@ -29,7 +29,7 @@ export const FibraHero = () => {
   ];
 
   return (
-    <section className="relative min-h-[50vh] bg-dark overflow-hidden flex items-center">
+    <section id="hero" className="relative min-h-[100vh] pt-[115px] -mt-[115px] bg-dark overflow-hidden flex items-center">
       {/* Background Gradient Effect */}
       <div className="absolute inset-0 bg-gradient-new opacity-95" />
       
@@ -40,7 +40,9 @@ export const FibraHero = () => {
       {floatingIcons.map(({ Icon, duration, delay, size, ...position }, index) => (
         <motion.div
           key={index}
-          className={`absolute pointer-events-none ${index > 7 ? 'hidden md:block' : ''}`}
+          className={`absolute pointer-events-none ${
+            index > 5 ? 'hidden sm:block' : index > 10 ? 'hidden lg:block' : ''
+          }`}
           style={{ ...position }}
           animate={{
             y: [0, -20, 0],
@@ -86,7 +88,7 @@ export const FibraHero = () => {
         {/* Grid pattern removed */}
       </motion.div>
 
-      <div className="relative container mx-auto px-4 pt-12 md:pt-16 pb-8 md:pb-12">
+      <div className="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
         <div className="grid lg:grid-cols-2 gap-8 md:gap-12 items-center">
           {/* Left Column - Main Content */}
           <motion.div
