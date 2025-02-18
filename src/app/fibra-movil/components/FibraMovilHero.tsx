@@ -90,7 +90,6 @@ export const FibraMovilHero = () => {
           ease: "linear",
         }}
       >
-        {/* Grid pattern removed */}
       </motion.div>
 
       <div className="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
@@ -127,28 +126,32 @@ export const FibraMovilHero = () => {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex gap-2 p-1 bg-white/10 backdrop-blur-sm rounded-xl w-fit"
+              className="flex relative z-10"
             >
-              <button
-                onClick={() => setActiveTab('configurator')}
-                className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ${
-                  activeTab === 'configurator'
-                    ? 'bg-white text-[#292cf6] shadow-sm'
-                    : 'text-white/80 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                Configurador
-              </button>
-              <button
-                onClick={() => setActiveTab('packs')}
-                className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ${
-                  activeTab === 'packs'
-                    ? 'bg-white text-[#292cf6] shadow-sm'
-                    : 'text-white/80 hover:text-white hover:bg-white/5'
-                }`}
-              >
-                Packs
-              </button>
+              <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-3 shadow-md w-fit">
+                <div className="grid grid-cols-2 md:flex md:flex-row gap-3">
+                  <button
+                    onClick={() => setActiveTab('configurator')}
+                    className={`flex items-center justify-center gap-2 rounded-xl px-6 md:px-8 py-3 text-base font-medium transition-all duration-300 whitespace-nowrap ${
+                      activeTab === 'configurator'
+                        ? 'bg-gradient-new text-white shadow-sm'
+                        : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                    }`}
+                  >
+                    Configurador
+                  </button>
+                  <button
+                    onClick={() => setActiveTab('packs')}
+                    className={`flex items-center justify-center gap-2 rounded-xl px-6 md:px-8 py-3 text-base font-medium transition-all duration-300 whitespace-nowrap ${
+                      activeTab === 'packs'
+                        ? 'bg-gradient-new text-white shadow-sm'
+                        : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                    }`}
+                  >
+                    Packs
+                  </button>
+                </div>
+              </div>
             </motion.div>
           </motion.div>
 

@@ -1,11 +1,9 @@
+'use client';
+
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Globe, Database, Plus, Minus, CaretDown, Star } from '@phosphor-icons/react';
-
-interface BonoConfig {
-  internationalMinutes: string;
-  extraData: string;
-}
+import Link from 'next/link';
+import { Globe, Database, Check, Package, ArrowRight } from '@phosphor-icons/react';
 
 const INTERNATIONAL_BONOS = [
   { id: '100min', minutes: '100', price: 3.00 },
@@ -21,8 +19,12 @@ const DATA_BONOS = [
   { id: '10gb', data: '10GB', price: 8.00 },
 ];
 
+interface BonoConfig {
+  internationalMinutes: string;
+  extraData: string;
+}
+
 export default function MovilBonos() {
-  const [isExpanded, setIsExpanded] = useState(false);
   const [config, setConfig] = useState<BonoConfig>({
     internationalMinutes: '',
     extraData: '',
@@ -35,163 +37,157 @@ export default function MovilBonos() {
     }));
   };
 
-  const selectedBonosCount = (config.internationalMinutes ? 1 : 0) + (config.extraData ? 1 : 0);
-
   return (
-    <div className="mt-12 mb-8">
+    <motion.div 
+      initial={{ opacity: 0, y: 20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="w-full"
+    >
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative"
+        className="text-center mb-8"
       >
-        {/* Title Section */}
-        <div className="text-center mb-6">
-          <h2 className="text-3xl md:text-4xl font-bold text-[#1a1f35]">
-            Bonos Adicionales
-          </h2>
-          <p className="text-[#444444] mt-2 text-lg">
-            Amplía tus datos y minutos cuando lo necesites
-          </p>
-        </div>
-
-        {/* Collapsible Button */}
-        <div className="relative">
-          <div className="absolute -inset-[2px] rounded-2xl bg-gradient-to-r from-[#ed54ba] via-[#4361ee] to-[#51fcff] opacity-100" />
-          <button
-            onClick={() => setIsExpanded(!isExpanded)}
-            className="relative w-full bg-white rounded-2xl group transition-all duration-300"
-          >
-            <div className="px-6 py-4 flex items-center justify-between relative overflow-hidden">
-              {/* Selection/Hover Gradient */}
-              <div className="absolute inset-[1px] rounded-xl bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-              
-              <div className="flex items-center gap-6 relative">
-                <div className="flex items-center gap-4 p-2 rounded-xl relative z-10">
-                  <Globe size={24} weight="duotone" className="text-[#1a1f35] transition-colors duration-300" />
-                  <Database size={24} weight="duotone" className="text-[#1a1f35] transition-colors duration-300" />
-                </div>
-                <div className="text-left relative z-10">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-xl md:text-2xl font-bold text-[#1a1f35] transition-all duration-300">
-                      Bonos Adicionales
-                    </h3>
-                    <Star size={16} weight="fill" className="text-[#1a1f35]" />
-                  </div>
-                  {selectedBonosCount > 0 && (
-                    <p className="text-sm text-[#1a1f35]/70 transition-all duration-300">
-                      {selectedBonosCount} bono{selectedBonosCount > 1 ? 's' : ''} seleccionado{selectedBonosCount > 1 ? 's' : ''}
-                    </p>
-                  )}
-                </div>
-              </div>
-              <motion.div
-                animate={{ rotate: isExpanded ? 180 : 0 }}
-                transition={{ duration: 0.3 }}
-                className="relative z-10"
-              >
-                <CaretDown size={20} weight="bold" className="text-[#1a1f35] transition-colors duration-300" />
-              </motion.div>
-            </div>
-          </button>
-        </div>
-
-        {/* Expandable Content */}
-        <AnimatePresence>
-          {isExpanded && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden"
-            >
-              <div className="mt-3 bg-white rounded-xl p-4 shadow-lg space-y-6"
-                style={{
-                  border: '3px solid transparent',
-                  background: 'linear-gradient(rgb(248 250 252), rgb(248 250 252)) padding-box, var(--gradient-primary) border-box'
-                }}
-              >
-                {/* International Minutes Section */}
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <Globe size={28} weight="duotone" className="text-[#ed54ba]" />
-                    <h3 className="text-xl font-semibold bg-gradient-new bg-clip-text text-transparent">
-                      Bonos Internacionales
-                    </h3>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
-                    {INTERNATIONAL_BONOS.map((bono) => (
-                      <button
-                        key={bono.id}
-                        onClick={() => handleBonoChange('internationalMinutes', bono.id)}
-                        className="relative group"
-                      >
-                        <div className="relative">
-                          <div className="absolute -inset-[2px] bg-gradient-new rounded-xl opacity-100" />
-                          <div className={`relative p-4 rounded-[10px] transition-all duration-300 bg-white ${
-                            config.internationalMinutes === bono.id
-                              ? 'bg-gradient-to-r from-[#ed54ba]/20 to-[#51fcff]/20'
-                              : 'hover:bg-gradient-to-r hover:from-[#ed54ba]/10 hover:to-[#51fcff]/10'
-                          }`}
-                          >
-                            <div className="flex flex-col items-center justify-between gap-2">
-                              <div className="text-xl font-medium text-transparent bg-gradient-new bg-clip-text">{bono.minutes} min</div>
-                              <div className="text-4xl font-black text-transparent bg-gradient-new bg-clip-text">
-                                {bono.price.toFixed(2)}
-                                <span className="text-lg font-normal text-transparent bg-gradient-new bg-clip-text ml-1">€</span>
-                              </div>
-                              <div className="text-sm text-transparent bg-gradient-new bg-clip-text">Internacional</div>
-                            </div>
-                          </div>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Extra Data Section */}
-                <div>
-                  <div className="flex items-center gap-3 mb-4">
-                    <Database size={28} weight="duotone" className="text-[#51fcff]" />
-                    <h3 className="text-xl font-semibold bg-gradient-new bg-clip-text text-transparent">
-                      Bonos de Datos Extra
-                    </h3>
-                  </div>
-                  <div className="grid grid-cols-2 md:grid-cols-5 gap-3">
-                    {DATA_BONOS.map((bono) => (
-                      <button
-                        key={bono.id}
-                        onClick={() => handleBonoChange('extraData', bono.id)}
-                        className="relative group"
-                      >
-                        <div className="relative">
-                          <div className="absolute -inset-[2px] bg-gradient-new rounded-xl opacity-100" />
-                          <div className={`relative p-4 rounded-[10px] transition-all duration-300 bg-white ${
-                            config.extraData === bono.id
-                              ? 'bg-gradient-to-r from-[#ed54ba]/20 to-[#51fcff]/20'
-                              : 'hover:bg-gradient-to-r hover:from-[#ed54ba]/10 hover:to-[#51fcff]/10'
-                          }`}
-                          >
-                            <div className="flex flex-col items-center justify-between gap-2">
-                              <div className="text-xl font-medium text-transparent bg-gradient-new bg-clip-text">{bono.data}</div>
-                              <div className="text-4xl font-black text-transparent bg-gradient-new bg-clip-text">
-                                {bono.price.toFixed(2)}
-                                <span className="text-lg font-normal text-transparent bg-gradient-new bg-clip-text ml-1">€</span>
-                              </div>
-                              <div className="text-sm text-transparent bg-gradient-new bg-clip-text">Datos Extra</div>
-                            </div>
-                          </div>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+        <h3 className="text-2xl font-bold text-[#1e3a5f] mb-2">Bonos Adicionales</h3>
+        <p className="text-[#666666]">Personaliza tu plan con bonos extra según tus necesidades</p>
       </motion.div>
-    </div>
+
+      <div className="grid md:grid-cols-2 gap-6 max-w-[900px] mx-auto">
+        {/* International Minutes Bonos */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="bg-white rounded-2xl shadow-lg shadow-[#80c4cc]/10 overflow-hidden border border-[#eef2f5]"
+        >
+          <div className="bg-gradient-to-r from-[#292cf6]/5 to-[#ed54ba]/5 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-lg font-semibold text-[#1e3a5f]">Minutos Internacionales</h4>
+              <Globe size={24} weight="duotone" className="text-[#292cf6]" />
+            </div>
+            <div className="space-y-3">
+              {INTERNATIONAL_BONOS.map((bono) => (
+                <button
+                  key={bono.id}
+                  onClick={() => handleBonoChange('internationalMinutes', bono.id)}
+                  className={`w-full p-4 rounded-xl transition-all duration-300 flex items-center justify-between group ${
+                    config.internationalMinutes === bono.id
+                      ? 'bg-gradient-new text-white shadow-lg shadow-[#292cf6]/20'
+                      : 'bg-white hover:bg-[#f8fafc] text-[#1e3a5f]'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                      config.internationalMinutes === bono.id
+                        ? 'bg-white/20'
+                        : 'bg-[#292cf6]/5 group-hover:bg-[#292cf6]/10'
+                    }`}>
+                      {config.internationalMinutes === bono.id ? (
+                        <Check size={14} weight="bold" className="text-white" />
+                      ) : null}
+                    </div>
+                    <span className="font-medium">{bono.minutes} min</span>
+                  </div>
+                  <span className={`font-semibold ${
+                    config.internationalMinutes === bono.id
+                      ? 'text-white'
+                      : 'text-[#292cf6]'
+                  }`}>
+                    +{bono.price}€
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+
+        {/* Extra Data Bonos */}
+        <motion.div
+          initial={{ opacity: 0, x: 20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.5, delay: 0.2 }}
+          className="bg-white rounded-2xl shadow-lg shadow-[#80c4cc]/10 overflow-hidden border border-[#eef2f5]"
+        >
+          <div className="bg-gradient-to-r from-[#ed54ba]/5 to-[#292cf6]/5 p-6">
+            <div className="flex items-center justify-between mb-4">
+              <h4 className="text-lg font-semibold text-[#1e3a5f]">Datos Extra</h4>
+              <Database size={24} weight="duotone" className="text-[#ed54ba]" />
+            </div>
+            <div className="space-y-3">
+              {DATA_BONOS.map((bono) => (
+                <button
+                  key={bono.id}
+                  onClick={() => handleBonoChange('extraData', bono.id)}
+                  className={`w-full p-4 rounded-xl transition-all duration-300 flex items-center justify-between group ${
+                    config.extraData === bono.id
+                      ? 'bg-gradient-new text-white shadow-lg shadow-[#ed54ba]/20'
+                      : 'bg-white hover:bg-[#f8fafc] text-[#1e3a5f]'
+                  }`}
+                >
+                  <div className="flex items-center gap-3">
+                    <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
+                      config.extraData === bono.id
+                        ? 'bg-white/20'
+                        : 'bg-[#ed54ba]/5 group-hover:bg-[#ed54ba]/10'
+                    }`}>
+                      {config.extraData === bono.id ? (
+                        <Check size={14} weight="bold" className="text-white" />
+                      ) : null}
+                    </div>
+                    <span className="font-medium">{bono.data}</span>
+                  </div>
+                  <span className={`font-semibold ${
+                    config.extraData === bono.id
+                      ? 'text-white'
+                      : 'text-[#ed54ba]'
+                  }`}>
+                    +{bono.price}€
+                  </span>
+                </button>
+              ))}
+            </div>
+          </div>
+        </motion.div>
+      </div>
+
+      {/* Selected Bonos Summary */}
+      <AnimatePresence>
+        {(config.internationalMinutes !== '' || config.extraData !== '') && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="mt-8 max-w-[900px] mx-auto bg-white/50 backdrop-blur-sm rounded-xl p-6 border border-[#eef2f5]"
+          >
+            <div className="flex items-center justify-between">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-new flex items-center justify-center">
+                  <Package size={20} weight="duotone" className="text-white" />
+                </div>
+                <div>
+                  <h4 className="text-lg font-semibold text-[#1e3a5f]">Bonos Seleccionados</h4>
+                  <p className="text-sm text-[#666666]">
+                    {config.internationalMinutes !== '' && config.extraData !== ''
+                      ? 'Minutos internacionales y datos extra'
+                      : config.internationalMinutes !== ''
+                      ? 'Minutos internacionales'
+                      : 'Datos extra'}
+                  </p>
+                </div>
+              </div>
+              <Link
+                href="#contacto"
+                className="bg-gradient-new text-white px-6 py-2 rounded-lg font-medium text-sm transition-all duration-300 hover:shadow-lg hover:shadow-[#292cf6]/30 hover:-translate-y-1 flex items-center gap-2"
+              >
+                Contratar Bonos
+                <ArrowRight size={16} weight="bold" />
+              </Link>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.div>
   );
 } 

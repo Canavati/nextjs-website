@@ -6,6 +6,7 @@ import {
   SimCard, Broadcast, WifiHigh as WifiSignal, House, ChatCircleDots 
 } from '@phosphor-icons/react';
 import Image from 'next/image';
+import { HeroFibraPacks } from '@/components/offerings/solo-fibra/SoloFibraConfigurator';
 
 export const FibraHero = () => {
   const floatingIcons = [
@@ -143,36 +144,9 @@ export const FibraHero = () => {
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-white space-y-6"
+            className="w-full"
           >
-            <div className="space-y-4">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                Plan
-                <span className="bg-gradient-bright bg-clip-text text-transparent"> Estándar</span>
-              </h2>
-              
-              <div className="space-y-3">
-                <div className="flex items-center gap-4 text-lg md:text-xl">
-                  <WifiHigh size={32} weight="duotone" className="text-[#51fcff]" />
-                  <span>Fibra 500Mb Simétricos</span>
-                </div>
-                <div className="flex items-center gap-4 text-lg md:text-xl">
-                  <Broadcast size={32} weight="duotone" className="text-[#51fcff]" />
-                  <span>Router WiFi 6 Incluido</span>
-                </div>
-                <div className="flex items-center gap-4 text-lg md:text-xl">
-                  <Wrench size={32} weight="duotone" className="text-[#51fcff]" />
-                  <span>Instalación Profesional</span>
-                </div>
-              </div>
-
-              <div className="flex items-end gap-4 mt-6 md:mt-8">
-                <div className="text-[3.5rem] md:text-[5rem] font-black leading-none text-[#51fcff] animate-pulse-subtle drop-shadow-[0_0_8px_rgba(81,252,255,0.5)]">
-                  30€
-                  <span className="text-xl md:text-2xl text-white/60 ml-2">/mes</span>
-                </div>
-              </div>
-            </div>
+            <HeroFibraPacks />
           </motion.div>
         </div>
       </div>

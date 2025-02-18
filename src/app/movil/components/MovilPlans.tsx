@@ -87,7 +87,7 @@ export const MovilPlans = () => {
       />
 
       {/* Content Container */}
-      <div className="max-w-[1400px] mx-auto px-4 relative">
+      <div className="max-w-[1600px] mx-auto px-4 relative">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}

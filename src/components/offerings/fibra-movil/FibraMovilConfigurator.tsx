@@ -268,6 +268,7 @@ const SectionDropdown = ({ title, items, isOpen, onToggle, delay }: {
 
 export const HeroConfigurator = () => {
   const [selectedPlan, setSelectedPlan] = useState(0);
+  const [previewPlan, setPreviewPlan] = useState(0);
   const [config, setConfig] = useState<FibraMovilConfig>({
     selectedPlan: 0,
     additionalLines: {
@@ -279,6 +280,19 @@ export const HeroConfigurator = () => {
 
   const totalAdditionalLines = Object.values(config.additionalLines).reduce((a, b) => a + b, 0);
   const canAddMore = totalAdditionalLines < 4;
+
+  const handlePlanSelect = (index: number) => {
+    setSelectedPlan(index);
+    setConfig(prev => ({ ...prev, selectedPlan: index }));
+  };
+
+  const handlePlanHover = (index: number) => {
+    setPreviewPlan(index);
+  };
+
+  const handlePlanLeave = () => {
+    setPreviewPlan(selectedPlan);
+  };
 
   const handleLineChange = (lineType: keyof typeof config.additionalLines, increment: boolean) => {
     if (increment && !canAddMore) return;
@@ -293,8 +307,8 @@ export const HeroConfigurator = () => {
     }));
   };
 
-  const calculateTotalPrice = () => {
-    const basePlan = FIBRA_MOVIL_PLANS[selectedPlan];
+  const calculateTotalPrice = (planIndex: number) => {
+    const basePlan = FIBRA_MOVIL_PLANS[planIndex];
     const additionalCost = 
       config.additionalLines.line20GB * 5 +
       config.additionalLines.line40GB * 10 +
@@ -302,6 +316,11 @@ export const HeroConfigurator = () => {
     
     return basePlan.basePrice + additionalCost;
   };
+
+  const currentPlan = FIBRA_MOVIL_PLANS[previewPlan];
+  const selectedPlanPrice = calculateTotalPrice(selectedPlan);
+  const previewPlanPrice = calculateTotalPrice(previewPlan);
+  const priceDifference = previewPlanPrice - selectedPlanPrice;
   
   return (
     <div className="relative w-full max-w-[500px] mx-auto">
@@ -322,47 +341,58 @@ export const HeroConfigurator = () => {
             {FIBRA_MOVIL_PLANS.map((plan, index) => (
               <button
                 key={plan.title}
-                onClick={() => {
-                  setSelectedPlan(index);
-                  setConfig(prev => ({ ...prev, selectedPlan: index }));
-                }}
-                className={`flex-1 py-2 px-3 rounded-xl text-sm font-medium transition-all duration-300 ${
-                  selectedPlan === index
+                onClick={() => handlePlanSelect(index)}
+                onMouseEnter={() => handlePlanHover(index)}
+                onMouseLeave={handlePlanLeave}
+                className={`relative flex-1 py-2 px-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  previewPlan === index
                     ? 'bg-white text-[#292cf6] shadow-sm'
                     : 'text-white/80 hover:text-white hover:bg-white/5'
                 }`}
               >
+                {selectedPlan === index && (
+                  <div className="absolute -top-1 -right-1 w-3 h-3 bg-[#51fcff] rounded-full" />
+                )}
                 {plan.title}
               </button>
             ))}
           </div>
 
           {/* Selected Plan Details */}
-          <div className="grid grid-cols-2 gap-6 mb-6">
-            {/* Fibra Speed */}
-            <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-b from-[#51fcff]/10 to-transparent rounded-2xl -z-10 group-hover:from-[#51fcff]/20 transition-colors duration-300" />
-              <div className="p-4 text-center">
-                <div className="text-4xl font-black text-white mb-1 group-hover:text-[#51fcff] transition-colors duration-300">
-                  {FIBRA_MOVIL_PLANS[selectedPlan].speed}
-                  <span className="text-lg font-bold ml-1">Mb</span>
+          <AnimatePresence mode="wait">
+            <motion.div
+              key={previewPlan}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              transition={{ duration: 0.3 }}
+              className="grid grid-cols-2 gap-6 mb-6"
+            >
+              {/* Fibra Speed */}
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-b from-[#51fcff]/10 to-transparent rounded-2xl -z-10 group-hover:from-[#51fcff]/20 transition-colors duration-300" />
+                <div className="p-4 text-center">
+                  <div className="text-4xl font-black text-white mb-1 group-hover:text-[#51fcff] transition-colors duration-300">
+                    {currentPlan.speed}
+                    <span className="text-lg font-bold ml-1">Mb</span>
+                  </div>
+                  <div className="text-sm text-white/60">Fibra Simétrica</div>
                 </div>
-                <div className="text-sm text-white/60">Fibra Simétrica</div>
               </div>
-            </div>
 
-            {/* Mobile Data */}
-            <div className="relative group">
-              <div className="absolute inset-0 bg-gradient-to-b from-[#51fcff]/10 to-transparent rounded-2xl -z-10 group-hover:from-[#51fcff]/20 transition-colors duration-300" />
-              <div className="p-4 text-center">
-                <div className="text-4xl font-black text-white mb-1 group-hover:text-[#51fcff] transition-colors duration-300">
-                  {FIBRA_MOVIL_PLANS[selectedPlan].data}
-                  <span className="text-lg font-bold ml-1">GB</span>
+              {/* Mobile Data */}
+              <div className="relative group">
+                <div className="absolute inset-0 bg-gradient-to-b from-[#51fcff]/10 to-transparent rounded-2xl -z-10 group-hover:from-[#51fcff]/20 transition-colors duration-300" />
+                <div className="p-4 text-center">
+                  <div className="text-4xl font-black text-white mb-1 group-hover:text-[#51fcff] transition-colors duration-300">
+                    {currentPlan.data}
+                    <span className="text-lg font-bold ml-1">GB</span>
+                  </div>
+                  <div className="text-sm text-white/60">Datos Móviles</div>
                 </div>
-                <div className="text-sm text-white/60">Datos Móviles</div>
               </div>
-            </div>
-          </div>
+            </motion.div>
+          </AnimatePresence>
 
           {/* Additional Lines Section */}
           <div className="mb-6">
@@ -400,7 +430,10 @@ export const HeroConfigurator = () => {
                     </div>
                     <div className="flex items-center justify-center gap-1.5">
                       <motion.button
-                        onClick={() => handleLineChange(line.type as keyof typeof config.additionalLines, false)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleLineChange(line.type as keyof typeof config.additionalLines, false);
+                        }}
                         className={`w-6 h-6 rounded-lg flex items-center justify-center transition-colors ${
                           config.additionalLines[line.type as keyof typeof config.additionalLines] === 0
                             ? 'bg-white/10 text-white/40'
@@ -416,7 +449,10 @@ export const HeroConfigurator = () => {
                         {config.additionalLines[line.type as keyof typeof config.additionalLines]}
                       </span>
                       <motion.button
-                        onClick={() => handleLineChange(line.type as keyof typeof config.additionalLines, true)}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleLineChange(line.type as keyof typeof config.additionalLines, true);
+                        }}
                         className={`w-6 h-6 rounded-lg flex items-center justify-center transition-colors ${
                           !canAddMore
                             ? 'bg-white/10 text-white/40'
@@ -441,11 +477,34 @@ export const HeroConfigurator = () => {
             <div className="inline-block relative group">
               <div className="absolute inset-0 bg-gradient-to-r from-[#51fcff]/20 via-[#51fcff]/10 to-[#51fcff]/20 rounded-2xl blur-xl group-hover:opacity-100 transition-opacity duration-300 -z-10" />
               <div className="relative">
-                <div className="text-5xl font-black text-white group-hover:text-[#51fcff] transition-colors duration-300">
-                  {calculateTotalPrice().toFixed(2)}€
-                  <span className="text-base font-medium text-white/60 ml-2">/mes</span>
-                </div>
-                <div className="text-sm text-white/40 mt-1">IVA incluido</div>
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={previewPlan}
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                    transition={{ duration: 0.3 }}
+                  >
+                    <div className="text-5xl font-black text-white group-hover:text-[#51fcff] transition-colors duration-300">
+                      {previewPlanPrice.toFixed(2)}€
+                      <span className="text-base font-medium text-white/60 ml-2">/mes</span>
+                    </div>
+                    <div className="h-8 flex items-center justify-center">
+                      {previewPlan !== selectedPlan && (
+                        <motion.div
+                          initial={{ opacity: 0, scale: 0.8 }}
+                          animate={{ opacity: 1, scale: 1 }}
+                          className="text-sm font-medium"
+                        >
+                          <span className={`${priceDifference > 0 ? 'text-red-400' : 'text-green-400'}`}>
+                            {priceDifference > 0 ? '+' : ''}{priceDifference.toFixed(2)}€
+                          </span>
+                        </motion.div>
+                      )}
+                    </div>
+                    <div className="text-sm text-white/40">IVA incluido</div>
+                  </motion.div>
+                </AnimatePresence>
               </div>
             </div>
           </div>
