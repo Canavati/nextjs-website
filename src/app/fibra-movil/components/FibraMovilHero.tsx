@@ -1,13 +1,18 @@
 'use client';
 
 import { motion } from 'framer-motion';
+import { useState } from 'react';
 import { 
   WifiHigh, DeviceMobile, Phone, Cloud, Cpu, Database, Globe, 
   Desktop, SimCard, Broadcast, Lightning, ChatCircleDots 
 } from '@phosphor-icons/react';
-import Image from 'next/image';
+import { HeroConfigurator } from '@/components/offerings/fibra-movil/FibraMovilConfigurator';
+import { TarifasDropdown } from '@/components/ui/TarifasDropdown';
+import HeroPacks from '@/components/offerings/packs/HeroPacks';
 
 export const FibraMovilHero = () => {
+  const [activeTab, setActiveTab] = useState<'packs' | 'configurator'>('configurator');
+  
   const floatingIcons = [
     // Left side
     { Icon: WifiHigh, top: '15%', left: '10%', duration: 8, delay: 0, size: 42 },
@@ -117,62 +122,50 @@ export const FibraMovilHero = () => {
               Combina la potencia de la fibra óptica con la libertad de datos móviles ilimitados. La solución completa para tu hogar y tu vida en movimiento.
             </motion.p>
 
+            {/* Tab Switcher */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, delay: 0.6 }}
-              className="flex flex-wrap gap-4 pt-2"
+              className="flex gap-2 p-1 bg-white/10 backdrop-blur-sm rounded-xl w-fit"
             >
-              <a
-                href="#planes"
-                className="inline-block bg-gradient-new text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1"
+              <button
+                onClick={() => setActiveTab('configurator')}
+                className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ${
+                  activeTab === 'configurator'
+                    ? 'bg-white text-[#292cf6] shadow-sm'
+                    : 'text-white/80 hover:text-white hover:bg-white/5'
+                }`}
               >
-                Ver Planes
-              </a>
-              <a
-                href="#proceso"
-                className="inline-block bg-white/10 text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg transition-all duration-300 hover:bg-white/20"
+                Configurador
+              </button>
+              <button
+                onClick={() => setActiveTab('packs')}
+                className={`px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 ${
+                  activeTab === 'packs'
+                    ? 'bg-white text-[#292cf6] shadow-sm'
+                    : 'text-white/80 hover:text-white hover:bg-white/5'
+                }`}
               >
-                ¿Cómo Funciona?
-              </a>
+                Packs
+              </button>
             </motion.div>
           </motion.div>
 
-          {/* Right Column - Features */}
+          {/* Right Column - Configurator */}
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
-            className="text-white space-y-6"
+            className="w-full"
           >
-            <div className="space-y-4">
-              <h2 className="text-4xl md:text-5xl font-bold mb-4">
-                Pack
-                <span className="bg-gradient-bright bg-clip-text text-transparent"> Single</span>
-              </h2>
-              
-              <div className="space-y-3">
-                <div className="flex items-center gap-4 text-lg md:text-xl">
-                  <WifiHigh size={32} weight="duotone" className="text-[#51fcff]" />
-                  <span>Fibra 500Mb</span>
-                </div>
-                <div className="flex items-center gap-4 text-lg md:text-xl">
-                  <DeviceMobile size={32} weight="duotone" className="text-[#51fcff]" />
-                  <span>1 Línea Móvil 50GB</span>
-                </div>
-                <div className="flex items-center gap-4 text-lg md:text-xl">
-                  <Phone size={32} weight="duotone" className="text-[#51fcff]" />
-                  <span>Llamadas Ilimitadas</span>
-                </div>
+            {activeTab === 'packs' ? (
+              <div className="space-y-6">
+                <HeroPacks />
               </div>
-
-              <div className="flex items-end gap-4 mt-6 md:mt-8">
-                <div className="text-[3.5rem] md:text-[5rem] font-black leading-none text-[#51fcff] animate-pulse-subtle drop-shadow-[0_0_8px_rgba(81,252,255,0.5)]">
-                  33€
-                  <span className="text-xl md:text-2xl text-white/60 ml-2">/mes</span>
-                </div>
-              </div>
-            </div>
+            ) : (
+              <HeroConfigurator />
+            )}
           </motion.div>
         </div>
       </div>

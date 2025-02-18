@@ -20,49 +20,25 @@ const FIBRA_MOVIL_PLANS = [
     title: 'Básico',
     speed: '300',
     data: '45',
-    basePrice: 33.00,
-    features: [
-      'Fibra simétrica garantizada',
-      'Router WiFi 6 incluido',
-      '1 línea móvil con llamadas ilimitadas',
-      '45GB de datos móviles incluidos'
-    ]
+    basePrice: 33.00
   },
   {
     title: 'Estándar',
     speed: '500',
     data: '50',
-    basePrice: 40.00,
-    features: [
-      'Fibra simétrica garantizada',
-      'Router WiFi 6 incluido',
-      '1 línea móvil con llamadas ilimitadas',
-      '50GB de datos móviles incluidos'
-    ]
+    basePrice: 40.00
   },
   {
     title: 'Pro',
     speed: '500',
     data: '115',
-    basePrice: 45.00,
-    features: [
-      'Fibra simétrica garantizada',
-      'Router WiFi 6 incluido',
-      '1 línea móvil con llamadas ilimitadas',
-      '115GB de datos móviles incluidos'
-    ]
+    basePrice: 45.00
   },
   {
     title: 'Premium',
     speed: '1000',
     data: '115',
-    basePrice: 55.00,
-    features: [
-      'Fibra simétrica garantizada',
-      'Router WiFi 6 incluido',
-      '1 línea móvil con llamadas ilimitadas',
-      '115GB de datos móviles incluidos'
-    ]
+    basePrice: 55.00
   }
 ];
 
@@ -290,6 +266,232 @@ const SectionDropdown = ({ title, items, isOpen, onToggle, delay }: {
   </motion.div>
 );
 
+export const HeroConfigurator = () => {
+  const [selectedPlan, setSelectedPlan] = useState(0);
+  const [config, setConfig] = useState<FibraMovilConfig>({
+    selectedPlan: 0,
+    additionalLines: {
+      line20GB: 0,
+      line40GB: 0,
+      line60GB: 0
+    }
+  });
+
+  const totalAdditionalLines = Object.values(config.additionalLines).reduce((a, b) => a + b, 0);
+  const canAddMore = totalAdditionalLines < 4;
+
+  const handleLineChange = (lineType: keyof typeof config.additionalLines, increment: boolean) => {
+    if (increment && !canAddMore) return;
+    if (!increment && config.additionalLines[lineType] === 0) return;
+
+    setConfig(prev => ({
+      ...prev,
+      additionalLines: {
+        ...prev.additionalLines,
+        [lineType]: increment ? prev.additionalLines[lineType] + 1 : prev.additionalLines[lineType] - 1
+      }
+    }));
+  };
+
+  const calculateTotalPrice = () => {
+    const basePlan = FIBRA_MOVIL_PLANS[selectedPlan];
+    const additionalCost = 
+      config.additionalLines.line20GB * 5 +
+      config.additionalLines.line40GB * 10 +
+      config.additionalLines.line60GB * 12;
+    
+    return basePlan.basePrice + additionalCost;
+  };
+  
+  return (
+    <div className="relative w-full max-w-[500px] mx-auto">
+      {/* Main Card */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+        className="relative overflow-hidden rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
+      >
+        {/* Gradient Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-white/0" />
+        
+        {/* Content */}
+        <div className="relative p-6 md:p-8">
+          {/* Plan Selection */}
+          <div className="flex gap-2 p-1 bg-black/20 rounded-2xl backdrop-blur-sm mb-6">
+            {FIBRA_MOVIL_PLANS.map((plan, index) => (
+              <button
+                key={plan.title}
+                onClick={() => {
+                  setSelectedPlan(index);
+                  setConfig(prev => ({ ...prev, selectedPlan: index }));
+                }}
+                className={`flex-1 py-2 px-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                  selectedPlan === index
+                    ? 'bg-white text-[#292cf6] shadow-sm'
+                    : 'text-white/80 hover:text-white hover:bg-white/5'
+                }`}
+              >
+                {plan.title}
+              </button>
+            ))}
+          </div>
+
+          {/* Selected Plan Details */}
+          <div className="grid grid-cols-2 gap-6 mb-6">
+            {/* Fibra Speed */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-b from-[#51fcff]/10 to-transparent rounded-2xl -z-10 group-hover:from-[#51fcff]/20 transition-colors duration-300" />
+              <div className="p-4 text-center">
+                <div className="text-4xl font-black text-white mb-1 group-hover:text-[#51fcff] transition-colors duration-300">
+                  {FIBRA_MOVIL_PLANS[selectedPlan].speed}
+                  <span className="text-lg font-bold ml-1">Mb</span>
+                </div>
+                <div className="text-sm text-white/60">Fibra Simétrica</div>
+              </div>
+            </div>
+
+            {/* Mobile Data */}
+            <div className="relative group">
+              <div className="absolute inset-0 bg-gradient-to-b from-[#51fcff]/10 to-transparent rounded-2xl -z-10 group-hover:from-[#51fcff]/20 transition-colors duration-300" />
+              <div className="p-4 text-center">
+                <div className="text-4xl font-black text-white mb-1 group-hover:text-[#51fcff] transition-colors duration-300">
+                  {FIBRA_MOVIL_PLANS[selectedPlan].data}
+                  <span className="text-lg font-bold ml-1">GB</span>
+                </div>
+                <div className="text-sm text-white/60">Datos Móviles</div>
+              </div>
+            </div>
+          </div>
+
+          {/* Additional Lines Section */}
+          <div className="mb-6">
+            <div className="flex items-center justify-between mb-2">
+              <h3 className="text-sm font-medium text-white/90">Líneas Adicionales</h3>
+              <div className="text-sm text-white/60">
+                {totalAdditionalLines}/4 líneas
+              </div>
+            </div>
+
+            <div className="h-1 bg-white/10 rounded-full mb-3 overflow-hidden">
+              <motion.div
+                className="h-full bg-gradient-to-r from-[#ed54ba] to-[#51fcff]"
+                initial={{ width: 0 }}
+                animate={{ width: `${(totalAdditionalLines / 4) * 100}%` }}
+                transition={{ duration: 0.3 }}
+              />
+            </div>
+
+            <div className="grid grid-cols-3 gap-2">
+              {[
+                { type: 'line20GB', gb: '20', price: '5,00' },
+                { type: 'line40GB', gb: '40', price: '10,00' },
+                { type: 'line60GB', gb: '60', price: '12,00' }
+              ].map((line) => (
+                <div 
+                  key={line.type}
+                  className="relative group"
+                >
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#51fcff]/10 to-transparent rounded-xl -z-10 group-hover:from-[#51fcff]/20 transition-colors duration-300" />
+                  <div className="p-3 text-center">
+                    <div className="flex items-center justify-center gap-1 mb-2">
+                      <span className="text-2xl font-bold text-white">{line.gb}</span>
+                      <span className="text-sm text-white/60">GB</span>
+                    </div>
+                    <div className="flex items-center justify-center gap-1.5">
+                      <motion.button
+                        onClick={() => handleLineChange(line.type as keyof typeof config.additionalLines, false)}
+                        className={`w-6 h-6 rounded-lg flex items-center justify-center transition-colors ${
+                          config.additionalLines[line.type as keyof typeof config.additionalLines] === 0
+                            ? 'bg-white/10 text-white/40'
+                            : 'bg-white/20 hover:bg-white/30 text-white'
+                        }`}
+                        disabled={config.additionalLines[line.type as keyof typeof config.additionalLines] === 0}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Minus size={12} weight="bold" />
+                      </motion.button>
+                      <span className="w-4 text-center text-sm font-medium text-white">
+                        {config.additionalLines[line.type as keyof typeof config.additionalLines]}
+                      </span>
+                      <motion.button
+                        onClick={() => handleLineChange(line.type as keyof typeof config.additionalLines, true)}
+                        className={`w-6 h-6 rounded-lg flex items-center justify-center transition-colors ${
+                          !canAddMore
+                            ? 'bg-white/10 text-white/40'
+                            : 'bg-white/20 hover:bg-white/30 text-white'
+                        }`}
+                        disabled={!canAddMore}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Plus size={12} weight="bold" />
+                      </motion.button>
+                    </div>
+                    <div className="text-xs text-white/40 mt-1">{line.price}€/mes</div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Price Section */}
+          <div className="text-center mb-6">
+            <div className="inline-block relative group">
+              <div className="absolute inset-0 bg-gradient-to-r from-[#51fcff]/20 via-[#51fcff]/10 to-[#51fcff]/20 rounded-2xl blur-xl group-hover:opacity-100 transition-opacity duration-300 -z-10" />
+              <div className="relative">
+                <div className="text-5xl font-black text-white group-hover:text-[#51fcff] transition-colors duration-300">
+                  {calculateTotalPrice().toFixed(2)}€
+                  <span className="text-base font-medium text-white/60 ml-2">/mes</span>
+                </div>
+                <div className="text-sm text-white/40 mt-1">IVA incluido</div>
+              </div>
+            </div>
+          </div>
+
+          {/* CTA Button */}
+          <motion.button
+            whileHover={{ scale: 1.02 }}
+            whileTap={{ scale: 0.98 }}
+            className="w-full bg-gradient-new text-white py-4 rounded-xl font-semibold text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300"
+          >
+            Contratar Ahora
+          </motion.button>
+        </div>
+      </motion.div>
+
+      {/* Floating Elements */}
+      <div className="absolute -z-10 inset-0 pointer-events-none">
+        {/* Glowing orbs */}
+        <div className="absolute top-0 left-1/4 w-32 h-32 bg-[#51fcff] rounded-full mix-blend-soft-light filter blur-xl opacity-40 animate-float" />
+        <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-[#292cf6] rounded-full mix-blend-soft-light filter blur-xl opacity-40 animate-float" style={{ animationDelay: '-2s' }} />
+        
+        {/* Particles */}
+        {[...Array(5)].map((_, i) => (
+          <motion.div
+            key={i}
+            className="absolute w-1 h-1 bg-[#51fcff] rounded-full"
+            style={{
+              top: `${Math.random() * 100}%`,
+              left: `${Math.random() * 100}%`,
+            }}
+            animate={{
+              y: [0, -20, 0],
+              opacity: [0, 1, 0],
+            }}
+            transition={{
+              duration: 2 + Math.random() * 2,
+              repeat: Infinity,
+              delay: Math.random() * 2,
+            }}
+          />
+        ))}
+      </div>
+    </div>
+  );
+};
+
 export default function FibraMovilConfigurator() {
   const [config, setConfig] = useState<FibraMovilConfig>({
     selectedPlan: 0,
@@ -458,16 +660,6 @@ export default function FibraMovilConfigurator() {
                       <span className="text-base text-[#666666]">GB</span>
                     </div>
                   </div>
-                </div>
-
-                {/* Features */}
-                <div className="flex flex-col items-start mx-auto w-fit space-y-1.5">
-                  {plan.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-3">
-                      <div className="w-2.5 h-2.5 rounded-full bg-[#ed54ba]/40 flex-shrink-0" />
-                      <span className="text-sm text-[#444444] max-w-[160px] leading-tight">{feature}</span>
-                    </div>
-                  ))}
                 </div>
 
                 {/* Light Divider */}
