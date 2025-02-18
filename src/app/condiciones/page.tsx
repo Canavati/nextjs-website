@@ -5,27 +5,21 @@ import { FilePdf } from '@phosphor-icons/react';
 
 const condicionesList = [
   {
-    title: 'Condiciones Generales y Particulares',
+    title: 'Terminos y Condiciones Generales de Servicio',
     url: '/condiciones_generales_particulares.pdf',
     description: 'Consulta las condiciones generales y particulares de nuestros servicios',
     isAvailable: true
   },
   {
-    title: 'Condiciones de Tarifas y Promociones',
-    url: '/condiciones_tarifas_promociones.pdf',
-    description: 'Información sobre las condiciones de nuestras tarifas y promociones',
+    title: 'Política de Cookies',
+    url: '/politica-cookies.pdf',
+    description: 'Información sobre el uso de cookies en nuestra web',
     isAvailable: true
   },
   {
-    title: 'Condiciones de Privacidad',
-    url: '/condiciones_privacidad.pdf',
-    description: 'Detalles sobre nuestra política de privacidad',
-    isAvailable: true
-  },
-  {
-    title: 'Condiciones de Protección de Datos Personales',
-    url: '/condiciones_proteccion_datos.pdf',
-    description: 'Información sobre el tratamiento de datos personales',
+    title: 'Condiciones de Privacidad y Protección de Datos',
+    url: '/condiciones_proteccion_datos_y_privacidad.pdf',
+    description: 'Información sobre privacidad y tratamiento de datos personales',
     isAvailable: true
   }
 ];
