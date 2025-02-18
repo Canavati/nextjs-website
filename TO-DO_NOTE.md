@@ -17,4 +17,10 @@ Web:
 
 - agregar blogs
 
+- agregar tarifas
+
+- Pagina de energia
+
+- Página de Unitv 
+
 - Backend (Forms funcionales)
