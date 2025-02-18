@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Phone, Article, Question, CaretDown, FolderSimple, Tag } from '@phosphor-icons/react';
+import { Phone, Article, Question, CaretDown, FolderSimple, Tag, FileText } from '@phosphor-icons/react';
 import { useState, useRef, useEffect } from 'react';
 import { useHero } from '@/contexts/HeroContext';
 
@@ -104,6 +104,14 @@ export default function TopBar() {
                 >
                   <Article size={16} weight="duotone" />
                   <span>Blog</span>
+                </Link>
+                <Link
+                  href="/condiciones"
+                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-600 hover:text-[--primary] hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                  onClick={() => setShowHelpMenu(false)}
+                >
+                  <FileText size={16} weight="duotone" />
+                  <span>Condiciones</span>
                 </Link>
                 <Link
                   href="/tarifas"
