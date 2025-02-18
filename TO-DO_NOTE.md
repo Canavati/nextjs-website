@@ -23,4 +23,6 @@ Web:
 
 - Página de Unitv 
 
+- Terminos y condiciones, cookies, etc.
+
 - Backend (Forms funcionales)
