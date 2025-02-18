@@ -11,46 +11,55 @@ export interface BlogPost {
   slug: string;
   content: string;
   excerpt: string;
-  featuredImage: {
+  featuredImage?: {
     url: string;
     title: string;
-  };
+  } | null;
   publishDate: string;
   author: {
     name: string;
     avatar?: {
       url: string;
-    };
+    } | null;
   };
 }
 
 export async function getBlogPosts(): Promise<BlogPost[]> {
   const response = await contentfulClient.getEntries({
     content_type: 'blogPost',
-    order: '-fields.publishDate',
+    order: ['-sys.createdAt'],
   });
 
-  return response.items.map((item: any) => ({
-    title: item.fields.title,
-    slug: item.fields.slug ? formatSlug(item.fields.slug) : formatSlug(item.fields.title),
-    content: item.fields.content,
-    excerpt: item.fields.excerpt,
-    featuredImage: item.fields.featuredImage?.fields
-      ? {
-          url: `https:${item.fields.featuredImage.fields.file.url}`,
-          title: item.fields.featuredImage.fields.title,
-        }
-      : null,
-    publishDate: item.fields.publishDate,
-    author: {
-      name: item.fields.author?.fields.name,
-      avatar: item.fields.author?.fields.avatar?.fields
+  // Debug log to see raw Contentful response
+  console.log('Raw Contentful Response:', JSON.stringify(response.items[0]?.fields, null, 2));
+
+  return response.items.map((item: any) => {
+    // Get the first image from the images array if it exists
+    const image = Array.isArray(item.fields.image) ? item.fields.image[0] : null;
+    console.log('Image Data:', image);
+    
+    return {
+      title: item.fields.title,
+      slug: item.fields.slug ? formatSlug(item.fields.slug) : formatSlug(item.fields.title),
+      content: item.fields.content,
+      excerpt: item.fields.excerpt,
+      featuredImage: image
         ? {
-            url: `https:${item.fields.author.fields.avatar.fields.file.url}`,
+            url: `https:${image.fields.file.url}`,
+            title: image.fields.title,
           }
-        : undefined,
-    },
-  }));
+        : null,
+      publishDate: item.fields.publishDate,
+      author: {
+        name: item.fields.author?.fields?.name ?? 'Anonymous',
+        avatar: item.fields.author?.fields?.avatar?.fields
+          ? {
+              url: `https:${item.fields.author.fields.avatar.fields.file.url}`,
+            }
+          : null,
+      },
+    };
+  });
 }
 
 export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> {
@@ -66,26 +75,28 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
     return null;
   }
 
-  const item = response.items[0];
+  const item = response.items[0] as any;
+  const image = Array.isArray(item.fields.image) ? item.fields.image[0] : null;
+
   return {
     title: item.fields.title,
     slug: item.fields.slug ? formatSlug(item.fields.slug) : formatSlug(item.fields.title),
     content: item.fields.content,
     excerpt: item.fields.excerpt,
-    featuredImage: item.fields.featuredImage?.fields
+    featuredImage: image
       ? {
-          url: `https:${item.fields.featuredImage.fields.file.url}`,
-          title: item.fields.featuredImage.fields.title,
+          url: `https:${image.fields.file.url}`,
+          title: image.fields.title,
         }
       : null,
     publishDate: item.fields.publishDate,
     author: {
-      name: item.fields.author?.fields.name,
-      avatar: item.fields.author?.fields.avatar?.fields
+      name: item.fields.author?.fields?.name ?? 'Anonymous',
+      avatar: item.fields.author?.fields?.avatar?.fields
         ? {
             url: `https:${item.fields.author.fields.avatar.fields.file.url}`,
           }
-        : undefined,
+        : null,
     },
   };
 } 

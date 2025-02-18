@@ -2,16 +2,30 @@
 
 import Link from 'next/link';
 import { motion } from 'framer-motion';
-import { Phone, Article, Question, CaretDown } from '@phosphor-icons/react';
+import { Phone, Article, Question, CaretDown, FolderSimple, Tag } from '@phosphor-icons/react';
 import { useState, useRef, useEffect } from 'react';
 import { useHero } from '@/contexts/HeroContext';
 
 export default function TopBar() {
   const [showHelpMenu, setShowHelpMenu] = useState(false);
+  const timeoutRef = useRef<NodeJS.Timeout>();
   const { isOverHero } = useHero();
   const menuRef = useRef<HTMLDivElement>(null);
-  const buttonRef = useRef<HTMLAnchorElement>(null);
+  const buttonRef = useRef<HTMLButtonElement>(null);
   const topBarRef = useRef<HTMLDivElement>(null);
+
+  const handleMouseEnter = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+    }
+    setShowHelpMenu(true);
+  };
+
+  const handleMouseLeave = () => {
+    timeoutRef.current = setTimeout(() => {
+      setShowHelpMenu(false);
+    }, 150);
+  };
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -26,14 +40,17 @@ export default function TopBar() {
     };
 
     document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+      if (timeoutRef.current) {
+        clearTimeout(timeoutRef.current);
+      }
+    };
   }, []);
 
   return (
-    <motion.div
+    <div
       ref={topBarRef}
-      initial={{ y: -50 }}
-      animate={{ y: 0 }}
       className={`fixed top-0 left-0 w-full h-[35px] z-[1001] transition-colors duration-300 ${
         isOverHero ? 'bg-black/80 backdrop-blur-sm' : 'bg-[#292cf6]'
       }`}
@@ -48,44 +65,55 @@ export default function TopBar() {
             <Article size={18} weight="duotone" />
             <span className="hidden lg:inline">Blog</span>
           </Link>
-          <div className="relative hidden md:block">
-            <Link
+          <div 
+            className="relative hidden md:block"
+            onMouseEnter={handleMouseEnter}
+            onMouseLeave={handleMouseLeave}
+          >
+            <button
               ref={buttonRef}
-              href="/ayuda"
               className="flex items-center gap-2 text-white no-underline text-sm font-medium opacity-90 hover:opacity-100 hover:text-[--secondary] hover:-translate-y-[1px] transition-all duration-300"
-              onMouseEnter={() => setShowHelpMenu(true)}
-              onMouseLeave={() => setShowHelpMenu(false)}
             >
-              <Question size={18} weight="duotone" />
-              <span className="hidden lg:inline">Centro de Ayuda</span>
+              <FolderSimple size={18} weight="duotone" />
+              <span className="hidden lg:inline">Recursos</span>
               <CaretDown 
                 size={12} 
                 weight="bold" 
                 className={`hidden lg:inline transition-transform duration-200 ${showHelpMenu ? 'rotate-180' : ''}`} 
               />
-            </Link>
+            </button>
             <div 
               ref={menuRef}
-              className={`absolute top-full right-0 mt-1 w-40 bg-white rounded-md shadow-lg transform transition-all duration-200 origin-top ${
-                showHelpMenu ? 'opacity-100 scale-100' : 'opacity-0 scale-95 pointer-events-none'
+              className={`absolute top-full right-0 mt-1 w-48 bg-white rounded-xl shadow-lg transform transition-all duration-200 origin-top-right ${
+                showHelpMenu ? 'opacity-100 scale-100 translate-y-0' : 'opacity-0 scale-95 -translate-y-2 pointer-events-none'
               }`}
-              onMouseEnter={() => setShowHelpMenu(true)}
-              onMouseLeave={() => setShowHelpMenu(false)}
             >
-              <Link
-                href="/ayuda"
-                className="block w-full px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-[--primary] transition-colors duration-200"
-                onClick={() => setShowHelpMenu(false)}
-              >
-                Centro de Ayuda
-              </Link>
-              <Link
-                href="/tarifas"
-                className="block w-full px-3 py-1.5 text-sm text-gray-600 hover:bg-gray-50 hover:text-[--primary] transition-colors duration-200"
-                onClick={() => setShowHelpMenu(false)}
-              >
-                Tarifas
-              </Link>
+              <div className="py-1 px-1">
+                <Link
+                  href="/ayuda"
+                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-600 hover:text-[--primary] hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                  onClick={() => setShowHelpMenu(false)}
+                >
+                  <Question size={16} weight="duotone" />
+                  <span>Centro de Ayuda</span>
+                </Link>
+                <Link
+                  href="/blog"
+                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-600 hover:text-[--primary] hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                  onClick={() => setShowHelpMenu(false)}
+                >
+                  <Article size={16} weight="duotone" />
+                  <span>Blog</span>
+                </Link>
+                <Link
+                  href="/tarifas"
+                  className="flex items-center gap-2 w-full px-3 py-2 text-sm text-gray-600 hover:text-[--primary] hover:bg-gray-50 rounded-lg transition-colors duration-200"
+                  onClick={() => setShowHelpMenu(false)}
+                >
+                  <Tag size={16} weight="duotone" />
+                  <span>Tarifas</span>
+                </Link>
+              </div>
             </div>
           </div>
           <a
@@ -99,6 +127,6 @@ export default function TopBar() {
           </a>
         </div>
       </div>
-    </motion.div>
+    </div>
   );
 } 

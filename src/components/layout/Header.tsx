@@ -47,8 +47,6 @@ export default function Header() {
               width={200}
               height={53}
               priority
-              placeholder="blur"
-              blurDataURL={getBlurDataURL(200, 53)}
               className={`object-contain transition-all duration-300 ${
                 isOverHero ? 'brightness-0 invert' : ''
               }`}
