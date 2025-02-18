@@ -15,14 +15,16 @@ Web:
 
 - Agregar Los bonos (afirmar donde) ⛔ (Color Configuration)
 
-- agregar blogs
+- Terminar de configurar el configurador de solo movil, y asegurarse que los otros configuradores estén bien configurados.
 
-- agregar tarifas
+- agregar blogs, y terminar de configurar el blog page con detalles del diseño.
+
+- agregar tarifas, y refinar el diseno del dropdown de tarifas.
 
 - Pagina de energia
 
 - Página de Unitv 
 
-- Terminos y condiciones, cookies, etc.
+- Terminos y condiciones, cookies, etc., agregados en el footer y el centro de ayuda.
 
-- Backend (Forms funcionales)
+- Backend (Forms funcionales con los IDs de cada oferta para alimentar a Make.com con lo que el usuario elija)
