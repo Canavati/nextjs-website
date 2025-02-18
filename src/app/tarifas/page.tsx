@@ -6,31 +6,31 @@ import { FilePdf } from '@phosphor-icons/react';
 const tarifasList = [
   {
     title: 'Tarifas Principales',
-    url: '/pdfs/tarifas/pvp_normales.pdf',
+    url: '/tarifas/pvp_normales.pdf',
     description: 'Consulta nuestras tarifas estándar y planes principales',
     isAvailable: false
   },
   {
     title: 'Tarifas Red Inteligente',
-    url: '/pdfs/tarifas/pvp_red_inteligente.pdf',
+    url: '/tarifas/pvp_red_inteligente.pdf',
     description: 'Información sobre tarifas de servicios de red inteligente',
     isAvailable: false
   },
   {
     title: 'Tarifas Numeración Especial',
-    url: '/pdfs/tarifas/20240303_MMBB_Legales-Numeración-Especial.pdf',
+    url: '/tarifas/pvp_numeracion_especial.pdf',
     description: 'Detalles de tarifas para números especiales',
     isAvailable: true
   },
   {
     title: 'Tarifas Internacionales',
-    url: '/pdfs/tarifas/TARIFARIO_MMBB_TARIFAS_INTERNACIONALES.pdf',
+    url: '/tarifas/pvp_internacionales.pdf',
     description: 'Consulta nuestras tarifas para llamadas internacionales',
     isAvailable: true
   },
   {
     title: 'Tarifas Roaming',
-    url: '/pdfs/tarifas/TARIFARIOS MMBB_ROAMING.pdf',
+    url: '/tarifas/pvp_roaming.pdf',
     description: 'Información sobre tarifas de roaming en el extranjero',
     isAvailable: true
   }

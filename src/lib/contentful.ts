@@ -91,7 +91,7 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
       : null,
     publishDate: item.fields.publishDate,
     author: {
-      name: item.fields.author?.fields?.name ?? 'Anonymous',
+      name: item.fields.author?.fields?.name ?? 'Unimovil',
       avatar: item.fields.author?.fields?.avatar?.fields
         ? {
             url: `https:${item.fields.author.fields.avatar.fields.file.url}`,
