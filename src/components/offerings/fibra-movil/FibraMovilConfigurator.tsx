@@ -206,66 +206,6 @@ const ConfigurationModal = ({
   </motion.div>
 );
 
-// Section Dropdown Component
-const SectionDropdown = ({ title, items, isOpen, onToggle, delay }: { 
-  title: string;
-  items: string[];
-  isOpen: boolean;
-  onToggle: () => void;
-  delay: number;
-}) => (
-  <motion.div
-    initial={{ opacity: 0, y: 20 }}
-    animate={{ opacity: 1, y: 0 }}
-    transition={{ duration: 0.3, delay }}
-    className="bg-white rounded-xl shadow-sm overflow-hidden"
-    style={{
-      border: '2px solid transparent',
-      background: 'linear-gradient(rgb(248 250 252), rgb(248 250 252)) padding-box, var(--gradient-primary) border-box'
-    }}
-  >
-    <motion.button
-      onClick={onToggle}
-      className="w-full p-4 flex items-center justify-between text-left relative"
-    >
-      <h3 className="text-lg font-medium text-dark">{title}</h3>
-      <motion.span
-        animate={{ rotate: isOpen ? 180 : 0 }}
-        transition={{ duration: 0.3 }}
-        className="text-[#ed54ba]"
-      >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          width="24"
-          height="24"
-          fill="currentColor"
-          viewBox="0 0 256 256"
-        >
-          <path d="M213.66,101.66l-80,80a8,8,0,0,1-11.32,0l-80-80A8,8,0,0,1,53.66,90.34L128,164.69l74.34-74.35a8,8,0,0,1,11.32,11.32Z"></path>
-        </svg>
-      </motion.span>
-    </motion.button>
-    <motion.div
-      initial={false}
-      animate={{
-        height: isOpen ? 'auto' : 0,
-        opacity: isOpen ? 1 : 0
-      }}
-      transition={{ duration: 0.3 }}
-      className="overflow-hidden"
-    >
-      <ul className="p-4 pt-0 space-y-2">
-        {items.map((item, idx) => (
-          <li key={idx} className="flex items-center gap-2 text-sm text-gray">
-            <div className="w-1 h-1 rounded-full bg-[#ed54ba]" />
-            {item}
-          </li>
-        ))}
-      </ul>
-    </motion.div>
-  </motion.div>
-);
-
 export const HeroConfigurator = () => {
   const [selectedPlan, setSelectedPlan] = useState(0);
   const [previewPlan, setPreviewPlan] = useState(0);
@@ -738,7 +678,7 @@ export default function FibraMovilConfigurator() {
         ))}
       </div>
 
-      {/* Desktop Configuration Section - Unchanged */}
+      {/* Desktop Configuration Section */}
       <div className="hidden md:grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4">
         <motion.div
           className="lg:col-span-2 relative rounded-xl p-3 shadow-sm"
@@ -869,6 +809,11 @@ export default function FibraMovilConfigurator() {
         </motion.div>
       </div>
 
+      {/* Add TarifasDropdown with proper spacing */}
+      <div className="mt-8 md:mt-12">
+        <TarifasDropdown />
+      </div>
+
       {/* Mobile Configuration Modal */}
       <AnimatePresence>
         {showMobileConfig && (
@@ -883,9 +828,6 @@ export default function FibraMovilConfigurator() {
           />
         )}
       </AnimatePresence>
-
-      {/* Add TarifasDropdown */}
-      <TarifasDropdown />
     </motion.div>
   );
 } 

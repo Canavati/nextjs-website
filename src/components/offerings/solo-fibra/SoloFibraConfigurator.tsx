@@ -4,6 +4,7 @@ import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { WifiHigh, Broadcast, Rocket, Crown } from '@phosphor-icons/react';
+import { TarifasDropdown } from '@/components/ui/TarifasDropdown';
 
 const SOLO_FIBRA_PLANS = [
   {
@@ -240,6 +241,7 @@ export default function SoloFibraConfigurator() {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
+      className="space-y-6"
     >
       {/* Dots Navigation */}
       <div className="flex justify-center gap-2 mb-4 md:hidden">
@@ -363,6 +365,11 @@ export default function SoloFibraConfigurator() {
             </div>
           </motion.div>
         ))}
+      </div>
+
+      {/* Add TarifasDropdown */}
+      <div className="px-[5%] md:px-0">
+        <TarifasDropdown />
       </div>
     </motion.div>
   );

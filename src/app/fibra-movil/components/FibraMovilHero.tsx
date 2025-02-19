@@ -7,7 +7,6 @@ import {
   Desktop, SimCard, Broadcast, Lightning, ChatCircleDots 
 } from '@phosphor-icons/react';
 import { HeroConfigurator } from '@/components/offerings/fibra-movil/FibraMovilConfigurator';
-import { TarifasDropdown } from '@/components/ui/TarifasDropdown';
 import HeroPacks from '@/components/offerings/packs/HeroPacks';
 
 export const FibraMovilHero = () => {
@@ -167,7 +166,9 @@ export const FibraMovilHero = () => {
                 <HeroPacks />
               </div>
             ) : (
-              <HeroConfigurator />
+              <div className="space-y-6">
+                <HeroConfigurator />
+              </div>
             )}
           </motion.div>
         </div>

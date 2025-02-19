@@ -125,12 +125,12 @@ export default function Hero() {
       {/* Animated Background Pattern */}
       <motion.div
         className="absolute inset-0 w-full h-full"
-        animate={{
+        animate={{ 
           backgroundPosition: ["0px 0px", "100px 100px"],
         }}
-        transition={{
+        transition={{ 
           duration: 20,
-          repeat: Infinity,
+          repeat: Infinity, 
           ease: "linear",
         }}
       >
@@ -430,13 +430,13 @@ export default function Hero() {
                           weight="duotone" 
                           className="text-[#51fcff] relative z-10 transform group-hover/feature:scale-110 transition-transform duration-300" 
                         />
-                      </div>
+                </div>
                       <span className="text-white/90 group-hover/feature:text-white transition-colors duration-300">
                         {feature.text}
                       </span>
                     </motion.div>
                   ))}
-                </div>
+              </div>
 
                 {/* Price Section with Enhanced Animation */}
                 <motion.div 
@@ -453,9 +453,9 @@ export default function Hero() {
                           {selectedOffering.price}€
                         </span>
                         <span className="text-xl lg:text-2xl text-white/60 ml-2">/mes</span>
-                      </div>
-                    </div>
-                  </div>
+                </div>
+              </div>
+            </div>
                 </motion.div>
 
                 {/* CTA Button with Enhanced Animation */}
@@ -464,16 +464,16 @@ export default function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                 >
-                  <Link
-                    href="#planes"
+            <Link
+              href="#planes"
                     className="relative inline-block w-full group/button"
-                  >
+            >
                     <div className="absolute inset-0 bg-gradient-to-r from-[#4361ee] to-[#51fcff] rounded-xl opacity-90 group-hover/button:opacity-100 transition-opacity duration-300" />
                     <div className="relative text-center px-8 py-4 text-white font-semibold text-lg transform group-hover/button:-translate-y-1 transition-transform duration-300">
-                      ¡CONTRATAR AHORA!
+              ¡CONTRATAR AHORA!
                     </div>
                     <div className="absolute inset-0 rounded-xl shadow-lg shadow-[#51fcff]/20 group-hover/button:shadow-[#51fcff]/30 transition-shadow duration-300" />
-                  </Link>
+            </Link>
                 </motion.div>
               </div>
             </motion.div>
