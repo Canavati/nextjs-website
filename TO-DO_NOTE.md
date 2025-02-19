@@ -13,13 +13,15 @@ Web:
 
 - Los sliders me gustarían que llevaran mensajes "marketinianos" como los del documento adjunto (marketing-mensajes-1) ✅
 
+- agregar tarifas, y refinar el diseno del dropdown de tarifas. ✅
+
 - Agregar Los bonos (afirmar donde) ⛔ (Color Configuration)
 
 - Terminar de configurar el configurador de solo movil, y asegurarse que los otros configuradores estén bien configurados.
 
 - agregar blogs, y terminar de configurar el blog page con detalles del diseño.
 
-- agregar tarifas, y refinar el diseno del dropdown de tarifas.
+
 
 - Pagina de energia
 
