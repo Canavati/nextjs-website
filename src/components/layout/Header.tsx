@@ -57,7 +57,7 @@ export default function Header() {
   `.trim();
 
   const linkClasses = `
-    transition-all duration-300 font-semibold tracking-wide hover:scale-105
+    transition-all duration-300 font-semibold tracking-wide hover:scale-105 [-webkit-tap-highlight-color:transparent]
     ${isOverHero 
       ? 'text-white hover:text-[#51fcff] drop-shadow-[0_2px_8px_rgba(81,252,255,0.5)]' 
       : 'text-dark hover:text-primary'
@@ -79,7 +79,7 @@ export default function Header() {
       />
 
       <nav 
-        className={`relative z-10 w-full h-full flex items-center px-[5%] ${
+        className={`relative z-10 w-full h-full flex items-center px-[5%] [&_*]:!outline-none ${
           isOverHero ? 'bg-transparent' : ''
         }`}
         role="navigation"
@@ -90,7 +90,7 @@ export default function Header() {
           <Link 
             href="/" 
             title="Volver al inicio"
-            className="focus:outline-none focus:ring-2 focus:ring-primary rounded-md"
+            className="focus:outline-none rounded-md"
           >
             <Image
               src="/images/logo.webp"
@@ -106,9 +106,9 @@ export default function Header() {
         {/* Mobile Menu Button */}
         <button
           onClick={handleMenuToggle}
-          className={`lg:hidden ml-auto p-2 rounded-md transition-colors duration-300 ${
+          className={`lg:hidden ml-auto p-2 rounded-md transition-colors duration-300 [-webkit-tap-highlight-color:transparent] ${
             isOverHero ? 'text-white hover:text-[#51fcff]' : 'text-dark hover:text-primary'
-          } focus:outline-none focus:ring-2 focus:ring-primary`}
+          } focus:outline-none`}
           aria-label={isMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
           aria-expanded={isMenuOpen}
           aria-controls="mobile-menu"
@@ -121,9 +121,9 @@ export default function Header() {
           <li>
             <Link
               href="/"
-              className={`home-link transition-all duration-300 hover:scale-110 p-2 rounded-md ${
+              className={`home-link transition-all duration-300 hover:scale-110 p-2 rounded-md [-webkit-tap-highlight-color:transparent] ${
                 isOverHero ? 'text-white hover:text-[#51fcff]' : 'text-dark hover:text-primary'
-              } focus:outline-none focus:ring-2 focus:ring-primary`}
+              } focus:outline-none`}
               title="Inicio"
               aria-label="Ir a la página de inicio"
             >
@@ -135,7 +135,7 @@ export default function Header() {
             <li key={href}>
               <Link
                 href={href}
-                className={`${linkClasses} p-2 rounded-md focus:outline-none focus:ring-2 focus:ring-primary`}
+                className={`${linkClasses} p-2 rounded-md focus:outline-none`}
                 aria-label={`Ir a ${label}`}
               >
                 {label}
@@ -150,7 +150,7 @@ export default function Header() {
             href="#contacto"
             className={`contact-button bg-gradient-new text-white px-6 py-3 rounded-md font-medium 
               hover:opacity-90 transition-all duration-300 hover:scale-105 
-              focus:outline-none focus:ring-2 focus:ring-primary
+              focus:outline-none
               ${isOverHero ? 'shadow-[0_4px_12px_rgba(81,252,255,0.3)]' : ''}`}
             aria-label="Contactar con nosotros"
           >
