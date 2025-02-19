@@ -22,12 +22,45 @@ import {
 export default function UniTVPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  
+  const [selectedPlan, setSelectedPlan] = useState({
+    name: "CERO BÁSICO",
+    price: 2.99
+  });
+  const [selectedAddons, setSelectedAddons] = useState<{
+    title: string;
+    price: number;
+  }[]>([]);
+
+  const mainPlans = [
+    { name: "CERO BÁSICO", price: 2.99 },
+    { name: "CINE", price: 6.99 },
+    { name: "DEPORTES", price: 8.99 },
+    { name: "PREMIUM TOTAL", price: 9.99 }
+  ];
+
+  const calculateTotal = () => {
+    const addonsTotal = selectedAddons.reduce((sum, addon) => sum + addon.price, 0);
+    return (selectedPlan.price + addonsTotal).toFixed(2);
+  };
+
+  const toggleAddon = (addon: { title: string; price: string }) => {
+    setSelectedAddons(prev => {
+      const exists = prev.find(item => item.title === addon.title);
+      if (exists) {
+        return prev.filter(item => item.title !== addon.title);
+      } else {
+        return [...prev, { title: addon.title, price: parseFloat(addon.price) }];
+      }
+    });
+  };
+
   const slides = [
+    { src: '/unitv/MASMEDIA_BASICO_2025.jpg', alt: 'UNITV Básico' },
     { src: '/unitv/MASMEDIA_CINE-2025.jpg', alt: 'UNITV Cine' },
     { src: '/unitv/MASMEDIA_DEPORTES-2025.jpg', alt: 'UNITV Deportes' },
     { src: '/unitv/MASMEDIA_HOT.png', alt: 'UNITV Hot' },
     { src: '/unitv/MASMEDIA_PLAYBOY.png', alt: 'UNITV Playboy' },
+    { src: '/unitv/MASMEDIA_PREMIUM_TOTAL-2025.jpg', alt: 'UNITV Premium Total' },
   ];
 
   useEffect(() => {
@@ -306,34 +339,41 @@ export default function UniTVPage() {
           </motion.div>
 
           {/* Plans Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
             {/* Basic Plan */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              className="bg-white rounded-3xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 flex flex-col"
+              onClick={() => setSelectedPlan({ name: "CERO BÁSICO", price: 2.99 })}
+              className={`bg-white rounded-3xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 flex flex-col relative cursor-pointer group ${
+                selectedPlan.name === "CERO BÁSICO" 
+                  ? 'ring-2 ring-[#51fcff] shadow-[#51fcff]/20' 
+                  : 'hover:scale-[1.02] hover:ring-2 hover:ring-[#51fcff]/50'
+              }`}
             >
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">CERO BÁSICO</h3>
-              <p className="text-3xl font-bold text-[#0066FF] mb-4">2.99€<span className="text-sm font-normal text-gray-400">/mes</span></p>
-              <ul className="space-y-3 mb-6 flex-1">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Canales Generalistas (La 1, La 2, Antena 3)</span>
+              <h3 className="text-xl font-bold text-gray-900 mb-1">CERO BÁSICO</h3>
+              <p className="text-2xl font-bold text-[#0066FF] mb-3">2.99€<span className="text-sm font-normal text-gray-400">/mes</span></p>
+              <ul className="space-y-2 mb-4 flex-1">
+                <li className="flex items-start gap-1.5">
+                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
+                  <span className="text-gray-600 text-sm">Canales Generalistas (La 1, La 2, Antena 3)</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Canales Regionales y TDT</span>
+                <li className="flex items-start gap-1.5">
+                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
+                  <span className="text-gray-600 text-sm">Canales Regionales y TDT</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Canales Deportivos Básicos</span>
+                <li className="flex items-start gap-1.5">
+                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
+                  <span className="text-gray-600 text-sm">Canales Deportivos Básicos</span>
                 </li>
               </ul>
-              <button className="w-full bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white rounded-xl py-4 font-medium hover:opacity-90 transition-all duration-300 hover:-translate-y-1">
-                Contratar Ahora
-              </button>
+              {selectedPlan.name === "CERO BÁSICO" && (
+                <div className="absolute -top-2 -right-2 bg-[#51fcff] text-white w-6 h-6 rounded-full flex items-center justify-center shadow-lg">
+                  ✓
+                </div>
+              )}
             </motion.div>
 
             {/* Cine Plan */}
@@ -342,27 +382,34 @@ export default function UniTVPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="bg-white rounded-3xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 flex flex-col"
+              onClick={() => setSelectedPlan({ name: "CINE", price: 6.99 })}
+              className={`bg-white rounded-3xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 flex flex-col relative cursor-pointer group ${
+                selectedPlan.name === "CINE" 
+                  ? 'ring-2 ring-[#51fcff] shadow-[#51fcff]/20' 
+                  : 'hover:scale-[1.02] hover:ring-2 hover:ring-[#51fcff]/50'
+              }`}
             >
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">CINE</h3>
-              <p className="text-3xl font-bold text-[#0066FF] mb-4">6.99€<span className="text-sm font-normal text-gray-400">/mes</span></p>
-              <ul className="space-y-3 mb-6 flex-1">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Incluye Plan Básico + Canales Premium</span>
+              <h3 className="text-xl font-bold text-gray-900 mb-1">CINE</h3>
+              <p className="text-2xl font-bold text-[#0066FF] mb-3">6.99€<span className="text-sm font-normal text-gray-400">/mes</span></p>
+              <ul className="space-y-2 mb-4 flex-1">
+                <li className="flex items-start gap-1.5">
+                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
+                  <span className="text-gray-600 text-sm">Incluye Plan Básico + Canales Premium</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Paramount, Clover Channel, Classic Movies</span>
+                <li className="flex items-start gap-1.5">
+                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
+                  <span className="text-gray-600 text-sm">Paramount, Clover Channel, Classic Movies</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Discovery Channel y Documentales</span>
+                <li className="flex items-start gap-1.5">
+                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
+                  <span className="text-gray-600 text-sm">Discovery Channel y Documentales</span>
                 </li>
               </ul>
-              <button className="w-full bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white rounded-xl py-4 font-medium hover:opacity-90 transition-all duration-300 hover:-translate-y-1">
-                Contratar Ahora
-              </button>
+              {selectedPlan.name === "CINE" && (
+                <div className="absolute -top-2 -right-2 bg-[#51fcff] text-white w-6 h-6 rounded-full flex items-center justify-center shadow-lg">
+                  ✓
+                </div>
+              )}
             </motion.div>
 
             {/* Deportes Plan */}
@@ -371,27 +418,34 @@ export default function UniTVPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              className="bg-white rounded-3xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 flex flex-col"
+              onClick={() => setSelectedPlan({ name: "DEPORTES", price: 8.99 })}
+              className={`bg-white rounded-3xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 flex flex-col relative cursor-pointer group ${
+                selectedPlan.name === "DEPORTES" 
+                  ? 'ring-2 ring-[#51fcff] shadow-[#51fcff]/20' 
+                  : 'hover:scale-[1.02] hover:ring-2 hover:ring-[#51fcff]/50'
+              }`}
             >
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">DEPORTES</h3>
-              <p className="text-3xl font-bold text-[#0066FF] mb-4">8.99€<span className="text-sm font-normal text-gray-400">/mes</span></p>
-              <ul className="space-y-3 mb-6 flex-1">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Incluye Plan Básico + Deportes Premium</span>
+              <h3 className="text-xl font-bold text-gray-900 mb-1">DEPORTES</h3>
+              <p className="text-2xl font-bold text-[#0066FF] mb-3">8.99€<span className="text-sm font-normal text-gray-400">/mes</span></p>
+              <ul className="space-y-2 mb-4 flex-1">
+                <li className="flex items-start gap-1.5">
+                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
+                  <span className="text-gray-600 text-sm">Incluye Plan Básico + Deportes Premium</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Eurosport, DAZN, Real Madrid TV</span>
+                <li className="flex items-start gap-1.5">
+                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
+                  <span className="text-gray-600 text-sm">Eurosport, DAZN, Real Madrid TV</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Todos los deportes en directo</span>
+                <li className="flex items-start gap-1.5">
+                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
+                  <span className="text-gray-600 text-sm">Todos los deportes en directo</span>
                 </li>
               </ul>
-              <button className="w-full bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white rounded-xl py-4 font-medium hover:opacity-90 transition-all duration-300 hover:-translate-y-1">
-                Contratar Ahora
-              </button>
+              {selectedPlan.name === "DEPORTES" && (
+                <div className="absolute -top-2 -right-2 bg-[#51fcff] text-white w-6 h-6 rounded-full flex items-center justify-center shadow-lg">
+                  ✓
+                </div>
+              )}
             </motion.div>
 
             {/* Premium Total Plan */}
@@ -400,137 +454,183 @@ export default function UniTVPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              className="relative bg-white rounded-3xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 flex flex-col"
+              onClick={() => setSelectedPlan({ name: "PREMIUM TOTAL", price: 9.99 })}
+              className={`bg-white rounded-3xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 flex flex-col relative cursor-pointer group ${
+                selectedPlan.name === "PREMIUM TOTAL" 
+                  ? 'ring-2 ring-[#51fcff] shadow-[#51fcff]/20' 
+                  : 'hover:scale-[1.02] hover:ring-2 hover:ring-[#51fcff]/50'
+              }`}
             >
-              <div className="absolute -top-3 right-4 bg-gradient-to-r from-[#51fcff] to-[#0066FF] px-4 py-1 rounded-full text-sm font-medium text-white">
+              <div className="absolute -top-3 right-4 bg-gradient-to-r from-[#51fcff] to-[#0066FF] px-3 py-0.5 rounded-full text-xs font-medium text-white">
                 Más Popular
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">PREMIUM TOTAL</h3>
-              <p className="text-3xl font-bold text-[#0066FF] mb-4">9.99€<span className="text-sm font-normal text-gray-400">/mes</span></p>
-              <ul className="space-y-3 mb-6 flex-1">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Todos los canales incluidos</span>
+              <h3 className="text-xl font-bold text-gray-900 mb-1">PREMIUM TOTAL</h3>
+              <p className="text-2xl font-bold text-[#0066FF] mb-3">9.99€<span className="text-sm font-normal text-gray-400">/mes</span></p>
+              <ul className="space-y-2 mb-4 flex-1">
+                <li className="flex items-start gap-1.5">
+                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
+                  <span className="text-gray-600 text-sm">Todos los canales incluidos</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Warner TV, TCM, COSMO</span>
+                <li className="flex items-start gap-1.5">
+                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
+                  <span className="text-gray-600 text-sm">Warner TV, TCM, COSMO</span>
                 </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Contenido Adulto y SVOD</span>
+                <li className="flex items-start gap-1.5">
+                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
+                  <span className="text-gray-600 text-sm">Contenido Adulto y SVOD</span>
                 </li>
               </ul>
-              <button className="w-full bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white rounded-xl py-4 font-medium hover:opacity-90 transition-all duration-300 hover:-translate-y-1">
-                Contratar Ahora
-              </button>
+              {selectedPlan.name === "PREMIUM TOTAL" && (
+                <div className="absolute -top-2 -right-2 bg-[#51fcff] text-white w-6 h-6 rounded-full flex items-center justify-center shadow-lg">
+                  ✓
+                </div>
+              )}
             </motion.div>
           </div>
 
-          {/* Additional Packages Title */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.5 }}
-            className="text-center mt-32 mb-16"
-          >
-            <h2 className="text-4xl md:text-5xl font-bold text-center mb-4 text-shimmer-dark relative z-10 drop-shadow-[0_2px_10px_rgba(255,255,255,1)] [text-shadow:0_2px_15px_rgba(255,255,255,0.3),0_-1px_1px_rgba(0,0,0,0)]">
-              Paquetes Adicionales
-            </h2>
-            <p className="text-xl text-gray-800 relative z-10">
-              Personaliza tu experiencia con contenido extra
-            </p>
-          </motion.div>
+          {/* Additional Packages Configurator */}
+          <div className="max-w-6xl mx-auto mt-8 bg-white/80 backdrop-blur-sm rounded-3xl p-4 shadow-xl relative">
+            {/* Selected Plan Preview */}
+            <div className="bg-gradient-to-r from-[#51fcff]/10 to-[#0066FF]/10 rounded-xl p-3 mb-3">
+              <div className="flex flex-wrap items-center justify-between gap-2">
+                <div className="flex items-center gap-2">
+                  <span className="bg-[#51fcff] text-white text-xs px-2 py-0.5 rounded-full">Plan Base</span>
+                  <h4 className="font-bold text-gray-800 text-sm">{selectedPlan.name}</h4>
+                </div>
+                <div className="flex items-center gap-2 text-xs">
+                  <span className="text-gray-600">Base: <span className="font-bold text-[#0066FF]">{selectedPlan.price}€</span></span>
+                  <span className="text-gray-600 ml-2">Extra: <span className="font-bold text-[#0066FF]">+{(parseFloat(calculateTotal()) - selectedPlan.price).toFixed(2)}€</span></span>
+                  <span className="text-gray-600 ml-2">Total: <span className="font-bold text-[#0066FF]">{calculateTotal()}€</span></span>
+                </div>
+              </div>
+              {selectedAddons.length > 0 && (
+                <div className="flex flex-wrap gap-1.5 mt-2">
+                  {selectedAddons.map((addon, idx) => (
+                    <div key={idx} className="bg-[#51fcff]/10 rounded-full px-2 py-0.5 text-xs text-gray-600">
+                      {addon.title} (+{addon.price}€)
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
 
-          {/* Additional Packages Grid */}
-          <div className="grid md:grid-cols-3 gap-8 max-w-6xl mx-auto">
-            {/* International Package */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.1 }}
-              className="bg-white rounded-3xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 flex flex-col"
-            >
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Internacionales</h3>
-              <p className="text-3xl font-bold text-[#0066FF] mb-4">5.99€<span className="text-sm font-normal text-gray-400">/mes</span></p>
-              <ul className="space-y-3 mb-6 flex-1">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">BBC, CNN, Al Jazeera, TeleFe</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Canales temáticos Fox/Star Network</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">+ de 50 canales internacionales</span>
-                </li>
-              </ul>
-              <button className="w-full bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white rounded-xl py-4 font-medium hover:opacity-90 transition-all duration-300 hover:-translate-y-1">
-                Contratar Ahora
-              </button>
-            </motion.div>
+            <div className="flex items-center justify-between border-b border-gray-200 pb-2 mb-3">
+              <div>
+                <h3 className="text-sm font-bold text-gray-800">Personaliza tu plan con paquetes adicionales</h3>
+                <p className="text-xs text-gray-600">Selecciona los paquetes para tu plan base {selectedPlan.name}</p>
+              </div>
+              <div className="flex items-center gap-2 text-xs">
+                <div className="flex items-center gap-1">
+                  <div className="w-4 h-4 rounded-full bg-[#51fcff] text-white flex items-center justify-center text-[10px]">1</div>
+                  <span className="text-gray-600">Plan base</span>
+                </div>
+                <div className="w-3 h-px bg-gray-200"></div>
+                <div className="flex items-center gap-1">
+                  <div className="w-4 h-4 rounded-full bg-[#51fcff] text-white flex items-center justify-center text-[10px]">2</div>
+                  <span className="text-gray-600">Extras</span>
+                </div>
+              </div>
+            </div>
 
-            {/* Music Package */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.2 }}
-              className="bg-white rounded-3xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 flex flex-col"
-            >
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Musicales</h3>
-              <p className="text-3xl font-bold text-[#0066FF] mb-4">3.99€<span className="text-sm font-normal text-gray-400">/mes</span></p>
-              <ul className="space-y-3 mb-6 flex-1">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">MTV, VH1, MCM SpaceFest</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Canales de música en directo</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Conciertos y festivales exclusivos</span>
-                </li>
-              </ul>
-              <button className="w-full bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white rounded-xl py-4 font-medium hover:opacity-90 transition-all duration-300 hover:-translate-y-1">
-                Contratar Ahora
-              </button>
-            </motion.div>
+            {/* Additional Packages Grid */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+              {[
+                {
+                  title: "Internacionales",
+                  price: "5.99",
+                  features: [
+                    "BBC, CNN, Al Jazeera, TeleFe",
+                    "Canales temáticos Fox/Star Network",
+                    "+ de 50 canales internacionales"
+                  ]
+                },
+                {
+                  title: "Musicales",
+                  price: "3.99",
+                  features: [
+                    "MTV, VH1, MCM SpaceFest",
+                    "Canales de música en directo",
+                    "Conciertos y festivales exclusivos"
+                  ]
+                },
+                {
+                  title: "SVOD Cocina",
+                  price: "2.99",
+                  features: [
+                    "Recetas de Javier Romero",
+                    "Tutoriales de cocina",
+                    "Programas de gastronomía"
+                  ]
+                },
+                {
+                  title: "Hot Playboy",
+                  price: "5.99",
+                  features: [
+                    "Playboy TV, Venus",
+                    "Penthouse, Sextreme",
+                    "Contenido a la carta"
+                  ]
+                },
+                {
+                  title: "Pride SVOD",
+                  price: "3.99",
+                  features: [
+                    "Cine gay",
+                    "Series LGBTQ+",
+                    "Contenido exclusivo"
+                  ]
+                }
+              ].map((pack, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.1 * index }}
+                  className="relative bg-white rounded-lg p-2 shadow-md hover:shadow-lg transition-all duration-300"
+                >
+                  <div className="flex justify-between items-start">
+                    <div>
+                      <h3 className="text-sm font-bold text-gray-900">{pack.title}</h3>
+                      <p className="text-sm font-bold text-[#0066FF]">
+                        {pack.price}€<span className="text-xs font-normal text-gray-400">/mes</span>
+                      </p>
+                    </div>
+                    <button 
+                      onClick={() => toggleAddon(pack)}
+                      className={`w-4 h-4 rounded transition-colors duration-300 flex items-center justify-center ${
+                        selectedAddons.some(addon => addon.title === pack.title)
+                          ? 'bg-[#51fcff] border border-[#51fcff]'
+                          : 'bg-white border border-[#51fcff] hover:bg-[#51fcff]/10'
+                      }`}
+                    >
+                      <span className={`text-xs ${
+                        selectedAddons.some(addon => addon.title === pack.title)
+                          ? 'text-white'
+                          : 'text-[#51fcff]'
+                      }`}>
+                        {selectedAddons.some(addon => addon.title === pack.title) ? '✓' : '+'}
+                      </span>
+                    </button>
+                  </div>
+                  <ul className="mt-1 space-y-0.5">
+                    {pack.features.map((feature, idx) => (
+                      <li key={idx} className="flex items-start gap-1">
+                        <span className="text-[#51fcff] text-[10px] mt-0.5">♦</span>
+                        <span className="text-gray-600 text-[11px] leading-tight">{feature}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              ))}
+            </div>
 
-            {/* Adult Package */}
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.3 }}
-              className="bg-white rounded-3xl shadow-lg p-8 hover:shadow-xl transition-all duration-300 flex flex-col"
-            >
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Contenido Adulto</h3>
-              <p className="text-3xl font-bold text-[#0066FF] mb-4">5.99€<span className="text-sm font-normal text-gray-400">/mes</span></p>
-              <ul className="space-y-3 mb-6 flex-1">
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Playboy TV, Venus</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Penthouse, Sextreme</span>
-                </li>
-                <li className="flex items-start gap-2">
-                  <span className="text-[#51fcff] text-lg mt-1">♦</span>
-                  <span className="text-gray-600">Contenido a la carta</span>
-                </li>
-              </ul>
-              <button className="w-full bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white rounded-xl py-4 font-medium hover:opacity-90 transition-all duration-300 hover:-translate-y-1">
-                Contratar Ahora
+            {/* Checkout Button */}
+            <div className="mt-3 text-center">
+              <button className="inline-block bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white px-4 py-2 rounded-xl font-semibold text-sm shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1">
+                Contratar Plan Personalizado
               </button>
-            </motion.div>
+            </div>
           </div>
         </div>
       </section>
