@@ -489,24 +489,24 @@ export default function UniTVPage() {
           </div>
 
           {/* Additional Packages Configurator */}
-          <div className="max-w-6xl mx-auto mt-8 bg-white/80 backdrop-blur-sm rounded-3xl p-4 shadow-xl relative">
+          <div className="max-w-6xl mx-auto mt-8 bg-white/90 backdrop-blur-sm rounded-3xl p-4 shadow-xl relative">
             {/* Selected Plan Preview */}
-            <div className="bg-gradient-to-r from-[#51fcff]/10 to-[#0066FF]/10 rounded-xl p-3 mb-3">
+            <div className="bg-gradient-to-r from-[#51fcff]/10 to-[#0066FF]/10 rounded-xl p-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
                 <div className="flex items-center gap-2">
-                  <span className="bg-[#51fcff] text-white text-xs px-2 py-0.5 rounded-full">Plan Base</span>
-                  <h4 className="font-bold text-gray-800 text-sm">{selectedPlan.name}</h4>
+                  <span className="bg-[#51fcff] text-white text-sm px-2.5 py-0.5 rounded-full font-medium">Plan Base</span>
+                  <h4 className="font-bold text-gray-800 text-base">{selectedPlan.name}</h4>
                 </div>
-                <div className="flex items-center gap-2 text-xs">
+                <div className="flex items-center gap-3 text-sm">
                   <span className="text-gray-600">Base: <span className="font-bold text-[#0066FF]">{selectedPlan.price}€</span></span>
-                  <span className="text-gray-600 ml-2">Extra: <span className="font-bold text-[#0066FF]">+{(parseFloat(calculateTotal()) - selectedPlan.price).toFixed(2)}€</span></span>
-                  <span className="text-gray-600 ml-2">Total: <span className="font-bold text-[#0066FF]">{calculateTotal()}€</span></span>
+                  <span className="text-gray-600">Extra: <span className="font-bold text-[#0066FF]">+{(parseFloat(calculateTotal()) - selectedPlan.price).toFixed(2)}€</span></span>
+                  <span className="text-gray-600">Total: <span className="font-bold text-[#0066FF]">{calculateTotal()}€</span></span>
                 </div>
               </div>
               {selectedAddons.length > 0 && (
-                <div className="flex flex-wrap gap-1.5 mt-2">
+                <div className="flex flex-wrap gap-2 mt-2">
                   {selectedAddons.map((addon, idx) => (
-                    <div key={idx} className="bg-[#51fcff]/10 rounded-full px-2 py-0.5 text-xs text-gray-600">
+                    <div key={idx} className="bg-[#51fcff]/10 rounded-full px-2.5 py-0.5 text-sm text-gray-600 font-medium">
                       {addon.title} (+{addon.price}€)
                     </div>
                   ))}
@@ -514,26 +514,26 @@ export default function UniTVPage() {
               )}
             </div>
 
-            <div className="flex items-center justify-between border-b border-gray-200 pb-2 mb-3">
+            <div className="flex items-center justify-between border-b border-gray-200 py-3">
               <div>
-                <h3 className="text-sm font-bold text-gray-800">Personaliza tu plan con paquetes adicionales</h3>
-                <p className="text-xs text-gray-600">Selecciona los paquetes para tu plan base {selectedPlan.name}</p>
+                <h3 className="text-base font-bold text-gray-800">Personaliza tu plan con paquetes adicionales</h3>
+                <p className="text-sm text-gray-600 mt-0.5">Selecciona los paquetes para tu plan base {selectedPlan.name}</p>
               </div>
-              <div className="flex items-center gap-2 text-xs">
-                <div className="flex items-center gap-1">
-                  <div className="w-4 h-4 rounded-full bg-[#51fcff] text-white flex items-center justify-center text-[10px]">1</div>
+              <div className="flex items-center gap-3 text-sm">
+                <div className="flex items-center gap-1.5">
+                  <div className="w-5 h-5 rounded-full bg-[#51fcff] text-white flex items-center justify-center text-xs font-medium">1</div>
                   <span className="text-gray-600">Plan base</span>
                 </div>
-                <div className="w-3 h-px bg-gray-200"></div>
-                <div className="flex items-center gap-1">
-                  <div className="w-4 h-4 rounded-full bg-[#51fcff] text-white flex items-center justify-center text-[10px]">2</div>
+                <div className="w-4 h-px bg-gray-200"></div>
+                <div className="flex items-center gap-1.5">
+                  <div className="w-5 h-5 rounded-full bg-[#51fcff] text-white flex items-center justify-center text-xs font-medium">2</div>
                   <span className="text-gray-600">Extras</span>
                 </div>
               </div>
             </div>
 
             {/* Additional Packages Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-2">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mt-3">
               {[
                 {
                   title: "Internacionales",
@@ -587,24 +587,24 @@ export default function UniTVPage() {
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ duration: 0.5, delay: 0.1 * index }}
-                  className="relative bg-white rounded-lg p-2 shadow-md hover:shadow-lg transition-all duration-300"
+                  className="relative bg-white rounded-xl p-3 shadow-md hover:shadow-lg transition-all duration-300"
                 >
-                  <div className="flex justify-between items-start">
+                  <div className="flex justify-between items-start mb-1">
                     <div>
-                      <h3 className="text-sm font-bold text-gray-900">{pack.title}</h3>
-                      <p className="text-sm font-bold text-[#0066FF]">
-                        {pack.price}€<span className="text-xs font-normal text-gray-400">/mes</span>
+                      <h3 className="text-base font-bold text-gray-900">{pack.title}</h3>
+                      <p className="text-base font-bold text-[#0066FF]">
+                        {pack.price}€<span className="text-sm font-normal text-gray-400">/mes</span>
                       </p>
                     </div>
                     <button 
                       onClick={() => toggleAddon(pack)}
-                      className={`w-4 h-4 rounded transition-colors duration-300 flex items-center justify-center ${
+                      className={`w-5 h-5 rounded-full transition-colors duration-300 flex items-center justify-center ${
                         selectedAddons.some(addon => addon.title === pack.title)
                           ? 'bg-[#51fcff] border border-[#51fcff]'
                           : 'bg-white border border-[#51fcff] hover:bg-[#51fcff]/10'
                       }`}
                     >
-                      <span className={`text-xs ${
+                      <span className={`text-sm ${
                         selectedAddons.some(addon => addon.title === pack.title)
                           ? 'text-white'
                           : 'text-[#51fcff]'
@@ -613,11 +613,11 @@ export default function UniTVPage() {
                       </span>
                     </button>
                   </div>
-                  <ul className="mt-1 space-y-0.5">
+                  <ul className="space-y-1">
                     {pack.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start gap-1">
-                        <span className="text-[#51fcff] text-[10px] mt-0.5">♦</span>
-                        <span className="text-gray-600 text-[11px] leading-tight">{feature}</span>
+                      <li key={idx} className="flex items-start gap-1.5">
+                        <span className="text-[#51fcff] text-xs mt-1">♦</span>
+                        <span className="text-gray-600 text-sm leading-relaxed">{feature}</span>
                       </li>
                     ))}
                   </ul>
@@ -626,8 +626,8 @@ export default function UniTVPage() {
             </div>
 
             {/* Checkout Button */}
-            <div className="mt-3 text-center">
-              <button className="inline-block bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white px-4 py-2 rounded-xl font-semibold text-sm shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1">
+            <div className="mt-4 text-center">
+              <button className="inline-block bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white px-5 py-2.5 rounded-xl font-semibold text-base shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1">
                 Contratar Plan Personalizado
               </button>
             </div>
