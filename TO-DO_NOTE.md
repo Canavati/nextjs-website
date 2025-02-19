@@ -17,13 +17,15 @@ Web:
 
 - Terminos y condiciones, cookies, etc., agregados en el footer y el centro de ayuda. ✅
 
+- Blogs terminados. ✅
+
 - Agregar Los bonos (afirmar donde) ⛔ (Finalizar el diseño)
 
 - Pagina de energia ⛔ (Falta  de configurar el diseño)
 
 - Terminar de configurar el configurador de solo movil, y asegurarse que los otros configuradores estén bien configurados. ⛔
 
-- agregar blogs, y terminar de configurar el blog page con detalles del diseño. ⛔ (falta el diseño y afirmar funcionalidad, y cambiar variables de .env)
+- cambiar el .env para que los blogs sean visibles. ⛔
 
 - Página de Unitv ⛔ (Falta el diseño)
 
