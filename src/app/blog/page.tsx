@@ -20,7 +20,7 @@ export default async function BlogPage() {
   })));
 
   return (
-    <main className="min-h-screen relative overflow-hidden py-16">
+    <main className="min-h-[calc(100vh-var(--top-bar-height))] relative overflow-hidden -mt-[var(--header-height)]">
       {/* Main Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-[#292cf6]/10 via-[#1a1f35]/40 to-[#292cf6]/20" />
 
@@ -67,16 +67,18 @@ export default async function BlogPage() {
       {/* Content */}
       <div className="relative z-10">
         {/* Hero Section */}
-        <div className="relative pt-24 pb-12">
+        <div className="relative pt-[calc(var(--header-height)+2rem)] pb-12">
           <div className="container mx-auto px-4">
-            <h1 className="text-5xl md:text-6xl font-bold text-center mb-4">
-              <span className="bg-gradient-bright bg-clip-text text-transparent">
-                Blog
-              </span>
-            </h1>
-            <p className="text-gray-300 text-center max-w-2xl mx-auto text-lg">
-              Descubre las últimas novedades, consejos y actualizaciones sobre nuestros servicios
-            </p>
+            <div className="bg-white/30 backdrop-blur-md rounded-2xl p-8 shadow-xl max-w-3xl mx-auto border border-white/50">
+              <h1 className="text-5xl md:text-6xl font-bold text-center mb-4">
+                <span className="text-shimmer-blue drop-shadow-lg">
+                  Unimovil Blog
+                </span>
+              </h1>
+              <p className="text-white text-center max-w-2xl mx-auto text-lg font-medium drop-shadow-md">
+                Descubre las últimas novedades, consejos y actualizaciones sobre nuestros servicios
+              </p>
+            </div>
           </div>
         </div>
 
