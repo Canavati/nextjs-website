@@ -162,15 +162,9 @@ export default function Footer() {
             <ul className="space-y-[1px] mt-1">
               <li>
                 <Link 
-                  href="/aviso-legal"
-                  className="text-gray-300 hover:text-[--secondary] transition-colors text-xs"
-                >
-                  Aviso Legal
-                </Link>
-              </li>
-              <li>
-                <Link 
-                  href="/terminos"
+                  href="/condiciones_generales_particulares.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-300 hover:text-[--secondary] transition-colors text-xs"
                 >
                   Términos y Condiciones
@@ -178,18 +172,52 @@ export default function Footer() {
               </li>
               <li>
                 <Link 
-                  href="/privacidad"
+                  href="/condiciones_proteccion_datos_y_privacidad.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-300 hover:text-[--secondary] transition-colors text-xs"
                 >
-                  Política de Privacidad
+                  Protección de Datos y Privacidad
                 </Link>
               </li>
               <li>
                 <Link 
-                  href="/cookies"
+                  href="/politica-cookies.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
                   className="text-gray-300 hover:text-[--secondary] transition-colors text-xs"
                 >
                   Política de Cookies
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/tarifas/pvp_numeracion_especial.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-[--secondary] transition-colors text-xs"
+                >
+                  Tarifas Numeración Especial
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/tarifas/pvp_internacionales.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-[--secondary] transition-colors text-xs"
+                >
+                  Tarifas Internacionales
+                </Link>
+              </li>
+              <li>
+                <Link 
+                  href="/tarifas/pvp_roaming.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-300 hover:text-[--secondary] transition-colors text-xs"
+                >
+                  Tarifas Roaming
                 </Link>
               </li>
             </ul>

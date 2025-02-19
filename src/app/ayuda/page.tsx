@@ -20,19 +20,44 @@ import { useState } from 'react';
 import Link from 'next/link';
 import FAQItem from '@/components/ui/FAQItem';
 
-const helpResources = [
+interface Button {
+  text: string;
+  link: string;
+}
+
+interface BaseHelpResource {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}
+
+interface SingleButtonResource extends BaseHelpResource {
+  link: string;
+  buttonText: string;
+  buttons?: never;
+}
+
+interface MultiButtonResource extends BaseHelpResource {
+  buttons: Button[];
+  link?: never;
+  buttonText?: never;
+}
+
+type HelpResource = SingleButtonResource | MultiButtonResource;
+
+const helpResources: HelpResource[] = [
   {
     icon: Phone,
     title: 'Atención Telefónica',
-    description: 'Llámanos al 900 XXX XXX',
-    link: 'tel:900XXXXXX',
+    description: 'Llámanos al 604 451 989',
+    link: 'tel:604451989',
     buttonText: 'Llamar ahora'
   },
   {
     icon: EnvelopeSimple,
     title: 'Correo Electrónico',
-    description: 'soporte@unimovil.com',
-    link: 'mailto:soporte@unimovil.com',
+    description: 'hola@unimovil.com',
+    link: 'mailto:hola@unimovil.com',
     buttonText: 'Enviar email'
   },
   {
@@ -44,10 +69,25 @@ const helpResources = [
   },
   {
     icon: Article,
-    title: 'Centro de Ayuda',
-    description: 'Consulta nuestras guías',
-    link: '/guias',
-    buttonText: 'Ver guías'
+    title: 'Blog',
+    description: 'Consulta nuestras guías y artículos',
+    link: '/blog',
+    buttonText: 'Ver blog'
+  },
+  {
+    icon: Receipt,
+    title: 'Documentación',
+    description: 'Tarifas y condiciones de servicio',
+    buttons: [
+      {
+        text: 'Tarifas',
+        link: '/tarifas'
+      },
+      {
+        text: 'Condiciones',
+        link: '/condiciones_generales_particulares.pdf'
+      }
+    ]
   }
 ];
 
@@ -480,213 +520,286 @@ export default function AyudaPage() {
   const totalPages = activeSection ? getPageCount(activeSection.faqs) : 1;
 
   return (
-    <main className="pt-total-nav min-h-screen bg-gray-50">
+    <main className="min-h-screen bg-dark">
       {/* Hero Section */}
-      <section className="bg-dark text-white py-16 relative overflow-hidden">
+      <section id="hero" className="pt-[200px] -mt-[115px] pb-24 relative overflow-hidden">
+        {/* Background Layers */}
         <div className="absolute inset-0 bg-gradient-new opacity-95" />
         <div className="absolute inset-0 bg-black/40" />
-        
-        <div className="relative max-w-7xl mx-auto px-4 text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-5xl font-bold mb-6"
-          >
-            Centro de Ayuda
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2 }}
-            className="text-xl text-gray-200 max-w-2xl mx-auto"
-          >
-            Estamos aquí para ayudarte. Encuentra respuestas rápidas o contacta con nuestro equipo de soporte.
-          </motion.p>
-        </div>
-      </section>
 
-      {/* Help Resources Grid - More Compact */}
-      <section className="py-8 px-4">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="relative max-w-[1550px] mx-auto px-4">
+          <div className="text-center mb-16">
+            <motion.h1
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="text-5xl font-bold mb-6 text-white"
+            >
+              Centro de Ayuda
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="text-xl text-white max-w-2xl mx-auto"
+            >
+              Estamos aquí para ayudarte. Encuentra respuestas rápidas o contacta con nuestro equipo de soporte.
+            </motion.p>
+          </div>
+
+          {/* Help Resources Grid */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-[1550px] mx-auto">
             {helpResources.map((resource, index) => (
               <motion.div
                 key={resource.title}
                 initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.5, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="bg-white rounded-xl p-4 shadow-md hover:shadow-lg transition-shadow duration-300"
+                className="bg-white/10 backdrop-blur-sm rounded-xl p-6 border border-white/5 hover:bg-white/15 transition-all duration-300"
               >
-                <div className="flex items-center gap-4">
-                  <resource.icon size={24} weight="duotone" className="text-primary" />
-                  <div>
-                    <h3 className="text-lg font-semibold">{resource.title}</h3>
-                    <p className="text-gray-600 text-sm">{resource.description}</p>
+                <div className="flex flex-col items-center text-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-gradient-new flex items-center justify-center">
+                    <resource.icon size={24} weight="duotone" className="text-white" />
                   </div>
+                  <div>
+                    <h3 className="text-lg font-semibold text-white mb-2">{resource.title}</h3>
+                    <p className="text-white text-sm mb-4">{resource.description}</p>
+                  </div>
+                  {('buttons' in resource && resource.buttons) ? (
+                    <div className="flex gap-2 w-full">
+                      {resource.buttons.map((button) => (
+                        <Link
+                          key={button.text}
+                          href={button.link}
+                          className="flex-1 bg-gradient-new text-white px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+                        >
+                          {button.text}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <Link
+                      href={resource.link}
+                      className="inline-flex items-center justify-center w-full bg-gradient-new text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+                    >
+                      {resource.buttonText}
+                    </Link>
+                  )}
                 </div>
-                <Link
-                  href={resource.link}
-                  className="mt-3 inline-block bg-gradient-new text-white px-4 py-1.5 rounded-lg text-sm font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
-                >
-                  {resource.buttonText}
-                </Link>
               </motion.div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Help Sections with Pills/Dropdown */}
-      <section className="py-8 px-4">
-        <div className="max-w-7xl mx-auto">
-          {/* Mobile Dropdown */}
-          <div className="sm:hidden flex justify-center mb-12">
-            <div className="w-full max-w-[300px]">
-              <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
-                className="w-full bg-gradient-new text-white rounded-xl p-3 shadow-md flex items-center justify-between gap-2 text-sm font-medium"
-              >
-                <div className="flex items-center gap-2">
-                  {activeSection?.icon && (
-                    <activeSection.icon size={20} weight="duotone" className="text-white" />
-                  )}
-                  <span>{activeSection?.title || 'Seleccionar categoría'}</span>
-                </div>
-                <CaretDown
-                  size={16}
-                  weight="bold"
-                  className={`transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
-                />
-              </button>
-              
-              {isDropdownOpen && (
-                <div className="absolute mt-2 w-full max-w-[300px] bg-white rounded-xl shadow-lg overflow-hidden z-10">
-                  <div className="py-2 px-2">
-                    {helpSections.map((section) => (
-                      <button
-                        key={section.id}
-                        onClick={() => {
-                          setActiveSection(section.id);
-                          setIsDropdownOpen(false);
-                        }}
-                        className={`w-full flex items-center gap-2 py-2.5 px-4 text-sm font-medium transition-colors rounded-lg ${
-                          activeSectionId === section.id
-                            ? 'bg-gradient-new text-white'
-                            : 'text-gray-600 hover:bg-gray-50'
-                        }`}
-                      >
-                        <section.icon size={18} weight="duotone" />
-                        {section.title}
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          </div>
+      {/* Rest of the content */}
+      <section className="relative overflow-hidden">
+        {/* Main Gradient Background */}
+        <div className="absolute inset-0 bg-gradient-to-br from-[var(--tertiary)] via-[#2a2f4d] to-[var(--quinary)]" />
 
-          {/* Desktop Pills */}
-          <div className="hidden sm:flex justify-center mb-12">
-            <div className="bg-white rounded-2xl p-2 shadow-md">
-              <div className="flex flex-row gap-2">
-                {helpSections.map((section) => (
-                  <button
-                    key={section.id}
-                    onClick={() => setActiveSection(section.id)}
-                    className={`flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-all duration-300 whitespace-nowrap ${
-                      activeSectionId === section.id
-                        ? 'bg-gradient-new text-white shadow-sm'
-                        : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
-                    }`}
-                  >
-                    <section.icon size={20} weight="duotone" />
-                    {section.title}
-                  </button>
-                ))}
+        {/* Enhanced Animated Floating Orbs */}
+        <div className="absolute inset-0 overflow-hidden">
+          {/* Primary Orb - Top Left */}
+          <div
+            className="absolute w-[600px] h-[600px] -left-48 -top-48 rounded-full bg-[radial-gradient(circle_at_center,_var(--quinary)_0%,_transparent_70%)] blur-[64px] animate-orb-float"
+          />
+          {/* Secondary Orb - Bottom Right */}
+          <div
+            className="absolute w-[500px] h-[500px] right-0 bottom-0 rounded-full bg-[radial-gradient(circle_at_center,_var(--primary)_0%,_transparent_80%)] blur-[64px] animate-orb-float-reverse"
+          />
+          {/* Accent Orb - Center */}
+          <div
+            className="absolute w-[300px] h-[300px] left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[radial-gradient(circle_at_center,_var(--quaternary)_0%,_transparent_80%)] blur-[48px] animate-pulse-slow"
+          />
+        </div>
+
+        {/* Enhanced Mesh Gradient with Dynamic Patterns */}
+        <div className="absolute inset-0 pointer-events-none mix-blend-soft-light opacity-70">
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--quaternary)_0%,_transparent_70%)] opacity-30 animate-pulse-slow" />
+          <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--quinary)_0%,_transparent_70%)] opacity-30 animate-pulse-slow delay-500" />
+        </div>
+
+        {/* Enhanced Line Pattern */}
+        <div 
+          className="absolute inset-0 pointer-events-none opacity-[0.07] animate-subtle-rotate"
+          style={{ 
+            backgroundImage: `
+              linear-gradient(90deg, var(--quinary) 1px, transparent 1px),
+              linear-gradient(0deg, var(--quinary) 1px, transparent 1px)
+            `,
+            backgroundSize: '50px 50px',
+          }}
+        />
+
+        {/* Floating Particles */}
+        <div className="absolute inset-0 pointer-events-none">
+          {[...Array(8)].map((_, i) => (
+            <div
+              key={i}
+              className="absolute rounded-full animate-particle-float"
+              style={{
+                width: `${2 + (i % 3)}px`,
+                height: `${2 + (i % 3)}px`,
+                backgroundColor: i % 2 === 0 ? '#51fcff' : '#ed54ba',
+                left: `${(i * 19) % 100}%`,
+                top: `${(i * 17) % 100}%`,
+                animationDelay: `${i * 1.5}s`,
+                opacity: 0.3,
+              }}
+            />
+          ))}
+        </div>
+
+        {/* Help Sections with Pills/Dropdown */}
+        <div className="relative z-10 py-16">
+          <div className="max-w-7xl mx-auto px-4">
+            {/* Mobile Dropdown */}
+            <div className="sm:hidden flex justify-center mb-12">
+              <div className="w-full max-w-[300px]">
+                <button
+                  onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                  className="w-full bg-gradient-new text-white rounded-xl p-3 shadow-md flex items-center justify-between gap-2 text-sm font-medium"
+                >
+                  <div className="flex items-center gap-2">
+                    {activeSection?.icon && (
+                      <activeSection.icon size={20} weight="duotone" className="text-white" />
+                    )}
+                    <span>{activeSection?.title || 'Seleccionar categoría'}</span>
+                  </div>
+                  <CaretDown
+                    size={16}
+                    weight="bold"
+                    className={`transform transition-transform duration-300 ${isDropdownOpen ? 'rotate-180' : ''}`}
+                  />
+                </button>
+                
+                {isDropdownOpen && (
+                  <div className="absolute mt-2 w-full max-w-[300px] bg-white rounded-xl shadow-lg overflow-hidden z-10">
+                    <div className="py-2 px-2">
+                      {helpSections.map((section) => (
+                        <button
+                          key={section.id}
+                          onClick={() => {
+                            setActiveSection(section.id);
+                            setIsDropdownOpen(false);
+                          }}
+                          className={`w-full flex items-center gap-2 py-2.5 px-4 text-sm font-medium transition-colors rounded-lg ${
+                            activeSectionId === section.id
+                              ? 'bg-gradient-new text-white'
+                              : 'text-gray-600 hover:bg-gray-50'
+                          }`}
+                        >
+                          <section.icon size={18} weight="duotone" />
+                          {section.title}
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
-          </div>
 
-          {/* FAQ Section for Active Category */}
-          <motion.div
-            key={`${activeSectionId}-${currentPage}`}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="max-w-3xl mx-auto"
-          >
-            <div className="space-y-4">
-              {activeSection && getCurrentPageFaqs(activeSection.faqs).map((faq, index) => (
-                <FAQItem
-                  key={index}
-                  question={faq.question}
-                  answer={faq.answer}
-                  delay={index * 0.1}
-                />
-              ))}
+            {/* Desktop Pills */}
+            <div className="hidden sm:flex justify-center mb-12">
+              <div className="bg-white rounded-2xl p-2 shadow-md">
+                <div className="flex flex-row gap-2">
+                  {helpSections.map((section) => (
+                    <button
+                      key={section.id}
+                      onClick={() => setActiveSection(section.id)}
+                      className={`flex items-center justify-center gap-2 rounded-xl px-4 py-2 text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+                        activeSectionId === section.id
+                          ? 'bg-gradient-new text-white shadow-sm'
+                          : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
+                      }`}
+                    >
+                      <section.icon size={20} weight="duotone" />
+                      {section.title}
+                    </button>
+                  ))}
+                </div>
+              </div>
             </div>
 
-            {/* Pagination */}
-            {totalPages > 1 && (
-              <div className="flex justify-center items-center gap-2 mt-8 mb-12">
-                <button
-                  onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
-                  disabled={currentPage === 1}
-                  className={`px-4 py-2 rounded-lg transition-all duration-300 ${
-                    currentPage === 1
-                      ? 'text-gray-400 cursor-not-allowed'
-                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
-                  }`}
-                >
-                  Anterior
-                </button>
-                {[...Array(totalPages)].map((_, i) => (
+            {/* FAQ Section for Active Category */}
+            <motion.div
+              key={`${activeSectionId}-${currentPage}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5 }}
+              className="max-w-3xl mx-auto"
+            >
+              <div className="space-y-4">
+                {activeSection && getCurrentPageFaqs(activeSection.faqs).map((faq, index) => (
+                  <FAQItem
+                    key={index}
+                    question={faq.question}
+                    answer={faq.answer}
+                    delay={index * 0.1}
+                  />
+                ))}
+              </div>
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="flex justify-center items-center gap-2 mt-8 mb-12">
                   <button
-                    key={i + 1}
-                    onClick={() => setCurrentPage(i + 1)}
-                    className={`w-10 h-10 rounded-xl transition-all duration-300 ${
-                      currentPage === i + 1
-                        ? 'bg-gradient-new text-white'
+                    onClick={() => setCurrentPage(prev => Math.max(prev - 1, 1))}
+                    disabled={currentPage === 1}
+                    className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+                      currentPage === 1
+                        ? 'text-gray-400 cursor-not-allowed'
                         : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
                     }`}
                   >
-                    {i + 1}
+                    Anterior
                   </button>
-                ))}
-                <button
-                  onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
-                  disabled={currentPage === totalPages}
-                  className={`px-4 py-2 rounded-lg transition-all duration-300 ${
-                    currentPage === totalPages
-                      ? 'text-gray-400 cursor-not-allowed'
-                      : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
-                  }`}
-                >
-                  Siguiente
-                </button>
-              </div>
-            )}
+                  {[...Array(totalPages)].map((_, i) => (
+                    <button
+                      key={i + 1}
+                      onClick={() => setCurrentPage(i + 1)}
+                      className={`w-10 h-10 rounded-xl transition-all duration-300 ${
+                        currentPage === i + 1
+                          ? 'bg-gradient-new text-white'
+                          : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                      }`}
+                    >
+                      {i + 1}
+                    </button>
+                  ))}
+                  <button
+                    onClick={() => setCurrentPage(prev => Math.min(prev + 1, totalPages))}
+                    disabled={currentPage === totalPages}
+                    className={`px-4 py-2 rounded-lg transition-all duration-300 ${
+                      currentPage === totalPages
+                        ? 'text-gray-400 cursor-not-allowed'
+                        : 'text-gray-600 hover:text-gray-800 hover:bg-gray-100'
+                    }`}
+                  >
+                    Siguiente
+                  </button>
+                </div>
+              )}
 
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ duration: 0.5, delay: 0.5 }}
-              className="text-center mt-12"
-            >
-              <p className="text-gray-600 mb-6">
-                ¿No encuentras lo que buscas?
-              </p>
-              <Link
-                href="#contacto"
-                className="inline-block bg-gradient-new text-white px-8 py-3 rounded-xl font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+              <motion.div
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.5 }}
+                className="text-center mt-12"
               >
-                Contacta con nosotros
-              </Link>
+                <p className="text-white mb-6">
+                  ¿No encuentras lo que buscas?
+                </p>
+                <Link
+                  href="#contacto"
+                  className="inline-block bg-gradient-new text-white px-8 py-3 rounded-xl font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+                >
+                  Contacta con nosotros
+                </Link>
+              </motion.div>
             </motion.div>
-          </motion.div>
+          </div>
         </div>
       </section>
     </main>

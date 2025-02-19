@@ -59,7 +59,6 @@ export default async function BlogPostPage({
       <div className="absolute inset-0 pointer-events-none mix-blend-soft-light opacity-70">
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--quaternary)_0%,_transparent_70%)] opacity-30 animate-pulse-slow" />
         <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--quinary)_0%,_transparent_70%)] opacity-30 animate-pulse-slow delay-500" />
-        <div className="absolute inset-0 bg-[conic-gradient(from_0deg_at_50%_50%,var(--quaternary)_0%,transparent_50%,var(--quinary)_100%)] opacity-20 animate-spin-slower" />
       </div>
 
       {/* NEW: Floating Light Trails */}
