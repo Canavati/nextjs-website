@@ -3,10 +3,19 @@
 import { motion } from 'framer-motion';
 import Image from 'next/image';
 import Contact from '@/components/sections/Contact';
-import { 
-  Television, PlayCircle, Film, MonitorPlay, 
-  DeviceMobile, Broadcast, Wifi, House,
-  VideoCamera, Desktop, Laptop, DeviceTablet
+import {
+  Television,
+  PlayCircle,
+  FilmStrip,
+  MonitorPlay,
+  DeviceMobile,
+  Broadcast,
+  WifiHigh,
+  House,
+  VideoCamera,
+  Desktop,
+  Laptop,
+  DeviceTablet,
 } from '@phosphor-icons/react';
 
 export default function UniTVPage() {
@@ -14,14 +23,14 @@ export default function UniTVPage() {
     // Left side
     { Icon: Television, top: '15%', left: '10%', duration: 8, delay: 0, size: 42 },
     { Icon: PlayCircle, top: '70%', left: '15%', duration: 10, delay: 1, size: 36 },
-    { Icon: Film, top: '40%', left: '8%', duration: 12, delay: 2, size: 48 },
+    { Icon: FilmStrip, top: '40%', left: '8%', duration: 12, delay: 2, size: 48 },
     { Icon: MonitorPlay, bottom: '15%', left: '20%', duration: 9, delay: 1.5, size: 32 },
     { Icon: DeviceMobile, top: '25%', left: '22%', duration: 11, delay: 0.5, size: 38 },
     
     // Center
     { Icon: Broadcast, top: '10%', left: '45%', duration: 15, delay: 2, size: 52 },
     { Icon: House, bottom: '20%', left: '48%', duration: 13, delay: 1, size: 44 },
-    { Icon: Wifi, top: '35%', left: '35%', duration: 10, delay: 3, size: 34 },
+    { Icon: WifiHigh, top: '35%', left: '35%', duration: 10, delay: 3, size: 34 },
     
     // Right side
     { Icon: VideoCamera, top: '20%', right: '15%', duration: 9, delay: 2, size: 40 },
@@ -118,7 +127,7 @@ export default function UniTVPage() {
                   { icon: Television, title: 'Contenido HD', description: 'Máxima calidad' },
                   { icon: DeviceMobile, title: 'Multiplataforma', description: 'En todos tus dispositivos' },
                   { icon: PlayCircle, title: 'Sin publicidad', description: 'Disfruta sin interrupciones' },
-                  { icon: Film, title: 'Contenido exclusivo', description: 'Series y películas únicas' },
+                  { icon: FilmStrip, title: 'Contenido exclusivo', description: 'Series y películas únicas' },
                 ].map((feature, index) => (
                   <div key={index} className="bg-white/10 rounded-lg p-3 backdrop-blur-sm">
                     <feature.icon size={24} weight="duotone" className="text-[#51fcff] mb-1.5" />
