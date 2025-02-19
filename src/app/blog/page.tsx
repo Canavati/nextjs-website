@@ -20,19 +20,48 @@ export default async function BlogPage() {
   })));
 
   return (
-    <main className="min-h-screen relative bg-gray-900">
-      {/* Animated Background */}
-      <div className="fixed inset-0 z-0 bg-gradient-to-br from-gray-900 via-[#292cf6]/10 to-gray-900 overflow-hidden">
-        {/* Grid Pattern */}
-        <div className="absolute inset-0 opacity-30 bg-[linear-gradient(90deg,rgba(81,252,255,.3)_1px,transparent_0),linear-gradient(rgba(81,252,255,.3)_1px,transparent_0)] bg-[size:48px_48px]" />
-        
-        {/* Floating Orbs */}
-        <div className="absolute top-20 left-[15%] w-[600px] h-[600px] bg-[#ed54ba]/20 rounded-full blur-3xl animate-cosmic-shift opacity-50" />
-        <div className="absolute bottom-40 right-[15%] w-[800px] h-[800px] bg-[#51fcff]/20 rounded-full blur-3xl animate-cosmic-shift delay-700 opacity-50" />
-        <div className="absolute top-1/3 right-1/4 w-[500px] h-[500px] bg-[#292cf6]/20 rounded-full blur-3xl animate-cosmic-shift delay-1000 opacity-50" />
-        
-        {/* Additional Ambient Light */}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#ed54ba]/5 via-transparent to-[#51fcff]/5" />
+    <main className="min-h-screen relative overflow-hidden py-16">
+      {/* Main Background */}
+      <div className="absolute inset-0 bg-gradient-to-br from-[#292cf6]/10 via-[#1a1f35]/40 to-[#292cf6]/20" />
+
+      {/* Dynamic Background Elements */}
+      <div className="absolute inset-0 overflow-hidden">
+        {/* Animated Gradient Waves */}
+        <div
+          className="absolute inset-0 opacity-20"
+          style={{
+            background: 'linear-gradient(45deg, var(--quinary), var(--quaternary), var(--quinary), var(--secondary))',
+            backgroundSize: '400% 400%',
+            animation: 'gradient-shift 20s linear infinite alternate',
+          }}
+        />
+
+        {/* Enhanced Floating Particles */}
+        {[...Array(40)].map((_, i) => (
+          <div
+            key={i}
+            className={`absolute rounded-full ${
+              i % 3 === 0 
+                ? 'w-1 h-1 bg-gradient-to-r from-[#292cf6] to-[#51fcff]' 
+                : i % 3 === 1
+                ? 'w-2 h-2 bg-gradient-to-r from-[#51fcff] to-[#292cf6]'
+                : 'w-3 h-3 bg-gradient-to-r from-[#292cf6] to-[#51fcff]'
+            }`}
+            style={{
+              left: `${Math.random() * 100}%`,
+              top: `${Math.random() * 100}%`,
+              filter: 'blur(1px)',
+              animation: `float-up ${10 + Math.random() * 10}s linear infinite`,
+              animationDelay: `${Math.random() * 5}s`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Enhanced Mesh Gradient */}
+      <div className="absolute inset-0 pointer-events-none opacity-50">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--quinary)_0%,_transparent_70%)] opacity-20" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom,_var(--quaternary)_0%,_transparent_70%)] opacity-20" />
       </div>
 
       {/* Content */}
@@ -41,7 +70,7 @@ export default async function BlogPage() {
         <div className="relative pt-24 pb-12">
           <div className="container mx-auto px-4">
             <h1 className="text-5xl md:text-6xl font-bold text-center mb-4">
-              <span className="bg-gradient-to-r from-[#ed54ba] to-[#51fcff] text-transparent bg-clip-text">
+              <span className="bg-gradient-bright bg-clip-text text-transparent">
                 Blog
               </span>
             </h1>
@@ -52,7 +81,7 @@ export default async function BlogPage() {
         </div>
 
         <div className="container mx-auto px-4 py-12">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 auto-rows-fr">
             {sortedPosts.map((post, index) => (
               <BlogCardWrapper 
                 key={post.slug} 

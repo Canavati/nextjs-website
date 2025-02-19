@@ -20,10 +20,10 @@ export default function BlogCardWrapper({ children, index, hasImage = false }: B
         ease: [0.23, 1, 0.32, 1]
       }}
       whileHover={{ y: -4 }}
-      className="group relative overflow-hidden transition-all duration-500"
+      className="h-full"
     >
       {/* Content */}
-      <div className="relative">
+      <div className="h-full">
         {children}
       </div>
     </motion.div>

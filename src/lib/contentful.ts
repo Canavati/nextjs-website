@@ -51,12 +51,12 @@ export async function getBlogPosts(): Promise<BlogPost[]> {
         : null,
       publishDate: item.fields.publishDate,
       author: {
-        name: item.fields.author?.fields?.name ?? 'Anonymous',
-        avatar: item.fields.author?.fields?.avatar?.fields
-          ? {
-              url: `https:${item.fields.author.fields.avatar.fields.file.url}`,
-            }
-          : null,
+        name: item.fields.author?.fields?.name ?? 'Unimovil',
+        avatar: {
+          url: item.fields.author?.fields?.avatar?.fields?.file?.url
+            ? `https:${item.fields.author.fields.avatar.fields.file.url}`
+            : '/images/logo_crop.png'
+        },
       },
     };
   });
@@ -92,11 +92,11 @@ export async function getBlogPostBySlug(slug: string): Promise<BlogPost | null> 
     publishDate: item.fields.publishDate,
     author: {
       name: item.fields.author?.fields?.name ?? 'Unimovil',
-      avatar: item.fields.author?.fields?.avatar?.fields
-        ? {
-            url: `https:${item.fields.author.fields.avatar.fields.file.url}`,
-          }
-        : null,
+      avatar: {
+        url: item.fields.author?.fields?.avatar?.fields?.file?.url
+          ? `https:${item.fields.author.fields.avatar.fields.file.url}`
+          : '/images/logo_crop.png'
+      },
     },
   };
 } 
