@@ -17,13 +17,11 @@ Web:
 
 - Agregar Los bonos (afirmar donde) ⛔ (Color Configuration)
 
+- Pagina de energia ⛔ (Falta  de configurar el diseño)
+
 - Terminar de configurar el configurador de solo movil, y asegurarse que los otros configuradores estén bien configurados.
 
 - agregar blogs, y terminar de configurar el blog page con detalles del diseño.
-
-
-
-- Pagina de energia
 
 - Página de Unitv 
 
