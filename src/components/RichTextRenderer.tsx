@@ -1,3 +1,4 @@
+import React from 'react';
 import { documentToReactComponents } from '@contentful/rich-text-react-renderer';
 import { BLOCKS, INLINES, MARKS } from '@contentful/rich-text-types';
 import Image from 'next/image';
@@ -17,22 +18,55 @@ const options = {
       <p className="mb-4 text-gray-700 leading-relaxed">{children}</p>
     ),
     [BLOCKS.HEADING_1]: (node: any, children: React.ReactNode) => (
-      <h1 className="text-4xl font-bold mb-4 text-gray-900">{children}</h1>
+      <h1 className="text-4xl font-bold mb-6 text-gray-900">{children}</h1>
     ),
     [BLOCKS.HEADING_2]: (node: any, children: React.ReactNode) => (
-      <h2 className="text-3xl font-bold mb-3 text-gray-900">{children}</h2>
+      <h2 className="text-3xl font-bold mb-4 text-gray-900">{children}</h2>
     ),
     [BLOCKS.HEADING_3]: (node: any, children: React.ReactNode) => (
       <h3 className="text-2xl font-bold mb-3 text-gray-900">{children}</h3>
     ),
     [BLOCKS.UL_LIST]: (node: any, children: React.ReactNode) => (
-      <ul className="list-disc list-inside mb-4 space-y-2">{children}</ul>
+      <ul className="mb-6 pl-6 space-y-3 list-disc marker:text-[#ed54ba] marker:text-lg">{children}</ul>
     ),
     [BLOCKS.OL_LIST]: (node: any, children: React.ReactNode) => (
-      <ol className="list-decimal list-inside mb-4 space-y-2">{children}</ol>
+      <ol className="mb-6 pl-6 space-y-3 list-decimal marker:text-[#ed54ba] marker:font-bold">{children}</ol>
     ),
     [BLOCKS.LIST_ITEM]: (node: any, children: React.ReactNode) => (
-      <li className="text-gray-700">{children}</li>
+      <li className="text-gray-700 pl-2 leading-relaxed">{children}</li>
+    ),
+    [BLOCKS.TABLE]: (node: any, children: React.ReactNode) => {
+      // Split children into header and body rows
+      const rows = React.Children.toArray(children);
+      const headerRow = rows[0];
+      const bodyRows = rows.slice(1);
+
+      return (
+        <div className="mb-4">
+          <div className="w-full">
+            <table className="w-full border-collapse bg-white border border-gray-200 rounded-lg overflow-hidden">
+              <thead>{headerRow}</thead>
+              <tbody>{bodyRows}</tbody>
+            </table>
+          </div>
+        </div>
+      );
+    },
+    [BLOCKS.TABLE_ROW]: (node: any, children: React.ReactNode) => (
+      <tr>{children}</tr>
+    ),
+    [BLOCKS.TABLE_HEADER_CELL]: (node: any, children: React.ReactNode) => (
+      <th 
+        scope="col" 
+        className="px-4 py-1 text-sm font-semibold text-gray-900 text-left bg-white border-b border-r border-gray-200 last:border-r-0"
+      >
+        {children}
+      </th>
+    ),
+    [BLOCKS.TABLE_CELL]: (node: any, children: React.ReactNode) => (
+      <td className="px-4 py-1 text-sm text-gray-700 border-b border-r border-gray-200 last:border-r-0 last-of-type:border-r-0">
+        {children}
+      </td>
     ),
     [BLOCKS.QUOTE]: (node: any, children: React.ReactNode) => (
       <blockquote className="border-l-4 border-gray-200 pl-4 mb-4 italic text-gray-700">
