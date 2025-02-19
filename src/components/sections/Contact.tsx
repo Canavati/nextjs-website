@@ -91,6 +91,7 @@ export default function Contact() {
                 src="/images/feature-visual.webp"
                 alt="Únete a la revolución digital"
                 fill
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="object-cover"
                 priority
               />
@@ -216,8 +217,9 @@ export default function Contact() {
                   <select 
                     className="w-full px-5 py-3 rounded-xl border-2 border-[#e5e7eb] focus:outline-none focus:border-[#292cf6] focus:ring-0 transition-all bg-white/80 group-hover:border-[#292cf6]/30 group-hover:shadow-lg appearance-none"
                     required
+                    defaultValue=""
                   >
-                    <option value="" disabled selected>Selecciona un servicio</option>
+                    <option value="" disabled>Selecciona un servicio</option>
                     <option value="fibra">Fibra</option>
                     <option value="movil">Móvil</option>
                     <option value="fibra-movil">Fibra + Móvil</option>

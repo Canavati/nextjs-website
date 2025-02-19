@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import FAQItem from '../ui/FAQItem';
+import { useMemo } from 'react';
 
 interface FAQ {
   question: string;
@@ -31,7 +32,48 @@ const defaultFAQs = [
   },
 ];
 
+// Add these functions at the top level
+const generateFloatingElements = (count: number) => {
+  const elements = [];
+  for (let i = 0; i < count; i++) {
+    elements.push({
+      left: `${(i * 13) % 100}%`,
+      top: `${(i * 17) % 100}%`,
+      width: `${4 + (i % 8)}px`,
+      height: `${4 + (i % 8)}px`,
+      backgroundColor: i % 2 === 0 ? '#0ea5e9' : '#38bdf8',
+      animationDelay: `${(i * 0.4) % 8}s`,
+      animationDuration: `${6 + (i % 4)}s`,
+      opacity: 0.2,
+      filter: 'blur(1px)',
+      transform: `rotate(${(i * 45) % 360}deg)`,
+    });
+  }
+  return elements;
+};
+
+const generateLightTrails = (count: number) => {
+  const trails = [];
+  for (let i = 0; i < count; i++) {
+    trails.push({
+      left: `${(i * 19) % 100}%`,
+      top: `${(i * 23) % 100}%`,
+      width: `${50 + (i * 25) % 150}px`,
+      background: `linear-gradient(90deg, transparent, ${i % 2 === 0 ? '#0ea5e9' : '#38bdf8'}, transparent)`,
+      animationDelay: `${-i * 2}s`,
+      animationDuration: `${15 + (i % 10)}s`,
+      opacity: 0.15,
+      transform: `rotate(${(i * 60) % 360}deg)`,
+    });
+  }
+  return trails;
+};
+
 export default function FAQ({ faqs = defaultFAQs }: FAQProps) {
+  // Generate positions once when component mounts
+  const floatingElements = useMemo(() => generateFloatingElements(20), []);
+  const lightTrails = useMemo(() => generateLightTrails(8), []);
+
   return (
     <section className="py-20 relative overflow-hidden bg-gradient-to-b from-[#0e2547] to-[#0e3459] perspective-1000">
       {/* Cosmic background layer - lighter, more cyan */}
@@ -39,45 +81,27 @@ export default function FAQ({ faqs = defaultFAQs }: FAQProps) {
       
       {/* Dynamic floating elements */}
       <div className="absolute inset-0">
-        {[...Array(20)].map((_, i) => (
+        {floatingElements.map((style, i) => (
           <div
             key={i}
             className="absolute rounded-full animate-float"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: `${Math.random() * 8 + 4}px`,
-              height: `${Math.random() * 8 + 4}px`,
-              backgroundColor: Math.random() > 0.5 ? '#0ea5e9' : '#38bdf8',
-              animationDelay: `${Math.random() * 8}s`,
-              animationDuration: `${6 + Math.random() * 4}s`,
-              opacity: 0.2,
-              filter: 'blur(1px)',
-              transform: `rotate(${Math.random() * 360}deg)`,
-            }}
+            style={style}
           >
-            <div className="absolute inset-0 bg-white/20 rounded-full animate-pulse" 
-                 style={{ animationDelay: `${Math.random() * 2}s` }}></div>
+            <div 
+              className="absolute inset-0 bg-white/20 rounded-full animate-pulse" 
+              style={{ animationDelay: `${(i * 0.25) % 2}s` }}
+            />
           </div>
         ))}
       </div>
 
       {/* Animated light trails */}
       <div className="absolute inset-0">
-        {[...Array(8)].map((_, i) => (
+        {lightTrails.map((style, i) => (
           <div
             key={i}
             className="absolute h-px animate-cosmic-shift"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: `${Math.random() * 150 + 50}px`,
-              background: `linear-gradient(90deg, transparent, ${Math.random() > 0.5 ? '#0ea5e9' : '#38bdf8'}, transparent)`,
-              animationDelay: `${-i * 2}s`,
-              animationDuration: `${15 + Math.random() * 10}s`,
-              opacity: 0.15,
-              transform: `rotate(${Math.random() * 360}deg)`,
-            }}
+            style={style}
           />
         ))}
       </div>

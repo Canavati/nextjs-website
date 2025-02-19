@@ -4,6 +4,19 @@ import { motion } from 'framer-motion';
 import { House, GameController, MonitorPlay, Users } from '@phosphor-icons/react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useMemo } from 'react';
+
+// Add this function at the top level
+const generateParticlePositions = (count: number) => {
+  const positions = [];
+  for (let i = 0; i < count; i++) {
+    positions.push({
+      left: `${(i * 19) % 100}%`,
+      top: `${(i * 17) % 100}%`,
+    });
+  }
+  return positions;
+};
 
 export default function ConnectedLife() {
   const features = [
@@ -28,6 +41,9 @@ export default function ConnectedLife() {
       description: 'Conexión simultánea para todos los dispositivos del hogar.',
     },
   ];
+
+  // Generate particle positions once
+  const particlePositions = useMemo(() => generateParticlePositions(5), []);
 
   return (
     <section id="vida-conectada" className="py-20 px-[5%] relative overflow-hidden bg-[#f5f7ff]">
@@ -105,23 +121,20 @@ export default function ConnectedLife() {
 
       {/* Floating Particles Effect */}
       <div className="absolute inset-0 pointer-events-none">
-        {[...Array(5)].map((_, i) => (
+        {particlePositions.map((position, i) => (
           <motion.div
             key={i}
             className="absolute w-1 h-1 rounded-full bg-[--quaternary]"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-            }}
+            style={position}
             animate={{
               y: [0, -100, 0],
               opacity: [0, 1, 0],
               scale: [0, 1, 0],
             }}
             transition={{
-              duration: 5 + Math.random() * 5,
+              duration: 5 + (i * 2),
               repeat: Infinity,
-              delay: Math.random() * 5,
+              delay: i * 1.5,
               ease: "easeInOut"
             }}
           />

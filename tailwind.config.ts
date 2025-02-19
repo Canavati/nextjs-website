@@ -46,7 +46,20 @@ const config: Config = {
         'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
         'cosmic-shift': 'cosmicShift 20s ease infinite',
         'network-flow': 'networkFlow 15s linear infinite',
-        'particle-wave': 'particleWave 8s ease-in-out infinite'
+        'particle-wave': 'particleWave 8s ease-in-out infinite',
+        'subtle-drift': 'subtleDrift 20s linear infinite',
+        'cosmic-drift-1': 'cosmicDrift1 15s ease-in-out infinite',
+        'cosmic-drift-2': 'cosmicDrift2 18s ease-in-out infinite',
+        'cosmic-drift-3': 'cosmicDrift3 20s ease-in-out infinite',
+        'spin-slow': 'spin 20s linear infinite',
+        'reverse-spin-slow': 'reverseSpin 25s linear infinite',
+        'particle-float': 'particleFloat 5s ease-in-out infinite',
+        'fade-in-out': 'fadeInOut 3s ease-in-out infinite',
+        'spin-slower': 'spin 30s linear infinite',
+        'float-horizontal': 'floatHorizontal 15s ease-in-out infinite',
+        'subtle-rotate': 'subtleRotate 180s linear infinite',
+        'glow-line-vertical': 'glowLineVertical 4s ease-in-out infinite',
+        'glow-line-horizontal': 'glowLineHorizontal 4s ease-in-out infinite',
       },
       keyframes: {
         progress: {
@@ -104,7 +117,69 @@ const config: Config = {
             'transform': 'translateY(-20px) scale(1.2)',
             'opacity': '0.8'
           }
-        }
+        },
+        subtleDrift: {
+          '0%': { 'background-position': '0% 0%' },
+          '100%': { 'background-position': '100% 100%' }
+        },
+        cosmicDrift1: {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '50%': { transform: 'translate(30px, 20px) scale(1.1)' }
+        },
+        cosmicDrift2: {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '50%': { transform: 'translate(-20px, -30px) scale(1.15)' }
+        },
+        cosmicDrift3: {
+          '0%, 100%': { transform: 'translate(0, 0) scale(1)' },
+          '50%': { transform: 'translate(15px, -25px) scale(1.05)' }
+        },
+        reverseSpin: {
+          '0%': { transform: 'rotate(360deg)' },
+          '100%': { transform: 'rotate(0deg)' }
+        },
+        particleFloat: {
+          '0%, 100%': { 
+            transform: 'translateY(0) translateX(0)',
+            opacity: '0'
+          },
+          '50%': { 
+            transform: 'translateY(-30px) translateX(10px)',
+            opacity: '1'
+          }
+        },
+        fadeInOut: {
+          '0%, 100%': { opacity: '0' },
+          '50%': { opacity: '0.5' },
+        },
+        floatHorizontal: {
+          '0%': { transform: 'translateX(-100%)' },
+          '100%': { transform: 'translateX(200%)' },
+        },
+        subtleRotate: {
+          '0%': { transform: 'rotate(0deg)' },
+          '100%': { transform: 'rotate(360deg)' },
+        },
+        glowLineVertical: {
+          '0%, 100%': { 
+            opacity: '0',
+            transform: 'scaleY(0.5)'
+          },
+          '50%': { 
+            opacity: '1',
+            transform: 'scaleY(1)'
+          },
+        },
+        glowLineHorizontal: {
+          '0%, 100%': { 
+            opacity: '0',
+            transform: 'scaleX(0.5)'
+          },
+          '50%': { 
+            opacity: '1',
+            transform: 'scaleX(1)'
+          },
+        },
       },
     },
   },

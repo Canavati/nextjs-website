@@ -5,7 +5,7 @@ import { Wrench, Headset, Gauge, CurrencyCircleDollar, LockOpen, Broadcast, Shie
 import { type IconProps } from '@phosphor-icons/react';
 import type { ComponentType } from 'react';
 import Link from 'next/link';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useMemo } from 'react';
 
 interface Benefit {
   icon?: string;
@@ -53,10 +53,32 @@ const motionConfig = {
   transition: { duration: 0.5 }
 };
 
+// Add this function at the top level, outside the component
+const generateParticlePositions = (count: number) => {
+  const positions = [];
+  for (let i = 0; i < count; i++) {
+    // Create a deterministic pattern based on index
+    const position = {
+      left: `${(i * 17) % 100}%`,
+      top: `${(i * 23) % 100}%`,
+      width: `${3 + (i % 3)}px`,
+      height: `${3 + (i % 3)}px`,
+      backgroundColor: i % 2 === 0 ? '#4361ee' : '#0ea5e9',
+      animationDelay: `${(i * 0.5) % 5}s`,
+      opacity: 0.3
+    };
+    positions.push(position);
+  }
+  return positions;
+};
+
 export default function Benefits({ benefits = defaultBenefits }: BenefitsProps) {
   const [isPaused, setIsPaused] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
+  
+  // Generate particle positions once when component mounts
+  const particlePositions = useMemo(() => generateParticlePositions(20), []);
 
   const renderIcon = (benefit: Benefit) => {
     if (benefit.Icon) {
@@ -146,19 +168,11 @@ export default function Benefits({ benefits = defaultBenefits }: BenefitsProps) 
 
       {/* Floating particles */}
       <div className="absolute inset-0">
-        {[...Array(20)].map((_, i) => (
+        {particlePositions.map((position, i) => (
           <div
             key={i}
             className="absolute rounded-full animate-particle-wave"
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              width: `${Math.random() * 4 + 2}px`,
-              height: `${Math.random() * 4 + 2}px`,
-              backgroundColor: Math.random() > 0.5 ? '#4361ee' : '#0ea5e9',
-              animationDelay: `${Math.random() * 5}s`,
-              opacity: 0.3
-            }}
+            style={position}
           />
         ))}
       </div>
