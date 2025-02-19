@@ -20,19 +20,44 @@ import { useState } from 'react';
 import Link from 'next/link';
 import FAQItem from '@/components/ui/FAQItem';
 
-const helpResources = [
+interface Button {
+  text: string;
+  link: string;
+}
+
+interface BaseHelpResource {
+  icon: React.ElementType;
+  title: string;
+  description: string;
+}
+
+interface SingleButtonResource extends BaseHelpResource {
+  link: string;
+  buttonText: string;
+  buttons?: never;
+}
+
+interface MultiButtonResource extends BaseHelpResource {
+  buttons: Button[];
+  link?: never;
+  buttonText?: never;
+}
+
+type HelpResource = SingleButtonResource | MultiButtonResource;
+
+const helpResources: HelpResource[] = [
   {
     icon: Phone,
     title: 'Atención Telefónica',
-    description: 'Llámanos al 900 XXX XXX',
-    link: 'tel:900XXXXXX',
+    description: 'Llámanos al 604 451 989',
+    link: 'tel:604451989',
     buttonText: 'Llamar ahora'
   },
   {
     icon: EnvelopeSimple,
     title: 'Correo Electrónico',
-    description: 'soporte@unimovil.com',
-    link: 'mailto:soporte@unimovil.com',
+    description: 'hola@unimovil.com',
+    link: 'mailto:hola@unimovil.com',
     buttonText: 'Enviar email'
   },
   {
@@ -44,10 +69,25 @@ const helpResources = [
   },
   {
     icon: Article,
-    title: 'Centro de Ayuda',
-    description: 'Consulta nuestras guías',
-    link: '/guias',
-    buttonText: 'Ver guías'
+    title: 'Blog',
+    description: 'Consulta nuestras guías y artículos',
+    link: '/blog',
+    buttonText: 'Ver blog'
+  },
+  {
+    icon: Receipt,
+    title: 'Documentación',
+    description: 'Tarifas y condiciones de servicio',
+    buttons: [
+      {
+        text: 'Tarifas',
+        link: '/tarifas'
+      },
+      {
+        text: 'Condiciones',
+        link: '/condiciones_generales_particulares.pdf'
+      }
+    ]
   }
 ];
 
@@ -487,7 +527,7 @@ export default function AyudaPage() {
         <div className="absolute inset-0 bg-gradient-new opacity-95" />
         <div className="absolute inset-0 bg-black/40" />
 
-        <div className="relative max-w-7xl mx-auto px-4">
+        <div className="relative max-w-[1550px] mx-auto px-4">
           <div className="text-center mb-16">
             <motion.h1
               initial={{ opacity: 0, y: 20 }}
@@ -501,14 +541,14 @@ export default function AyudaPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              className="text-xl text-gray-300 max-w-2xl mx-auto"
+              className="text-xl text-white max-w-2xl mx-auto"
             >
               Estamos aquí para ayudarte. Encuentra respuestas rápidas o contacta con nuestro equipo de soporte.
             </motion.p>
           </div>
 
           {/* Help Resources Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-7xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 max-w-[1550px] mx-auto">
             {helpResources.map((resource, index) => (
               <motion.div
                 key={resource.title}
@@ -523,14 +563,28 @@ export default function AyudaPage() {
                   </div>
                   <div>
                     <h3 className="text-lg font-semibold text-white mb-2">{resource.title}</h3>
-                    <p className="text-gray-300 text-sm mb-4">{resource.description}</p>
+                    <p className="text-white text-sm mb-4">{resource.description}</p>
                   </div>
-                  <Link
-                    href={resource.link}
-                    className="inline-flex items-center justify-center w-full bg-gradient-new text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
-                  >
-                    {resource.buttonText}
-                  </Link>
+                  {('buttons' in resource && resource.buttons) ? (
+                    <div className="flex gap-2 w-full">
+                      {resource.buttons.map((button) => (
+                        <Link
+                          key={button.text}
+                          href={button.link}
+                          className="flex-1 bg-gradient-new text-white px-3 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+                        >
+                          {button.text}
+                        </Link>
+                      ))}
+                    </div>
+                  ) : (
+                    <Link
+                      href={resource.link}
+                      className="inline-flex items-center justify-center w-full bg-gradient-new text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+                    >
+                      {resource.buttonText}
+                    </Link>
+                  )}
                 </div>
               </motion.div>
             ))}
@@ -734,7 +788,7 @@ export default function AyudaPage() {
                 transition={{ duration: 0.5, delay: 0.5 }}
                 className="text-center mt-12"
               >
-                <p className="text-gray-600 mb-6">
+                <p className="text-white mb-6">
                   ¿No encuentras lo que buscas?
                 </p>
                 <Link
