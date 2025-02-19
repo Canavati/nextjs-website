@@ -19,12 +19,12 @@ Web:
 
 - Pagina de energia ⛔ (Falta  de configurar el diseño)
 
-- Terminar de configurar el configurador de solo movil, y asegurarse que los otros configuradores estén bien configurados.
+- Terminar de configurar el configurador de solo movil, y asegurarse que los otros configuradores estén bien configurados. ⛔
 
-- agregar blogs, y terminar de configurar el blog page con detalles del diseño.
+- agregar blogs, y terminar de configurar el blog page con detalles del diseño. ⛔ (falta el diseño y afirmar funcionalidad, y cambiar variables de .env)
 
 - Página de Unitv 
 
-- Terminos y condiciones, cookies, etc., agregados en el footer y el centro de ayuda.
+- Terminos y condiciones, cookies, etc., agregados en el footer y el centro de ayuda. ⛔ (falta ponerlo en el footer y el centro de ayuda)
 
-- Backend (Forms funcionales con los IDs de cada oferta para alimentar a Make.com con lo que el usuario elija)
+- Backend (Forms funcionales con los IDs de cada oferta para alimentar a Make.com con lo que el usuario elija) ⛔ (falta el backend)
