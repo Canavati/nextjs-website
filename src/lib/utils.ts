@@ -1,6 +1,9 @@
 export function formatSlug(text: string): string {
   return text
     .toLowerCase()
+    // Normalize accented characters to their ASCII equivalents
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
     // Remove the word "slug" if it exists
     .replace(/\bslug\b/g, '')
     // Remove special characters except letters, numbers, spaces and hyphens
