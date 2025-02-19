@@ -85,7 +85,7 @@ const helpResources: HelpResource[] = [
       },
       {
         text: 'Condiciones',
-        link: '/condiciones_generales_particulares.pdf'
+        link: '/condiciones'
       }
     ]
   }

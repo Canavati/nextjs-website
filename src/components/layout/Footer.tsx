@@ -105,14 +105,14 @@ export default function Footer() {
           <div className="mt-16">
             <h3 className="text-sm font-bold">Empresa</h3>
             <ul className="space-y-[1px] mt-1">
-              <li>
+              {/* <li>
                 <Link 
                   href="/sobre-nosotros"
                   className="text-gray-300 hover:text-[--secondary] transition-colors text-xs"
                 >
                   Sobre Nosotros
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link 
                   href="/blog"
@@ -139,18 +139,18 @@ export default function Footer() {
               </li>
               <li>
                 <Link 
-                  href="/contacto"
+                  href="/condiciones"
                   className="text-gray-300 hover:text-[--secondary] transition-colors text-xs"
                 >
-                  Contacto
+                  Condiciones
                 </Link>
               </li>
               <li>
                 <Link 
-                  href="/trabaja-con-nosotros"
+                  href="/contacto"
                   className="text-gray-300 hover:text-[--secondary] transition-colors text-xs"
                 >
-                  Trabaja con Nosotros
+                  Contacto
                 </Link>
               </li>
             </ul>
