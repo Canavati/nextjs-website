@@ -21,6 +21,7 @@ import PacksGrid from '../offerings/packs/PacksGrid';
 import FibraMovilConfigurator from '../offerings/fibra-movil/FibraMovilConfigurator';
 import SoloFibraConfigurator from '../offerings/solo-fibra/SoloFibraConfigurator';
 import SoloMovilConfigurator from '../offerings/solo-movil/SoloMovilConfigurator';
+import BonosConfigurator from '../offerings/solo-movil/BonosConfigurator';
 import { useIsMobile } from '@/hooks/useIsMobile';
 
 type ViewType = 'packs' | 'fibra-movil' | 'solo-fibra' | 'solo-movil';

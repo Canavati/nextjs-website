@@ -3,6 +3,8 @@
 import { motion, useScroll, useTransform } from 'framer-motion';
 import { useRef } from 'react';
 import SoloMovilConfigurator from '@/components/offerings/solo-movil/SoloMovilConfigurator';
+import BonosConfigurator from '@/components/offerings/solo-movil/BonosConfigurator';
+import { DeviceMobile } from '@phosphor-icons/react';
 
 export const MovilPlans = () => {
   const sectionRef = useRef<HTMLElement>(null);
@@ -93,8 +95,9 @@ export const MovilPlans = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-4xl md:text-5xl font-bold text-center mb-12 text-shimmer-dark relative z-10 drop-shadow-[0_2px_10px_rgba(255,255,255,1)] [text-shadow:0_2px_15px_rgba(255,255,255,0.3),0_-1px_1px_rgba(0,0,0,0)]"
+          className="text-xl md:text-2xl font-bold text-center mb-12 text-shimmer-dark relative z-10 drop-shadow-[0_2px_10px_rgba(255,255,255,1)] [text-shadow:0_2px_15px_rgba(255,255,255,0.3),0_-1px_1px_rgba(0,0,0,0)]"
         >
+          <DeviceMobile size={20} weight="duotone" className="text-[#ed54ba] inline-block mr-2 mb-1" />
           Planes Móviles
         </motion.h2>
 

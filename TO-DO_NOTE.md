@@ -16,10 +16,8 @@ Web:
 - Blogs terminados. ✅
 - Página de Unitv ✅ (Falta el diseño)
 - Pagina de energia ✅ (Falta  de configurar el diseño)
-
-- Agregar Los bonos (afirmar donde) ⛔ (Finalizar el diseño)
-
-- Terminar de configurar el configurador de solo movil, y asegurarse que los otros configuradores estén bien configurados. ⛔
+- Agregar Los bonos (afirmar donde) ✅
+- Terminar de configurar el configurador de solo movil, y asegurarse que los otros configuradores estén bien configurados. ✅
 
 - cambiar el .env para que los blogs sean visibles. ⛔
 

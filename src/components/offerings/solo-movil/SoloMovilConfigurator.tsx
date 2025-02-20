@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { DeviceMobile, Phone, Lightning, Rocket, Star, Crown, Sparkle, Globe, Database, CaretDown, Plus, Minus, Check, Package, ArrowRight } from '@phosphor-icons/react';
+import { DeviceMobile, Phone, Lightning, Rocket, Star, Crown } from '@phosphor-icons/react';
 import { TarifasDropdown } from '@/components/ui/TarifasDropdown';
 import MovilBonos from './MovilBonos';
 
@@ -40,43 +40,10 @@ const SOLO_MOVIL_PLANS = [
   }
 ];
 
-const INTERNATIONAL_BONOS = [
-  { id: '100min', minutes: '100', price: 3.00 },
-  { id: '300min', minutes: '300', price: 9.00 },
-  { id: '600min', minutes: '600', price: 12.00 },
-];
-
-const DATA_BONOS = [
-  { id: '500mb', data: '500MB', price: 2.00 },
-  { id: '1gb', data: '1GB', price: 3.00 },
-  { id: '3gb', data: '3GB', price: 5.00 },
-  { id: '5gb', data: '5GB', price: 6.00 },
-  { id: '10gb', data: '10GB', price: 8.00 },
-];
-
-interface BonoConfig {
-  internationalMinutes: string;
-  extraData: string;
-}
-
 export default function SoloMovilConfigurator() {
   const [activeSection, setActiveSection] = useState<'plans' | 'bonos'>('plans');
   const [currentCard, setCurrentCard] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
-  const [isExpanded, setIsExpanded] = useState(false);
-  const [config, setConfig] = useState<BonoConfig>({
-    internationalMinutes: '',
-    extraData: '',
-  });
-
-  const handleBonoChange = (type: 'internationalMinutes' | 'extraData', value: string) => {
-    setConfig(prev => ({
-      ...prev,
-      [type]: prev[type] === value ? '' : value
-    }));
-  };
-
-  const selectedBonosCount = (config.internationalMinutes ? 1 : 0) + (config.extraData ? 1 : 0);
 
   // Update current card based on scroll position
   useEffect(() => {

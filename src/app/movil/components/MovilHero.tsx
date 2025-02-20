@@ -5,9 +5,11 @@ import { useState } from 'react';
 import { 
   DeviceMobile, CellSignalFull, Crown, Lightning, Cloud, Cpu, Database, Globe, 
   Desktop, SimCard, Broadcast, Phone, ChatCircleDots, Users, UsersFour,
-  Plus, CaretDown, Star 
+  Plus, CaretDown, Star, Package 
 } from '@phosphor-icons/react';
 import Image from 'next/image';
+import BonosConfigurator from '@/components/offerings/solo-movil/BonosConfigurator';
+import Link from 'next/link';
 
 const MOVIL_PLANS = [
   {
@@ -65,42 +67,27 @@ interface BonoConfig {
 
 export const HeroConfigurator = () => {
   const [selectedPlan, setSelectedPlan] = useState(MOVIL_PLANS[0]);
-  const [previewPlan, setPreviewPlan] = useState(MOVIL_PLANS[0]);
-  const [isSelected, setIsSelected] = useState(false);
   const [activeSection, setActiveSection] = useState<'plan' | 'bonos'>('plan');
-  const [config, setConfig] = useState<BonoConfig>({
-    internationalMinutes: '',
-    extraData: '',
-  });
+  const [isSelected, setIsSelected] = useState(false);
+
+  const handleSectionChange = (section: 'plan' | 'bonos') => {
+    // Prevent re-animation if clicking the same section
+    if (section === activeSection) return;
+    setActiveSection(section);
+  };
 
   const handlePlanSelect = (plan: typeof MOVIL_PLANS[0]) => {
     setSelectedPlan(plan);
-    setPreviewPlan(plan);
     setIsSelected(true);
+    setActiveSection('plan');
   };
-
-  const handlePlanHover = (plan: typeof MOVIL_PLANS[0]) => {
-    if (!isSelected) {
-      setPreviewPlan(plan);
-    }
-  };
-
-  const handleBonoChange = (type: 'internationalMinutes' | 'extraData', value: string) => {
-    setConfig(prev => ({
-      ...prev,
-      [type]: prev[type] === value ? '' : value
-    }));
-  };
-
-  const currentPlan = isSelected ? selectedPlan : previewPlan;
-  const selectedBonosCount = (config.internationalMinutes ? 1 : 0) + (config.extraData ? 1 : 0);
 
   return (
     <div className="relative w-full max-w-[500px] mx-auto">
       {/* Section Switcher */}
       <div className="flex gap-2 mb-6">
         <motion.button
-          onClick={() => setActiveSection('plan')}
+          onClick={() => handleSectionChange('plan')}
           className={`flex-1 py-3 px-6 rounded-xl font-medium text-base transition-all duration-300 ${
             activeSection === 'plan'
               ? 'bg-gradient-new text-white shadow-lg shadow-[#51fcff]/20'
@@ -109,15 +96,18 @@ export const HeroConfigurator = () => {
           whileHover={{ y: -2 }}
           whileTap={{ scale: 0.98 }}
         >
-          Plan Móvil
-          {isSelected && (
-            <span className="ml-2 px-2 py-0.5 rounded-full bg-white/20 text-white text-xs">
-              {currentPlan.title}
-            </span>
-          )}
+          <div className="flex items-center justify-center gap-2">
+            <DeviceMobile size={20} weight="duotone" className="text-[#51fcff]" />
+            <span>Plan Móvil</span>
+            {isSelected && (
+              <span className="px-2 py-0.5 rounded-full bg-white/20 text-white text-xs">
+                {selectedPlan.title}
+              </span>
+            )}
+          </div>
         </motion.button>
         <motion.button
-          onClick={() => setActiveSection('bonos')}
+          onClick={() => handleSectionChange('bonos')}
           className={`flex-1 py-3 px-6 rounded-xl font-medium text-base transition-all duration-300 ${
             activeSection === 'bonos'
               ? 'bg-gradient-new text-white shadow-lg shadow-[#51fcff]/20'
@@ -126,45 +116,32 @@ export const HeroConfigurator = () => {
           whileHover={{ y: -2 }}
           whileTap={{ scale: 0.98 }}
         >
-          Bonos Extra
-          {selectedBonosCount > 0 && (
-            <span className="ml-2 px-2 py-0.5 rounded-full bg-white/20 text-white text-xs">
-              {selectedBonosCount}
-            </span>
-          )}
+          <div className="flex items-center justify-center gap-2">
+            <Package size={20} weight="duotone" className="text-[#51fcff]" />
+            <span>Bonos Extra</span>
+          </div>
         </motion.button>
       </div>
 
       {/* Main Container */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5 }}
-        className="relative space-y-6"
-      >
+      <div className="relative space-y-6">
         <AnimatePresence mode="wait" initial={false}>
           {activeSection === 'plan' ? (
             /* Plan Section */
             <motion.div
               key="plan"
-              initial={{ opacity: 0, x: -20 }}
+              initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
+              exit={{ opacity: 0, x: -20 }}
               transition={{ duration: 0.2 }}
               className="space-y-6"
             >
               {/* Dynamic Card */}
-              <motion.div
-                layoutId="plan-card"
-                className="w-full relative p-6 rounded-xl backdrop-blur-sm bg-white/10"
-                animate={{
-                  backgroundColor: isSelected ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
-                }}
-              >
+              <div className="w-full relative p-6 rounded-xl backdrop-blur-sm bg-white/10">
                 {/* Title and Icon */}
                 <div className="flex items-center gap-2 mb-6">
-                  <currentPlan.icon size={24} weight="duotone" className="text-[#51fcff]" />
-                  <h3 className="text-2xl font-medium text-white">{currentPlan.title}</h3>
+                  <selectedPlan.icon size={24} weight="duotone" className="text-[#51fcff]" />
+                  <h3 className="text-2xl font-medium text-white">{selectedPlan.title}</h3>
                 </div>
 
                 {/* Features Grid */}
@@ -175,7 +152,7 @@ export const HeroConfigurator = () => {
                       <span className="text-sm text-white/60">Datos</span>
                     </div>
                     <div className="text-5xl font-medium text-white">
-                      {currentPlan.data}<span className="text-lg ml-1">GB</span>
+                      {selectedPlan.data}<span className="text-lg ml-1">GB</span>
                     </div>
                   </div>
                   <div className="space-y-2">
@@ -184,7 +161,7 @@ export const HeroConfigurator = () => {
                       <span className="text-sm text-white/60">Llamadas</span>
                     </div>
                     <div className="text-sm font-medium text-white leading-tight">
-                      {currentPlan.calls}
+                      {selectedPlan.calls}
                     </div>
                   </div>
                 </div>
@@ -192,11 +169,11 @@ export const HeroConfigurator = () => {
                 {/* Price */}
                 <div className="flex items-baseline justify-between">
                   <div className="text-5xl font-medium text-white">
-                    {currentPlan.basePrice.toFixed(2)}€
+                    {selectedPlan.basePrice.toFixed(2)}€
                     <span className="text-lg font-normal text-white/60 ml-2">/mes</span>
                   </div>
                 </div>
-              </motion.div>
+              </div>
 
               {/* Plan Selector */}
               <div className="grid grid-cols-4 gap-3">
@@ -204,7 +181,6 @@ export const HeroConfigurator = () => {
                   <motion.button
                     key={plan.id}
                     onClick={() => handlePlanSelect(plan)}
-                    onMouseEnter={() => handlePlanHover(plan)}
                     className={`relative p-3 rounded-xl transition-all duration-300 ${
                       selectedPlan.id === plan.id && isSelected
                         ? 'bg-white/20'
@@ -219,9 +195,10 @@ export const HeroConfigurator = () => {
                     </div>
                     {selectedPlan.id === plan.id && isSelected && (
                       <motion.div
-                        layoutId="selected-indicator"
                         className="absolute inset-0 rounded-xl border-2 border-[#51fcff]"
-                        transition={{ duration: 0.3 }}
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.2 }}
                       />
                     )}
                   </motion.button>
@@ -232,117 +209,40 @@ export const HeroConfigurator = () => {
             /* Bonos Section */
             <motion.div
               key="bonos"
-              initial={{ opacity: 0, x: 20 }}
+              initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
+              exit={{ opacity: 0, x: 20 }}
               transition={{ duration: 0.2 }}
-              className="space-y-6"
             >
-              {/* International Minutes */}
-              <div className="relative p-6 rounded-xl backdrop-blur-sm bg-white/10 space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Globe size={24} weight="duotone" className="text-[#51fcff]" />
-                  <h3 className="text-xl font-medium text-white">Minutos Internacionales</h3>
-                </div>
-                <div className="space-y-3">
-                  {INTERNATIONAL_BONOS.map((bono) => (
-                    <motion.button
-                      key={bono.id}
-                      onClick={() => handleBonoChange('internationalMinutes', bono.id)}
-                      className={`w-full p-4 rounded-xl transition-all duration-300 flex items-center justify-between group ${
-                        config.internationalMinutes === bono.id
-                          ? 'bg-white/20 border-2 border-[#51fcff]'
-                          : 'bg-white/10 hover:bg-white/15'
-                      }`}
-                      whileHover={{ y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                          config.internationalMinutes === bono.id
-                            ? 'bg-[#51fcff]/20'
-                            : 'bg-white/10'
-                        }`}>
-                          {config.internationalMinutes === bono.id && (
-                            <motion.div
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              className="w-3 h-3 rounded-full bg-[#51fcff]"
-                            />
-                          )}
-                        </div>
-                        <span className="text-lg font-medium text-white">{bono.minutes} min</span>
-                      </div>
-                      <span className="text-xl font-medium text-[#51fcff]">
-                        +{bono.price.toFixed(2)}€
-                      </span>
-                    </motion.button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Extra Data */}
-              <div className="relative p-6 rounded-xl backdrop-blur-sm bg-white/10 space-y-4">
-                <div className="flex items-center gap-2 mb-2">
-                  <Database size={24} weight="duotone" className="text-[#51fcff]" />
-                  <h3 className="text-xl font-medium text-white">Datos Extra</h3>
-                </div>
-                <div className="space-y-3">
-                  {DATA_BONOS.map((bono) => (
-                    <motion.button
-                      key={bono.id}
-                      onClick={() => handleBonoChange('extraData', bono.id)}
-                      className={`w-full p-4 rounded-xl transition-all duration-300 flex items-center justify-between group ${
-                        config.extraData === bono.id
-                          ? 'bg-white/20 border-2 border-[#51fcff]'
-                          : 'bg-white/10 hover:bg-white/15'
-                      }`}
-                      whileHover={{ y: -2 }}
-                      whileTap={{ scale: 0.98 }}
-                    >
-                      <div className="flex items-center gap-3">
-                        <div className={`w-6 h-6 rounded-full flex items-center justify-center ${
-                          config.extraData === bono.id
-                            ? 'bg-[#51fcff]/20'
-                            : 'bg-white/10'
-                        }`}>
-                          {config.extraData === bono.id && (
-                            <motion.div
-                              initial={{ scale: 0 }}
-                              animate={{ scale: 1 }}
-                              className="w-3 h-3 rounded-full bg-[#51fcff]"
-                            />
-                          )}
-                        </div>
-                        <span className="text-lg font-medium text-white">{bono.data}</span>
-                      </div>
-                      <span className="text-xl font-medium text-[#51fcff]">
-                        +{bono.price.toFixed(2)}€
-                      </span>
-                    </motion.button>
-                  ))}
-                </div>
-              </div>
+              <BonosConfigurator variant="hero" />
             </motion.div>
           )}
         </AnimatePresence>
 
         {/* CTA Button */}
-        <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-          <a
-            href="#contacto"
-            className={`block text-center py-4 rounded-xl font-medium text-lg transition-all duration-300 ${
-              (activeSection === 'plan' && isSelected) || (activeSection === 'bonos' && selectedBonosCount > 0)
-                ? 'bg-gradient-new text-white shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30'
-                : 'bg-white/10 text-white/60 cursor-not-allowed'
-            }`}
-          >
-            {activeSection === 'plan'
-              ? isSelected ? 'Contratar Plan' : 'Selecciona un Plan'
-              : selectedBonosCount > 0 ? 'Contratar Bonos' : 'Selecciona un Bono'}
-          </a>
-        </motion.div>
-      </motion.div>
+        <AnimatePresence>
+          {activeSection === 'plan' && (
+            <motion.div 
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
+              whileHover={{ scale: 1.02 }} 
+              whileTap={{ scale: 0.98 }}
+            >
+              <Link
+                href="#contacto"
+                className={`block text-center py-4 rounded-xl font-medium text-lg transition-all duration-300 ${
+                  isSelected
+                    ? 'bg-gradient-new text-white shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30'
+                    : 'bg-white/10 text-white/60 cursor-not-allowed'
+                }`}
+              >
+                {isSelected ? 'Contratar Plan' : 'Selecciona un Plan'}
+              </Link>
+            </motion.div>
+          )}
+        </AnimatePresence>
+      </div>
     </div>
   );
 };
