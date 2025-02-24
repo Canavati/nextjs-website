@@ -67,14 +67,14 @@ export const HeroFibraPacks = () => {
         {/* Dynamic Card */}
         <motion.div
           layoutId="pack-card"
-          className="w-full relative p-6 rounded-xl backdrop-blur-sm bg-white/10"
+          className="w-full relative p-6 rounded-3xl backdrop-blur-sm bg-white/10"
           animate={{
             backgroundColor: isSelected ? 'rgba(255, 255, 255, 0.2)' : 'rgba(255, 255, 255, 0.1)',
           }}
         >
           {/* Hover/Selected Gradient */}
           <motion.div
-            className="absolute inset-0 rounded-xl bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20"
+            className="absolute inset-0 rounded-3xl bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20"
             animate={{
               opacity: isSelected ? 1 : 0.5
             }}
@@ -129,7 +129,7 @@ export const HeroFibraPacks = () => {
               key={pack.title}
               onClick={() => handlePackSelect(pack)}
               onMouseEnter={() => handlePackHover(pack)}
-              className={`relative p-3 rounded-xl transition-all duration-300 group ${
+              className={`relative p-3 rounded-2xl transition-all duration-300 group ${
                 selectedPack.title === pack.title && isSelected
                   ? 'bg-white/20'
                   : 'bg-white/10 hover:bg-white/15'
@@ -144,7 +144,7 @@ export const HeroFibraPacks = () => {
               {selectedPack.title === pack.title && isSelected && (
                 <motion.div
                   layoutId="selected-indicator"
-                  className="absolute inset-0 rounded-xl border-2 border-[#51fcff]"
+                  className="absolute inset-0 rounded-2xl border-2 border-[#51fcff]"
                   transition={{ duration: 0.3 }}
                 />
               )}
@@ -156,7 +156,7 @@ export const HeroFibraPacks = () => {
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Link
             href="#contacto"
-            className={`block text-center py-4 rounded-xl font-matter font-semibold text-lg transition-all duration-300 ${
+            className={`block text-center py-4 rounded-2xl font-matter font-semibold text-lg transition-all duration-300 ${
               isSelected
                 ? 'bg-gradient-new text-white shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30'
                 : 'bg-white/10 text-white/60 cursor-not-allowed'
@@ -277,11 +277,11 @@ export default function SoloFibraConfigurator() {
               <div className="flex flex-col gap-2">
                 <div className="flex items-center gap-2">
                   <WifiHigh size={24} weight="duotone" className="text-[#ed54ba]" />
-                  <span className="text-3xl font-medium text-[#79C4CD]">{plan.speed}<span className="text-xl text-[#666666]">Mb</span></span>
+                  <span className="text-5xl font-medium text-[#79C4CD]">{plan.speed}<span className="text-2xl text-[#666666]">Mb</span></span>
                 </div>
               </div>
               <div className="text-right">
-                <div className="text-3xl font-medium text-[#79C4CD]">
+                <div className="text-4xl font-medium text-[#79C4CD]">
                   {plan.basePrice.toFixed(2)}€
                   <span className="text-base font-normal text-[#666666] ml-1">/mes</span>
                 </div>
@@ -297,7 +297,7 @@ export default function SoloFibraConfigurator() {
         {SOLO_FIBRA_PLANS.map((plan, index) => (
           <motion.div
             key={index}
-            className="group relative p-6 rounded-xl text-left transition-all duration-300"
+            className="group relative p-6 rounded-3xl text-left transition-all duration-300"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -308,7 +308,7 @@ export default function SoloFibraConfigurator() {
             }}
           >
             {/* Selection/Hover Gradient */}
-            <div className="absolute inset-[1px] rounded-[10px] bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+            <div className="absolute inset-[1px] rounded-[1.75rem] bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
             
             {/* Content */}
             <div className="relative">
@@ -328,18 +328,8 @@ export default function SoloFibraConfigurator() {
                   <div className="text-2xl font-medium text-[#444444] mb-3">Fibra</div>
                   <div className="flex items-center justify-center gap-3">
                     <span className="text-6xl font-medium text-[#79C4CD]">{plan.speed}</span>
-                    <span className="text-2xl text-[#666666]">Mb</span>
+                    <span className="text-3xl text-[#666666]">Mb</span>
                   </div>
-                </div>
-
-                {/* Features */}
-                <div className="flex flex-col items-start mx-auto w-fit space-y-4">
-                  {plan.features.map((feature, idx) => (
-                    <div key={idx} className="flex items-center gap-4">
-                      <div className="w-3.5 h-3.5 rounded-full bg-[#ed54ba]/40 flex-shrink-0" />
-                      <span className="text-lg text-[#444444] max-w-[180px] leading-tight">{feature}</span>
-                    </div>
-                  ))}
                 </div>
 
                 {/* Light Divider */}
@@ -347,7 +337,7 @@ export default function SoloFibraConfigurator() {
 
                 {/* Price */}
                 <div className="text-center">
-                  <div className="text-6xl font-medium text-[#79C4CD]">
+                  <div className="text-7xl font-medium text-[#79C4CD]">
                     {plan.basePrice.toFixed(2)}€
                     <span className="text-2xl font-normal text-[#666666] ml-1">/mes</span>
                   </div>
@@ -357,7 +347,7 @@ export default function SoloFibraConfigurator() {
                 {/* Action Button */}
                 <Link
                   href="#contacto"
-                  className="block text-center bg-gradient-new text-white py-3 px-8 rounded-xl font-medium text-base transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+                  className="block text-center bg-gradient-new text-white py-3 px-8 rounded-2xl font-medium text-base transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
                 >
                   ¡Lo quiero!
                 </Link>

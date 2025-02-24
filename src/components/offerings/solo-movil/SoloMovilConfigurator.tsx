@@ -78,11 +78,11 @@ export default function SoloMovilConfigurator() {
     <div className="w-full">
       {/* Section Switcher */}
       <div className="flex justify-center mb-8">
-        <div className="bg-white/90 backdrop-blur-sm rounded-2xl p-2 shadow-md w-fit">
+        <div className="bg-white/90 backdrop-blur-sm rounded-3xl p-2 shadow-md w-fit">
           <div className="flex gap-2">
             <button
               onClick={() => setActiveSection('plans')}
-              className={`px-6 py-2 rounded-xl font-medium transition-all duration-300 ${
+              className={`px-6 py-2 rounded-2xl font-medium transition-all duration-300 ${
                 activeSection === 'plans'
                   ? 'bg-gradient-new text-white'
                   : 'text-[#1e3a5f] hover:bg-[#f8fafc]'
@@ -92,7 +92,7 @@ export default function SoloMovilConfigurator() {
             </button>
             <button
               onClick={() => setActiveSection('bonos')}
-              className={`px-6 py-2 rounded-xl font-medium transition-all duration-300 ${
+              className={`px-6 py-2 rounded-2xl font-medium transition-all duration-300 ${
                 activeSection === 'bonos'
                   ? 'bg-gradient-new text-white'
                   : 'text-[#1e3a5f] hover:bg-[#f8fafc]'
@@ -139,7 +139,7 @@ export default function SoloMovilConfigurator() {
                 {SOLO_MOVIL_PLANS.map((plan, index) => (
                   <div key={index} className="w-[280px] md:w-auto snap-center">
                     <motion.div
-                      className="group relative p-3 md:p-4 rounded-xl text-left transition-all duration-300"
+                      className="group relative p-3 md:p-4 rounded-3xl text-left transition-all duration-300"
                       initial={{ opacity: 0, y: 20 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -150,7 +150,7 @@ export default function SoloMovilConfigurator() {
                       }}
                     >
                       {/* Selection/Hover Gradient */}
-                      <div className="absolute inset-[1px] rounded-[10px] bg-gradient-to-tr from-[#ed54ba]/20 to-[#51fcff]/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                      <div className="absolute inset-[1px] rounded-[1.75rem] bg-gradient-to-tr from-[#ed54ba]/20 to-[#51fcff]/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
                       
                       {/* Content */}
                       <div className="relative flex flex-col h-full">
@@ -171,7 +171,7 @@ export default function SoloMovilConfigurator() {
                         <div className="text-center mb-4 h-[48px] flex items-center justify-center">
                           <div className="inline-flex items-center justify-center gap-2">
                             <DeviceMobile size={24} weight="duotone" className="text-[#ed54ba]" />
-                            <span className="text-5xl font-medium text-[#79C4CD]">{plan.data}</span>
+                            <span className="text-4xl font-medium text-[#79C4CD]">{plan.data}</span>
                             <span className="text-lg text-[#666666]">GB</span>
                           </div>
                         </div>
@@ -189,7 +189,7 @@ export default function SoloMovilConfigurator() {
 
                         {/* Price */}
                         <div className="text-center mt-auto h-[80px] flex flex-col items-center justify-center">
-                          <div className="text-5xl font-medium text-[#79C4CD]">
+                          <div className="text-6xl font-medium text-[#79C4CD]">
                             {plan.basePrice.toFixed(2)}€
                             <span className="text-lg font-normal text-[#666666] ml-1">/mes</span>
                           </div>
@@ -199,7 +199,7 @@ export default function SoloMovilConfigurator() {
                         {/* Action Button */}
                         <Link
                           href="#contacto"
-                          className="block text-center bg-gradient-new text-white py-2 px-6 rounded-lg font-medium text-sm mt-4 transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+                          className="block text-center bg-gradient-new text-white py-2 px-6 rounded-2xl font-medium text-sm mt-4 transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
                         >
                           ¡Lo quiero!
                         </Link>

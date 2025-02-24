@@ -67,7 +67,7 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
         <div className="flex gap-2">
           <motion.button
             onClick={() => handleTypeChange('minutes')}
-            className={`flex-1 py-3 px-6 rounded-xl font-medium text-base transition-all duration-300 ${
+            className={`flex-1 py-3 px-6 rounded-2xl font-medium text-base transition-all duration-300 ${
               activeType === 'minutes'
                 ? 'bg-gradient-new text-white shadow-lg shadow-[#51fcff]/20'
                 : 'bg-white/10 text-white/60 hover:bg-white/15 hover:text-white'
@@ -87,7 +87,7 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
           </motion.button>
           <motion.button
             onClick={() => handleTypeChange('data')}
-            className={`flex-1 py-3 px-6 rounded-xl font-medium text-base transition-all duration-300 ${
+            className={`flex-1 py-3 px-6 rounded-2xl font-medium text-base transition-all duration-300 ${
               activeType === 'data'
                 ? 'bg-gradient-new text-white shadow-lg shadow-[#51fcff]/20'
                 : 'bg-white/10 text-white/60 hover:bg-white/15 hover:text-white'
@@ -108,7 +108,7 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
         </div>
 
         {/* Main Card */}
-        <div className="w-full relative p-6 rounded-xl backdrop-blur-sm bg-white/10">
+        <div className="w-full relative p-6 rounded-3xl backdrop-blur-sm bg-white/10">
           <AnimatePresence mode="wait" initial={false}>
             {activeType === 'minutes' ? (
               <motion.div
@@ -127,11 +127,11 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
 
                 {/* Main Feature */}
                 <div className="text-center">
-                  <div className="text-5xl font-medium text-white">
+                  <div className="text-4xl font-medium text-white">
                     {selectedMinutes.minutes}
                     <span className="text-lg text-white/60 ml-2">min</span>
                   </div>
-                  <div className="text-2xl font-medium text-[#51fcff] mt-2">
+                  <div className="text-5xl font-medium text-[#51fcff] mt-2">
                     +{selectedMinutes.price.toFixed(2)}€
                     <span className="text-sm text-white/60 ml-1">/mes</span>
                   </div>
@@ -143,7 +143,7 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
                     <motion.button
                       key={bono.id}
                       onClick={() => handleMinutesSelect(bono)}
-                      className={`relative p-3 rounded-xl transition-all duration-300 ${
+                      className={`relative p-3 rounded-2xl transition-all duration-300 ${
                         selectedMinutes.id === bono.id && isMinutesSelected
                           ? 'bg-white/20'
                           : 'bg-white/10 hover:bg-white/15'
@@ -154,7 +154,7 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
                       <div className="text-lg font-medium text-white">{bono.minutes}</div>
                       {selectedMinutes.id === bono.id && isMinutesSelected && (
                         <motion.div
-                          className="absolute inset-0 rounded-xl border-2 border-[#51fcff]"
+                          className="absolute inset-0 rounded-2xl border-2 border-[#51fcff]"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ duration: 0.2 }}
@@ -181,10 +181,10 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
 
                 {/* Main Feature */}
                 <div className="text-center">
-                  <div className="text-5xl font-medium text-white">
+                  <div className="text-4xl font-medium text-white">
                     {selectedData.data}
                   </div>
-                  <div className="text-2xl font-medium text-[#51fcff] mt-2">
+                  <div className="text-5xl font-medium text-[#51fcff] mt-2">
                     +{selectedData.price.toFixed(2)}€
                     <span className="text-sm text-white/60 ml-1">/mes</span>
                   </div>
@@ -196,7 +196,7 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
                     <motion.button
                       key={bono.id}
                       onClick={() => handleDataSelect(bono)}
-                      className={`relative p-3 rounded-xl transition-all duration-300 ${
+                      className={`relative p-3 rounded-2xl transition-all duration-300 ${
                         selectedData.id === bono.id && isDataSelected
                           ? 'bg-white/20'
                           : 'bg-white/10 hover:bg-white/15'
@@ -207,7 +207,7 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
                       <div className="text-lg font-medium text-white">{bono.data}</div>
                       {selectedData.id === bono.id && isDataSelected && (
                         <motion.div
-                          className="absolute inset-0 rounded-xl border-2 border-[#51fcff]"
+                          className="absolute inset-0 rounded-2xl border-2 border-[#51fcff]"
                           initial={{ opacity: 0 }}
                           animate={{ opacity: 1 }}
                           transition={{ duration: 0.2 }}
@@ -225,7 +225,7 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
           <Link
             href="#contacto"
-            className={`block text-center py-4 rounded-xl font-medium text-lg transition-all duration-300 ${
+            className={`block text-center py-4 rounded-2xl font-medium text-lg transition-all duration-300 ${
               isMinutesSelected || isDataSelected
                 ? 'bg-gradient-new text-white shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30'
                 : 'bg-white/10 text-white/60 cursor-not-allowed'
@@ -264,7 +264,7 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
                 whileHover={{ y: -2 }}
               >
                 <div
-                  className="group relative p-4 rounded-xl bg-white text-center transition-all duration-300"
+                  className="group relative p-4 rounded-3xl bg-white text-center transition-all duration-300"
                   style={{
                     border: '1px solid transparent',
                     background: 'linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255)) padding-box, var(--gradient-primary) border-box'
@@ -331,7 +331,7 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
                 whileHover={{ y: -2 }}
               >
                 <div
-                  className="group relative p-4 rounded-xl bg-white text-center transition-all duration-300"
+                  className="group relative p-4 rounded-3xl bg-white text-center transition-all duration-300"
                   style={{
                     border: '1px solid transparent',
                     background: 'linear-gradient(rgb(255, 255, 255), rgb(255, 255, 255)) padding-box, var(--gradient-primary) border-box'

@@ -72,7 +72,7 @@ const ConfigurationModal = ({
       animate={{ scale: 1, opacity: 1 }}
       exit={{ scale: 0.95, opacity: 0 }}
       onClick={(e) => e.stopPropagation()}
-      className="w-full max-w-md bg-white rounded-2xl overflow-hidden shadow-xl"
+      className="w-full max-w-md bg-white rounded-3xl overflow-hidden shadow-xl"
     >
       {/* Header */}
       <div className="bg-gradient-new p-4 text-white">
@@ -125,7 +125,7 @@ const ConfigurationModal = ({
             </div>
           </div>
 
-          <div className="h-1 bg-gray-100 rounded-full overflow-hidden">
+          <div className="h-1 bg-gray-100 rounded-2xl overflow-hidden">
             <motion.div
               className="h-full bg-gradient-to-r from-[#ed54ba] to-[#51fcff]"
               initial={{ width: 0 }}
@@ -143,7 +143,7 @@ const ConfigurationModal = ({
           ].map((line) => (
             <div 
               key={line.type}
-              className="flex items-center justify-between p-2 bg-slate-50 rounded-lg"
+              className="flex items-center justify-between p-2 bg-slate-50 rounded-2xl"
             >
               <div className="flex items-center gap-2">
                 <DeviceMobile size={18} weight="duotone" className="text-[#ed54ba]" />
@@ -155,7 +155,7 @@ const ConfigurationModal = ({
               <div className="flex items-center gap-1.5">
                 <motion.button
                   onClick={() => onLineChange(line.type as keyof typeof config.additionalLines, false)}
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center transition-colors ${
+                  className={`w-7 h-7 rounded-2xl flex items-center justify-center transition-colors ${
                     config.additionalLines[line.type as keyof typeof config.additionalLines] === 0
                       ? 'bg-gray-100 text-gray-400'
                       : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
@@ -171,7 +171,7 @@ const ConfigurationModal = ({
                 </span>
                 <motion.button
                   onClick={() => onLineChange(line.type as keyof typeof config.additionalLines, true)}
-                  className={`w-7 h-7 rounded-lg flex items-center justify-center transition-colors ${
+                  className={`w-7 h-7 rounded-2xl flex items-center justify-center transition-colors ${
                     !canAddMore
                       ? 'bg-gray-100 text-gray-400'
                       : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
@@ -196,7 +196,7 @@ const ConfigurationModal = ({
         >
           <Link
             href="#contacto"
-            className="block text-center bg-gradient-new text-white py-2.5 px-6 rounded-xl font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+            className="block text-center bg-gradient-new text-white py-2.5 px-6 rounded-2xl font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
           >
             ¡Lo quiero!
           </Link>
@@ -269,7 +269,7 @@ export const HeroConfigurator = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="relative overflow-hidden rounded-3xl bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
+        className="relative overflow-hidden rounded-[2rem] bg-white/10 backdrop-blur-md border border-white/20 shadow-[0_8px_30px_rgb(0,0,0,0.12)]"
       >
         {/* Gradient Overlay */}
         <div className="absolute inset-0 bg-gradient-to-b from-white/5 to-white/0" />
@@ -277,14 +277,14 @@ export const HeroConfigurator = () => {
         {/* Content */}
         <div className="relative p-6 md:p-8">
           {/* Plan Selection */}
-          <div className="flex gap-2 p-1 bg-black/20 rounded-2xl backdrop-blur-sm mb-6">
+          <div className="flex gap-2 p-1 bg-black/20 rounded-[1.5rem] backdrop-blur-sm mb-6">
             {FIBRA_MOVIL_PLANS.map((plan, index) => (
               <button
                 key={plan.title}
                 onClick={() => handlePlanSelect(index)}
                 onMouseEnter={() => handlePlanHover(index)}
                 onMouseLeave={handlePlanLeave}
-                className={`relative flex-1 py-2 px-3 rounded-xl text-sm font-medium transition-all duration-300 ${
+                className={`relative flex-1 py-2 px-3 rounded-2xl text-sm font-medium transition-all duration-300 ${
                   previewPlan === index
                     ? 'bg-white text-[#292cf6] shadow-sm'
                     : 'text-white/80 hover:text-white hover:bg-white/5'
@@ -312,7 +312,7 @@ export const HeroConfigurator = () => {
               <div className="relative group">
                 <div className="absolute inset-0 bg-gradient-to-b from-[#51fcff]/10 to-transparent rounded-2xl -z-10 group-hover:from-[#51fcff]/20 transition-colors duration-300" />
                 <div className="p-4 text-center">
-                  <div className="text-4xl font-black text-white mb-1 group-hover:text-[#51fcff] transition-colors duration-300">
+                  <div className="text-3xl font-black text-white mb-1 group-hover:text-[#51fcff] transition-colors duration-300">
                     {currentPlan.speed}
                     <span className="text-lg font-bold ml-1">Mb</span>
                   </div>
@@ -324,7 +324,7 @@ export const HeroConfigurator = () => {
               <div className="relative group">
                 <div className="absolute inset-0 bg-gradient-to-b from-[#51fcff]/10 to-transparent rounded-2xl -z-10 group-hover:from-[#51fcff]/20 transition-colors duration-300" />
                 <div className="p-4 text-center">
-                  <div className="text-4xl font-black text-white mb-1 group-hover:text-[#51fcff] transition-colors duration-300">
+                  <div className="text-3xl font-black text-white mb-1 group-hover:text-[#51fcff] transition-colors duration-300">
                     {currentPlan.data}
                     <span className="text-lg font-bold ml-1">GB</span>
                   </div>
@@ -343,7 +343,7 @@ export const HeroConfigurator = () => {
               </div>
             </div>
 
-            <div className="h-1 bg-white/10 rounded-full mb-3 overflow-hidden">
+            <div className="h-1 bg-white/10 rounded-2xl mb-3 overflow-hidden">
               <motion.div
                 className="h-full bg-gradient-to-r from-[#ed54ba] to-[#51fcff]"
                 initial={{ width: 0 }}
@@ -362,7 +362,7 @@ export const HeroConfigurator = () => {
                   key={line.type}
                   className="relative group"
                 >
-                  <div className="absolute inset-0 bg-gradient-to-b from-[#51fcff]/10 to-transparent rounded-xl -z-10 group-hover:from-[#51fcff]/20 transition-colors duration-300" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-[#51fcff]/10 to-transparent rounded-2xl -z-10 group-hover:from-[#51fcff]/20 transition-colors duration-300" />
                   <div className="p-3 text-center">
                     <div className="flex items-center justify-center gap-1 mb-2">
                       <span className="text-2xl font-bold text-white">{line.gb}</span>
@@ -374,7 +374,7 @@ export const HeroConfigurator = () => {
                           e.stopPropagation();
                           handleLineChange(line.type as keyof typeof config.additionalLines, false);
                         }}
-                        className={`w-6 h-6 rounded-lg flex items-center justify-center transition-colors ${
+                        className={`w-6 h-6 rounded-2xl flex items-center justify-center transition-colors ${
                           config.additionalLines[line.type as keyof typeof config.additionalLines] === 0
                             ? 'bg-white/10 text-white/40'
                             : 'bg-white/20 hover:bg-white/30 text-white'
@@ -393,7 +393,7 @@ export const HeroConfigurator = () => {
                           e.stopPropagation();
                           handleLineChange(line.type as keyof typeof config.additionalLines, true);
                         }}
-                        className={`w-6 h-6 rounded-lg flex items-center justify-center transition-colors ${
+                        className={`w-6 h-6 rounded-2xl flex items-center justify-center transition-colors ${
                           !canAddMore
                             ? 'bg-white/10 text-white/40'
                             : 'bg-white/20 hover:bg-white/30 text-white'
@@ -415,7 +415,7 @@ export const HeroConfigurator = () => {
           {/* Price Section */}
           <div className="text-center mb-6">
             <div className="inline-block relative group">
-              <div className="absolute inset-0 bg-gradient-to-r from-[#51fcff]/20 via-[#51fcff]/10 to-[#51fcff]/20 rounded-2xl blur-xl group-hover:opacity-100 transition-opacity duration-300 -z-10" />
+              <div className="absolute inset-0 bg-gradient-to-r from-[#51fcff]/20 via-[#51fcff]/10 to-[#51fcff]/20 rounded-3xl blur-xl group-hover:opacity-100 transition-opacity duration-300 -z-10" />
               <div className="relative">
                 <AnimatePresence mode="wait">
                   <motion.div
@@ -425,7 +425,7 @@ export const HeroConfigurator = () => {
                     exit={{ opacity: 0, y: -10 }}
                     transition={{ duration: 0.3 }}
                   >
-                    <div className="text-5xl font-black text-white group-hover:text-[#51fcff] transition-colors duration-300">
+                    <div className="text-6xl font-black text-white group-hover:text-[#51fcff] transition-colors duration-300">
                       {previewPlanPrice.toFixed(2)}€
                       <span className="text-base font-medium text-white/60 ml-2">/mes</span>
                     </div>
@@ -453,7 +453,7 @@ export const HeroConfigurator = () => {
           <motion.button
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="w-full bg-gradient-new text-white py-4 rounded-xl font-semibold text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300"
+            className="w-full bg-gradient-new text-white py-4 rounded-2xl font-semibold text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300"
           >
             Contratar Ahora
           </motion.button>
@@ -546,7 +546,7 @@ export default function FibraMovilConfigurator() {
               setConfig(prev => ({ ...prev, selectedPlan: index }));
               setShowMobileConfig(true);
             }}
-            className="w-full group relative p-3 rounded-xl text-left transition-all duration-300"
+            className="w-full group relative p-3 rounded-3xl text-left transition-all duration-300"
             style={{
               border: '2px solid transparent',
               background: 'linear-gradient(rgb(248 250 252), rgb(248 250 252)) padding-box, var(--gradient-primary) border-box'
@@ -555,7 +555,7 @@ export default function FibraMovilConfigurator() {
             animate={{ opacity: 1, y: 0 }}
           >
             {/* Hover Gradient Only */}
-            <div className="absolute inset-[1px] rounded-[10px] bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 group-active:opacity-100 group-hover:opacity-100 transition-opacity duration-300" />
+            <div className="absolute inset-[1px] rounded-[1.75rem] bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 group-active:opacity-100 group-hover:opacity-100 transition-opacity duration-300" />
             
             <div className="relative">
               {/* Title and Icon */}
@@ -604,7 +604,7 @@ export default function FibraMovilConfigurator() {
           <motion.button
             key={index}
             onClick={() => setConfig(prev => ({ ...prev, selectedPlan: index }))}
-            className="group relative p-3 rounded-xl text-left transition-all duration-300"
+            className="group relative p-3 rounded-3xl text-left transition-all duration-300"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -615,7 +615,7 @@ export default function FibraMovilConfigurator() {
             }}
           >
             {/* Selection/Hover Gradient */}
-            <div className={`absolute inset-[1px] rounded-[10px] bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 transition-opacity duration-300 ${
+            <div className={`absolute inset-[1px] rounded-[1.75rem] bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 transition-opacity duration-300 ${
               config.selectedPlan === index ? 'opacity-100' : 'group-hover:opacity-100'
             }`} />
             
@@ -648,14 +648,14 @@ export default function FibraMovilConfigurator() {
                   <div className="text-center">
                     <div className="text-sm font-medium text-[#444444] mb-1">Fibra</div>
                     <div className="flex items-center justify-center gap-2">
-                      <span className="text-4xl font-medium text-[#79C4CD]">{plan.speed}</span>
+                      <span className="text-3xl font-medium text-[#79C4CD]">{plan.speed}</span>
                       <span className="text-base text-[#666666]">Mb</span>
                     </div>
                   </div>
                   <div className="text-center">
                     <div className="text-sm font-medium text-[#444444] mb-1">Datos Móvil</div>
                     <div className="flex items-center justify-center gap-2">
-                      <span className="text-4xl font-medium text-[#79C4CD]">{plan.data}</span>
+                      <span className="text-3xl font-medium text-[#79C4CD]">{plan.data}</span>
                       <span className="text-base text-[#666666]">GB</span>
                     </div>
                   </div>
@@ -666,7 +666,7 @@ export default function FibraMovilConfigurator() {
 
                 {/* Price */}
                 <div className="text-center">
-                  <div className="text-4xl font-medium text-[#79C4CD]">
+                  <div className="text-6xl font-medium text-[#79C4CD]">
                     {plan.basePrice.toFixed(2)}€
                     <span className="text-lg font-normal text-[#666666] ml-1">/mes</span>
                   </div>
@@ -681,7 +681,7 @@ export default function FibraMovilConfigurator() {
       {/* Desktop Configuration Section */}
       <div className="hidden md:grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4">
         <motion.div
-          className="lg:col-span-2 relative rounded-xl p-3 shadow-sm"
+          className="lg:col-span-2 relative rounded-3xl p-3 shadow-sm"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.4 }}
@@ -700,7 +700,7 @@ export default function FibraMovilConfigurator() {
             </div>
 
             {/* Progress Bar */}
-            <div className="h-1 bg-gray-100 rounded-full mb-3 overflow-hidden">
+            <div className="h-1 bg-gray-100 rounded-2xl mb-3 overflow-hidden">
               <motion.div
                 className="h-full bg-gradient-to-r from-[#ed54ba] to-[#51fcff]"
                 initial={{ width: 0 }}
@@ -717,7 +717,7 @@ export default function FibraMovilConfigurator() {
               ].map((line) => (
                 <motion.div 
                   key={line.type}
-                  className="flex items-center justify-between p-2 rounded-lg hover:bg-gray-50/80 transition-colors"
+                  className="flex items-center justify-between p-2 rounded-2xl hover:bg-gray-50/80 transition-colors"
                   whileHover={{ scale: 1.01 }}
                 >
                   <div className="flex items-center gap-3">
@@ -733,7 +733,7 @@ export default function FibraMovilConfigurator() {
                         e.stopPropagation();
                         handleLineChange(line.type as keyof typeof config.additionalLines, false);
                       }}
-                      className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                      className={`w-8 h-8 rounded-2xl flex items-center justify-center transition-colors ${
                         config.additionalLines[line.type as keyof typeof config.additionalLines] === 0
                           ? 'bg-gray-100 text-gray-400'
                           : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
@@ -752,7 +752,7 @@ export default function FibraMovilConfigurator() {
                         e.stopPropagation();
                         handleLineChange(line.type as keyof typeof config.additionalLines, true);
                       }}
-                      className={`w-8 h-8 rounded-lg flex items-center justify-center transition-colors ${
+                      className={`w-8 h-8 rounded-2xl flex items-center justify-center transition-colors ${
                         !canAddMore
                           ? 'bg-gray-100 text-gray-400'
                           : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
@@ -772,7 +772,7 @@ export default function FibraMovilConfigurator() {
 
         {/* Total Price Card */}
         <motion.div
-          className="relative rounded-xl p-3 shadow-sm"
+          className="relative rounded-3xl p-3 shadow-sm"
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3, delay: 0.5 }}
@@ -800,7 +800,7 @@ export default function FibraMovilConfigurator() {
             >
               <Link
                 href="#contacto"
-                className="block text-center bg-gradient-new text-white py-2.5 px-6 rounded-xl font-medium text-sm transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+                className="block text-center bg-gradient-new text-white py-2.5 px-6 rounded-2xl font-medium text-sm transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
               >
                 ¡Lo quiero!
               </Link>

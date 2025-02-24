@@ -44,7 +44,7 @@ export default function PackCard({
     <motion.div
       {...motionConfig}
       transition={{ duration: 0.5, delay }}
-      className="relative card-interactive gradient-glow rounded-xl p-6"
+      className="relative card-interactive gradient-glow rounded-3xl p-6"
       style={{
         border: '2px solid transparent',
         background: 'linear-gradient(rgb(248 250 252), rgb(248 250 252)) padding-box, var(--gradient-primary) border-box'
@@ -116,7 +116,7 @@ export default function PackCard({
         {/* Action Button */}
         <Link
           href="#contacto"
-          className="block text-center bg-gradient-new text-white py-3 px-8 rounded-xl font-medium text-base transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+          className="block text-center bg-gradient-new text-white py-3 px-8 rounded-2xl font-medium text-lg transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
         >
           ¡Lo quiero!
         </Link>

@@ -88,13 +88,13 @@ const HeroPackCard = ({ pack, isSelected, onClick }: HeroPackCardProps) => {
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5, delay: pack.delay }}
-      className={`w-full group relative p-4 rounded-xl text-left transition-all duration-300 ${
+      className={`w-full group relative p-4 rounded-3xl text-left transition-all duration-300 ${
         isSelected ? 'bg-white/20' : 'bg-white/10'
       } backdrop-blur-sm hover:bg-white/20`}
       whileHover={{ y: -4 }}
     >
       {/* Hover/Selected Gradient */}
-      <div className={`absolute inset-0 rounded-xl bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 ${
+      <div className={`absolute inset-0 rounded-3xl bg-gradient-to-tr from-[#ed54ba]/20 via-[#51fcff]/20 to-[#51fcff]/20 opacity-0 ${
         isSelected ? 'opacity-100' : 'group-hover:opacity-100'
       } transition-opacity duration-300`} />
       
@@ -195,7 +195,7 @@ export const HeroPacks = () => {
         >
           <Link
             href="#contacto"
-            className="block text-center bg-gradient-new text-white py-4 rounded-xl font-semibold text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300"
+            className="block text-center bg-gradient-new text-white py-4 rounded-2xl font-semibold text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300"
           >
             Contratar Ahora
           </Link>
