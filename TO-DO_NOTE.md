@@ -24,3 +24,7 @@ Web:
 - Hacer mas redondos los bordes de las tarjetas de las ofertas. ⛔
 
 - Backend (Forms funcionales con los IDs de cada oferta para alimentar a Make.com con lo que el usuario elija) ⛔ (falta el backend)
+
+- Configurar Contentfull con cuenta de pascual
+
+- COnfigurar vercel de pascual y mandar demo a pascual
