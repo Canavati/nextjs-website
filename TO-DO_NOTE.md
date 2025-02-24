@@ -19,6 +19,8 @@ Web:
 - Agregar Los bonos (afirmar donde) ✅
 - Terminar de configurar el configurador de solo movil, y asegurarse que los otros configuradores estén bien configurados. ✅
 
-- cambiar el .env para que los blogs sean visibles. ⛔
+- cambiar el .env para que los blogs sean visibles. ⛔|
+
+- Hacer mas redondos los bordes de las tarjetas de las ofertas. ⛔
 
 - Backend (Forms funcionales con los IDs de cada oferta para alimentar a Make.com con lo que el usuario elija) ⛔ (falta el backend)
