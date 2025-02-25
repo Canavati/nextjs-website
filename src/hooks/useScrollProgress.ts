@@ -1,7 +1,18 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export function useScrollProgress() {
+  const [isMounted, setIsMounted] = useState(false);
+  
+  // Mark as mounted on client side
   useEffect(() => {
+    setIsMounted(true);
+    return () => setIsMounted(false);
+  }, []);
+  
+  useEffect(() => {
+    // Only run on client side after component is mounted
+    if (!isMounted) return;
+    
     const updateScrollProgress = () => {
       const scrollProgress = document.getElementById('scroll-progress');
       if (scrollProgress) {
@@ -11,11 +22,15 @@ export function useScrollProgress() {
       }
     };
 
-    window.addEventListener('scroll', updateScrollProgress);
-    
     // Initial update
     updateScrollProgress();
-
-    return () => window.removeEventListener('scroll', updateScrollProgress);
-  }, []);
+    
+    // Add event listener
+    window.addEventListener('scroll', updateScrollProgress);
+    
+    // Cleanup event listener
+    return () => {
+      window.removeEventListener('scroll', updateScrollProgress);
+    };
+  }, [isMounted]); // Add isMounted as a dependency
 } 

@@ -3,7 +3,7 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { Globe, Database, Check, Package, ArrowRight, DeviceMobile, Phone } from '@phosphor-icons/react';
+import { Globe, Database, } from '@phosphor-icons/react';
 
 export const INTERNATIONAL_BONOS = [
   { id: '100min', minutes: '100', price: 3.00 },
@@ -12,11 +12,11 @@ export const INTERNATIONAL_BONOS = [
 ];
 
 export const DATA_BONOS = [
-  { id: '500mb', data: '500MB', price: 2.00 },
-  { id: '1gb', data: '1GB', price: 3.00 },
-  { id: '3gb', data: '3GB', price: 5.00 },
-  { id: '5gb', data: '5GB', price: 6.00 },
-  { id: '10gb', data: '10GB', price: 8.00 },
+  { id: '500mb', data: '500 MB', price: 2.00 },
+  { id: '1gb', data: '1 GB', price: 3.00 },
+  { id: '3gb', data: '3 GB', price: 5.00 },
+  { id: '5gb', data: '5 GB', price: 6.00 },
+  { id: '10gb', data: '10 GB', price: 9.00 },
 ];
 
 interface BonoConfig {
@@ -127,12 +127,14 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
 
                 {/* Main Feature */}
                 <div className="text-center">
-                  <div className="text-4xl font-medium text-white">
+                  <div className="text-4xl font-bold text-white">
                     {selectedMinutes.minutes}
                     <span className="text-lg text-white/60 ml-2">min</span>
                   </div>
-                  <div className="text-5xl font-medium text-[#51fcff] mt-2">
-                    +{selectedMinutes.price.toFixed(2)}€
+                  <div className="text-5xl font-bold text-[#51fcff] mt-2">
+                    +{Number.isInteger(selectedMinutes.price) ? 
+                      selectedMinutes.price : 
+                      selectedMinutes.price.toFixed(2)}€
                     <span className="text-sm text-white/60 ml-1">/mes</span>
                   </div>
                 </div>
@@ -176,16 +178,18 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
                 {/* Title and Icon */}
                 <div className="flex items-center gap-2">
                   <Database size={24} weight="duotone" className="text-[#51fcff]" />
-                  <h3 className="text-2xl font-medium text-white">Datos Extra</h3>
+                  <h3 className="text-2xl font-bold text-white">Datos Extra</h3>
                 </div>
 
                 {/* Main Feature */}
                 <div className="text-center">
-                  <div className="text-4xl font-medium text-white">
+                  <div className="text-4xl font-bold text-white">
                     {selectedData.data}
                   </div>
-                  <div className="text-5xl font-medium text-[#51fcff] mt-2">
-                    +{selectedData.price.toFixed(2)}€
+                  <div className="text-5xl font-bold text-[#51fcff] mt-2">
+                    +{Number.isInteger(selectedData.price) ? 
+                      selectedData.price : 
+                      selectedData.price.toFixed(2)}€
                     <span className="text-sm text-white/60 ml-1">/mes</span>
                   </div>
                 </div>
@@ -283,9 +287,9 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
 
                   {/* Main Feature */}
                   <div className="py-4">
-                    <div className="text-5xl font-medium text-[#79C4CD]">
+                    <div className="text-4xl font-medium text-[#79C4CD]">
                       {bono.minutes}
-                      <span className="text-base text-[#666666] ml-1">min</span>
+                      <span className="text-base text-[#666666] ml-1">mins</span>
                     </div>
                   </div>
 
@@ -294,8 +298,10 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
 
                   {/* Price */}
                   <div className="py-4">
-                    <div className="text-4xl font-medium text-[#79C4CD]">
-                      {bono.price.toFixed(2)}€
+                    <div className="text-5xl font-bold text-shimmer-glow-sync">
+                      {Number.isInteger(bono.price) ? 
+                        bono.price : 
+                        bono.price.toFixed(2)}€
                     </div>
                     <p className="text-xs text-[#666666] mt-1">IVA incluido</p>
                   </div>
@@ -350,7 +356,7 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
 
                   {/* Main Feature */}
                   <div className="py-4">
-                    <div className="text-5xl font-medium text-[#79C4CD]">
+                    <div className="text-4xl font-medium text-[#79C4CD]">
                       {bono.data}
                     </div>
                   </div>
@@ -360,8 +366,10 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
 
                   {/* Price */}
                   <div className="py-4">
-                    <div className="text-4xl font-medium text-[#79C4CD]">
-                      {bono.price.toFixed(2)}€
+                    <div className="text-5xl font-bold text-shimmer-glow-sync">
+                      {Number.isInteger(bono.price) ? 
+                        bono.price : 
+                        bono.price.toFixed(2)}€
                     </div>
                     <p className="text-xs text-[#666666] mt-1">IVA incluido</p>
                   </div>

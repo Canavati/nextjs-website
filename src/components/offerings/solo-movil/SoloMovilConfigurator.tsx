@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { DeviceMobile, Phone, Lightning, Rocket, Star, Crown } from '@phosphor-icons/react';
+import { DeviceMobile, Phone, Lightning, Rocket, Star, Crown, Sparkle } from '@phosphor-icons/react';
 import { TarifasDropdown } from '@/components/ui/TarifasDropdown';
 import MovilBonos from './MovilBonos';
 
@@ -17,25 +17,25 @@ const SOLO_MOVIL_PLANS = [
   {
     title: 'Estándar',
     data: '25',
-    basePrice: 7.00,
+    basePrice: 7,
     calls: 'Llamadas ilimitadas'
   },
   {
     title: 'Pro',
     data: '40',
-    basePrice: 9.00,
+    basePrice: 9,
     calls: 'Llamadas ilimitadas'
   },
   {
     title: 'Premium',
     data: '75',
-    basePrice: 10.00,
+    basePrice: 10,
     calls: 'Llamadas ilimitadas'
   },
   {
     title: 'Premium+',
     data: '200',
-    basePrice: 20.00,
+    basePrice: 20,
     calls: 'Llamadas ilimitadas'
   }
 ];
@@ -158,9 +158,9 @@ export default function SoloMovilConfigurator() {
                         <div className="flex items-center justify-center gap-2 mb-4 h-[32px]">
                           {plan.title === 'Básico' && <Lightning size={24} weight="duotone" className="text-[#ed54ba]" />}
                           {plan.title === 'Estándar' && <Rocket size={24} weight="duotone" className="text-[#ed54ba]" />}
-                          {plan.title === 'Pro' && <Crown size={24} weight="duotone" className="text-[#ed54ba]" />}
+                          {plan.title === 'Pro' && <Star size={24} weight="duotone" className="text-[#ed54ba]" />}
                           {plan.title === 'Premium' && <Crown size={24} weight="duotone" className="text-[#ed54ba]" />}
-                          {plan.title === 'Premium+' && <Crown size={24} weight="duotone" className="text-[#ed54ba]" />}
+                          {plan.title === 'Premium+' && <Sparkle size={24} weight="duotone" className="text-[#ed54ba]" />}
                           <h3 className="text-xl font-medium text-dark">{plan.title}</h3>
                         </div>
 
@@ -189,8 +189,12 @@ export default function SoloMovilConfigurator() {
 
                         {/* Price */}
                         <div className="text-center mt-auto h-[80px] flex flex-col items-center justify-center">
-                          <div className="text-6xl font-medium text-[#79C4CD]">
-                            {plan.basePrice.toFixed(2)}€
+                          <div className="flex items-baseline">
+                            <div className="text-6xl font-bold text-shimmer-glow-sync">
+                              {Number.isInteger(plan.basePrice) ? 
+                                `${plan.basePrice}€` : 
+                                `${plan.basePrice.toFixed(2)}€`}
+                            </div>
                             <span className="text-lg font-normal text-[#666666] ml-1">/mes</span>
                           </div>
                           <p className="text-xs text-[#666666] mt-1">IVA incluido</p>
@@ -199,7 +203,7 @@ export default function SoloMovilConfigurator() {
                         {/* Action Button */}
                         <Link
                           href="#contacto"
-                          className="block text-center bg-gradient-new text-white py-2 px-6 rounded-2xl font-medium text-sm mt-4 transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+                          className="block text-center bg-gradient-new text-white py-2 px-6 rounded-lg font-medium text-sm mt-4 transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
                         >
                           ¡Lo quiero!
                         </Link>

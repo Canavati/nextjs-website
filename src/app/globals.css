@@ -345,7 +345,243 @@
     animation: shimmer 4s linear infinite;
   }
 
-  /* Enhanced Gradient Effects */
+  .text-shimmer-bright {
+    background: linear-gradient(
+      60deg,
+      var(--primary) 0%,
+      var(--secondary) 40%,
+      var(--quaternary) 60%,
+      var(--quinary) 100%
+    );
+    background-size: 240% 240%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-flow 8s ease infinite;
+  }
+
+  /* New gradient text effects */
+  .text-shimmer-neon {
+    background: linear-gradient(
+      60deg,
+      #ff00ff 0%,
+      var(--primary) 25%,
+      var(--secondary) 50%,
+      #00ffff 75%,
+      #ff00ff 100%
+    );
+    background-size: 240% 240%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-flow 6s ease infinite;
+    text-shadow: 0 0 10px rgba(81, 252, 255, 0.5),
+                 0 0 20px rgba(81, 252, 255, 0.3),
+                 0 0 30px rgba(81, 252, 255, 0.1);
+  }
+
+  .text-shimmer-fire {
+    background: linear-gradient(
+      60deg,
+      #ff4500 0%,
+      var(--primary) 40%,
+      #ffcc00 70%,
+      #ff4500 100%
+    );
+    background-size: 240% 240%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-flow 8s ease infinite;
+    text-shadow: 0 0 10px rgba(255, 69, 0, 0.5),
+                 0 0 20px rgba(255, 69, 0, 0.3);
+  }
+
+  .text-shimmer-ocean {
+    background: linear-gradient(
+      60deg,
+      var(--secondary) 0%,
+      var(--quaternary) 30%,
+      var(--quinary) 60%,
+      #0077be 100%
+    );
+    background-size: 240% 240%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-flow 10s ease infinite;
+    text-shadow: 0 0 10px rgba(81, 252, 255, 0.5),
+                 0 0 20px rgba(81, 252, 255, 0.3);
+  }
+
+  /* Shadow effects for text gradient */
+  .text-glow-pink {
+    text-shadow: 0 0 5px rgba(237, 84, 186, 0.7),
+                 0 0 10px rgba(237, 84, 186, 0.5),
+                 0 0 15px rgba(237, 84, 186, 0.3);
+  }
+
+  .text-glow-cyan {
+    text-shadow: 0 0 5px rgba(81, 252, 255, 0.7),
+                 0 0 10px rgba(81, 252, 255, 0.5),
+                 0 0 15px rgba(81, 252, 255, 0.3);
+  }
+
+  .text-glow-blue {
+    text-shadow: 0 0 5px rgba(41, 44, 246, 0.7),
+                 0 0 10px rgba(41, 44, 246, 0.5),
+                 0 0 15px rgba(41, 44, 246, 0.3);
+  }
+
+  .text-glow-rainbow {
+    filter: drop-shadow(0 0 5px rgba(237, 84, 186, 0.7))
+           drop-shadow(0 0 10px rgba(81, 252, 255, 0.5))
+           drop-shadow(0 0 15px rgba(41, 44, 246, 0.3));
+  }
+
+  /* Enhanced text-shimmer-bright with glow */
+  .text-shimmer-bright-glow {
+    background: linear-gradient(
+      60deg,
+      var(--primary) 0%,
+      var(--secondary) 50%,
+      var(--quaternary) 60%,
+      var(--quinary) 100%
+    );
+    background-size: 240% 240%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-flow 8s ease infinite;
+    filter: drop-shadow(0 0 1px rgba(81, 252, 255, 0.8))
+           drop-shadow(0 0 2px rgba(81, 252, 255, 0.4));
+  }
+
+  /* Enhanced animated glow versions */
+  .text-shimmer-glow-sync {
+    background: linear-gradient(
+      60deg,
+      var(--primary) 0%,
+      var(--secondary) 50%,
+      var(--quaternary) 60%,
+      var(--quinary) 100%
+    );
+    background-size: 240% 240%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-flow 8s ease infinite;
+  }
+
+  .text-shimmer-glow-pulse {
+    background: linear-gradient(
+      60deg,
+      var(--primary) 0%,
+      var(--secondary) 50%,
+      var(--quaternary) 60%,
+      var(--quinary) 100%
+    );
+    background-size: 240% 240%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-flow 8s ease infinite, pulse-sync 8s ease infinite;
+  }
+
+  .text-shimmer-glow-rainbow {
+    background: linear-gradient(
+      60deg,
+      var(--primary) 0%,
+      var(--secondary) 50%,
+      var(--quaternary) 60%,
+      var(--quinary) 100%
+    );
+    background-size: 240% 240%;
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    animation: gradient-flow 8s ease infinite, rainbow-sync 8s ease infinite;
+  }
+
+  /* Synchronized glow animations */
+  @keyframes glow-sync {
+    0%, 100% {
+      filter: drop-shadow(0 0 2px rgba(237, 84, 186, 0.5))
+             drop-shadow(0 0 4px rgba(237, 84, 186, 0.2));
+    }
+    25% {
+      filter: drop-shadow(0 0 2px rgba(237, 84, 186, 0.3))
+             drop-shadow(0 0 4px rgba(81, 252, 255, 0.2));
+    }
+    50% {
+      filter: drop-shadow(0 0 2px rgba(81, 252, 255, 0.5))
+             drop-shadow(0 0 4px rgba(81, 252, 255, 0.2));
+    }
+    60% {
+      filter: drop-shadow(0 0 2px rgba(121, 196, 205, 0.5))
+             drop-shadow(0 0 4px rgba(121, 196, 205, 0.2));
+    }
+    75% {
+      filter: drop-shadow(0 0 2px rgba(41, 44, 246, 0.4))
+             drop-shadow(0 0 4px rgba(121, 196, 205, 0.1));
+    }
+  }
+
+  @keyframes pulse-sync {
+    0%, 100% {
+      filter: drop-shadow(0 0 1px rgba(237, 84, 186, 0.5))
+             drop-shadow(0 0 3px rgba(237, 84, 186, 0.2));
+    }
+    25% {
+      filter: drop-shadow(0 0 2px rgba(237, 84, 186, 0.3))
+             drop-shadow(0 0 4px rgba(81, 252, 255, 0.2));
+    }
+    50% {
+      filter: drop-shadow(0 0 3px rgba(81, 252, 255, 0.5))
+             drop-shadow(0 0 6px rgba(81, 252, 255, 0.2));
+    }
+    60% {
+      filter: drop-shadow(0 0 2px rgba(121, 196, 205, 0.5))
+             drop-shadow(0 0 5px rgba(121, 196, 205, 0.2));
+    }
+    75% {
+      filter: drop-shadow(0 0 2px rgba(41, 44, 246, 0.4))
+             drop-shadow(0 0 4px rgba(41, 44, 246, 0.2));
+    }
+  }
+
+  @keyframes rainbow-sync {
+    0%, 100% {
+      text-shadow: 0 0 2px rgba(237, 84, 186, 0.4),
+                   0 0 6px rgba(237, 84, 186, 0.2);
+    }
+    25% {
+      text-shadow: 0 0 2px rgba(237, 84, 186, 0.3),
+                   0 0 6px rgba(81, 252, 255, 0.15);
+    }
+    50% {
+      text-shadow: 0 0 2px rgba(81, 252, 255, 0.4),
+                   0 0 6px rgba(81, 252, 255, 0.2);
+    }
+    60% {
+      text-shadow: 0 0 2px rgba(121, 196, 205, 0.4),
+                   0 0 6px rgba(121, 196, 205, 0.2);
+    }
+    75% {
+      text-shadow: 0 0 2px rgba(41, 44, 246, 0.4),
+                   0 0 6px rgba(41, 44, 246, 0.2);
+    }
+  }
+
+  /* Enhanced gradient effects */
   .gradient-border {
     @apply relative;
     background: linear-gradient(#fff, #fff) padding-box,

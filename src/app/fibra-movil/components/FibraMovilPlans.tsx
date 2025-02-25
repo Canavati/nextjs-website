@@ -50,7 +50,12 @@ export const FibraMovilPlans = () => {
   };
 
   return (
-    <section ref={sectionRef} id="planes" className="py-20 relative overflow-hidden">
+    <section 
+      ref={sectionRef} 
+      id="planes" 
+      className="py-16 relative overflow-hidden"
+      style={{ position: 'relative' }}
+    >
       {/* Main Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#b8e5ea] via-[#dbeef2] to-[#b8e5ea]" />
 
@@ -112,12 +117,14 @@ export const FibraMovilPlans = () => {
 
       {/* Content Container */}
       <div className="max-w-[1400px] mx-auto px-4 relative">
-        <motion.h2
-          {...motionConfig}
-          className="text-4xl md:text-5xl font-bold text-center mb-12 text-shimmer-dark relative z-10 drop-shadow-[0_2px_10px_rgba(255,255,255,1)] [text-shadow:0_2px_15px_rgba(255,255,255,0.3),0_-1px_1px_rgba(0,0,0,0)]"
-        >
-          {activeView === 'packs' ? 'Packs Fibra + Móvil' : 'Configura tu Pack'}
-        </motion.h2>
+        <div className="py-2 overflow-visible">
+          <motion.h2
+            {...motionConfig}
+            className="text-4xl md:text-5xl font-bold text-center mb-2 leading-[1.4] pb-8 text-shimmer-dark relative z-10 drop-shadow-[0_2px_10px_rgba(255,255,255,1)] [text-shadow:0_2px_15px_rgba(255,255,255,0.3),0_-1px_1px_rgba(0,0,0,0)]"
+          >
+            {activeView === 'packs' ? 'Packs Fibra + Móvil' : 'Configura tu Pack'}
+          </motion.h2>
+        </div>
 
         <div className="flex justify-center mb-12 relative z-10">
           <motion.div

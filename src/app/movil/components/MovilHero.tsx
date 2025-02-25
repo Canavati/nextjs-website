@@ -5,7 +5,7 @@ import { useState } from 'react';
 import { 
   DeviceMobile, CellSignalFull, Crown, Lightning, Cloud, Cpu, Database, Globe, 
   Desktop, SimCard, Broadcast, Phone, ChatCircleDots, Users, UsersFour,
-  Plus, CaretDown, Star, Package 
+  Plus, CaretDown, Star, Package, Sparkle 
 } from '@phosphor-icons/react';
 import Image from 'next/image';
 import BonosConfigurator from '@/components/offerings/solo-movil/BonosConfigurator';
@@ -24,7 +24,7 @@ const MOVIL_PLANS = [
     id: 'standard',
     title: 'Estándar',
     data: '25',
-    basePrice: 7.00,
+    basePrice: 7,
     calls: 'Llamadas ilimitadas',
     icon: Lightning
   },
@@ -32,17 +32,25 @@ const MOVIL_PLANS = [
     id: 'pro',
     title: 'Pro',
     data: '40',
-    basePrice: 9.00,
+    basePrice: 9,
     calls: 'Llamadas ilimitadas',
-    icon: Crown
+    icon: Star
   },
   {
     id: 'premium',
     title: 'Premium',
     data: '75',
-    basePrice: 10.00,
+    basePrice: 10,
     calls: 'Llamadas ilimitadas',
     icon: Crown
+  },
+  {
+    id: 'premium-plus',
+    title: 'Premium+',
+    data: '200',
+    basePrice: 20,
+    calls: 'Llamadas ilimitadas',
+    icon: Sparkle
   }
 ];
 
@@ -69,17 +77,30 @@ export const HeroConfigurator = () => {
   const [selectedPlan, setSelectedPlan] = useState(MOVIL_PLANS[0]);
   const [activeSection, setActiveSection] = useState<'plan' | 'bonos'>('plan');
   const [isSelected, setIsSelected] = useState(false);
+  const [bonosKey, setBonosKey] = useState(0);
 
   const handleSectionChange = (section: 'plan' | 'bonos') => {
     // Prevent re-animation if clicking the same section
     if (section === activeSection) return;
+    
+    // Always increment the bonosKey on section change to ensure fresh remount
+    if (section === 'bonos') {
+      setBonosKey(prev => prev + 1);
+    }
+    
+    // Reset selections if changing to plan section
+    if (section === 'plan') {
+      setIsSelected(false);
+      setSelectedPlan(MOVIL_PLANS[0]);
+    }
+    
+    // Set active section (immediate visual feedback)
     setActiveSection(section);
   };
 
   const handlePlanSelect = (plan: typeof MOVIL_PLANS[0]) => {
     setSelectedPlan(plan);
     setIsSelected(true);
-    setActiveSection('plan');
   };
 
   return (
@@ -125,123 +146,146 @@ export const HeroConfigurator = () => {
 
       {/* Main Container */}
       <div className="relative space-y-6">
-        <AnimatePresence mode="wait" initial={false}>
-          {activeSection === 'plan' ? (
-            /* Plan Section */
-            <motion.div
-              key="plan"
-              initial={{ opacity: 0, x: 20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -20 }}
-              transition={{ duration: 0.2 }}
-              className="space-y-6"
-            >
-              {/* Dynamic Card */}
-              <div className="w-full relative p-6 rounded-xl backdrop-blur-sm bg-white/10">
-                {/* Title and Icon */}
-                <div className="flex items-center gap-2 mb-6">
-                  <selectedPlan.icon size={24} weight="duotone" className="text-[#51fcff]" />
-                  <h3 className="text-2xl font-medium text-white">{selectedPlan.title}</h3>
-                </div>
-
-                {/* Features Grid */}
-                <div className="grid grid-cols-2 gap-6 mb-6">
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <DeviceMobile size={20} weight="duotone" className="text-[#51fcff]" />
-                      <span className="text-sm text-white/60">Datos</span>
-                    </div>
-                    <div className="text-5xl font-medium text-white">
-                      {selectedPlan.data}<span className="text-lg ml-1">GB</span>
-                    </div>
-                  </div>
-                  <div className="space-y-2">
-                    <div className="flex items-center gap-2">
-                      <Phone size={20} weight="duotone" className="text-[#51fcff]" />
-                      <span className="text-sm text-white/60">Llamadas</span>
-                    </div>
-                    <div className="text-sm font-medium text-white leading-tight">
-                      {selectedPlan.calls}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Price */}
-                <div className="flex items-baseline justify-between">
-                  <div className="text-5xl font-medium text-white">
-                    {selectedPlan.basePrice.toFixed(2)}€
-                    <span className="text-lg font-normal text-white/60 ml-2">/mes</span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Plan Selector */}
-              <div className="grid grid-cols-4 gap-3">
-                {MOVIL_PLANS.map((plan) => (
-                  <motion.button
-                    key={plan.id}
-                    onClick={() => handlePlanSelect(plan)}
-                    className={`relative p-3 rounded-xl transition-all duration-300 ${
-                      selectedPlan.id === plan.id && isSelected
-                        ? 'bg-white/20'
-                        : 'bg-white/10 hover:bg-white/15'
-                    }`}
-                    whileHover={{ y: -2 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <div className="flex flex-col items-center gap-2">
-                      <plan.icon size={24} weight="duotone" className="text-[#51fcff]" />
-                      <span className="text-sm font-medium text-white">{plan.title}</span>
-                    </div>
-                    {selectedPlan.id === plan.id && isSelected && (
-                      <motion.div
-                        className="absolute inset-0 rounded-xl border-2 border-[#51fcff]"
-                        initial={{ opacity: 0 }}
-                        animate={{ opacity: 1 }}
-                        transition={{ duration: 0.2 }}
-                      />
-                    )}
-                  </motion.button>
-                ))}
-              </div>
-            </motion.div>
-          ) : (
-            /* Bonos Section */
-            <motion.div
-              key="bonos"
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 20 }}
-              transition={{ duration: 0.2 }}
-            >
-              <BonosConfigurator variant="hero" />
-            </motion.div>
-          )}
-        </AnimatePresence>
-
-        {/* CTA Button */}
-        <AnimatePresence>
-          {activeSection === 'plan' && (
-            <motion.div 
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
-              whileHover={{ scale: 1.02 }} 
-              whileTap={{ scale: 0.98 }}
-            >
-              <Link
-                href="#contacto"
-                className={`block text-center py-4 rounded-xl font-medium text-lg transition-all duration-300 ${
-                  isSelected
-                    ? 'bg-gradient-new text-white shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30'
-                    : 'bg-white/10 text-white/60 cursor-not-allowed'
-                }`}
+        {/* Simplified conditional rendering instead of AnimatePresence */}
+        {activeSection === 'plan' ? (
+          /* Plan Section - Keep internal animations but simplify container */
+          <motion.div
+            key={`plan-${selectedPlan.id}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="space-y-6 min-h-[400px]"
+          >
+            {/* Dynamic Card */}
+            <div className="w-full relative p-6 rounded-xl backdrop-blur-sm bg-white/10">
+              {/* Title and Icon */}
+              <motion.div 
+                className="flex items-center gap-2 mb-6"
+                key={`title-${selectedPlan.id}`}
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
               >
-                {isSelected ? 'Contratar Plan' : 'Selecciona un Plan'}
-              </Link>
-            </motion.div>
-          )}
-        </AnimatePresence>
+                <selectedPlan.icon size={24} weight="duotone" className="text-[#51fcff]" />
+                <h3 className="text-2xl font-bold text-white">{selectedPlan.title}</h3>
+              </motion.div>
+
+              {/* Features Grid */}
+              <div className="grid grid-cols-2 gap-6 mb-6">
+                <motion.div 
+                  className="space-y-2"
+                  key={`data-${selectedPlan.id}`}
+                  initial={{ opacity: 0, x: -10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.1 }}
+                >
+                  <div className="flex items-center gap-2">
+                    <DeviceMobile size={20} weight="duotone" className="text-[#51fcff]" />
+                    <span className="text-sm text-white/60">Datos</span>
+                  </div>
+                  <div className="text-5xl font-bold text-white">
+                    {selectedPlan.data}<span className="text-lg ml-1">GB</span>
+                  </div>
+                </motion.div>
+                <motion.div 
+                  className="space-y-2"
+                  key={`calls-${selectedPlan.id}`}
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  transition={{ duration: 0.3, delay: 0.2 }}
+                >
+                  <div className="flex items-center gap-2">
+                    <Phone size={20} weight="duotone" className="text-[#51fcff]" />
+                    <span className="text-sm text-white/60">Llamadas</span>
+                  </div>
+                  <div className="text-sm font-medium text-white leading-tight">
+                    {selectedPlan.calls}
+                  </div>
+                </motion.div>
+              </div>
+
+              {/* Price */}
+              <motion.div 
+                className="flex items-baseline justify-between"
+                key={`price-${selectedPlan.id}`}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: 0.3 }}
+              >
+                <div className="text-5xl font-black text-white">
+                  {selectedPlan.basePrice.toFixed(2)}€
+                  <span className="text-lg font-normal text-white/60 ml-2">/mes</span>
+                </div>
+              </motion.div>
+            </div>
+
+            {/* Plan Selector */}
+            <div className="grid grid-cols-5 gap-3">
+              {MOVIL_PLANS.map((plan) => (
+                <motion.button
+                  key={plan.id}
+                  onClick={() => handlePlanSelect(plan)}
+                  className={`relative p-3 rounded-xl transition-all duration-300 ${
+                    selectedPlan.id === plan.id && isSelected
+                      ? 'bg-white/20'
+                      : 'bg-white/10 hover:bg-white/15'
+                  }`}
+                  whileHover={{ y: -2 }}
+                  whileTap={{ scale: 0.98 }}
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <plan.icon size={24} weight="duotone" className="text-[#51fcff]" />
+                    <span className="text-sm font-medium text-white">{plan.title}</span>
+                  </div>
+                  {selectedPlan.id === plan.id && isSelected && (
+                    <motion.div
+                      className="absolute inset-0 rounded-xl border-2 border-[#51fcff]"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ 
+                        duration: 0.4, 
+                        ease: "easeInOut"
+                      }}
+                      layoutId="selectedPlanBorder"
+                    />
+                  )}
+                </motion.button>
+              ))}
+            </div>
+          </motion.div>
+        ) : (
+          /* Bonos Section - Simple wrapper with consistent key */
+          <motion.div
+            key={`bonos-container-${bonosKey}`}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="min-h-[400px]"
+          >
+            <BonosConfigurator key={bonosKey} variant="hero" />
+          </motion.div>
+        )}
+
+        {/* CTA Button - Only show for plan section */}
+        {activeSection === 'plan' && (
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            whileHover={{ scale: 1.02 }} 
+            whileTap={{ scale: 0.98 }}
+          >
+            <Link
+              href="#contacto"
+              className={`block text-center py-4 rounded-xl font-medium text-lg transition-all duration-300 ${
+                isSelected
+                  ? 'bg-gradient-new text-white shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30'
+                  : 'bg-white/10 text-white/60 cursor-not-allowed'
+              }`}
+            >
+              {isSelected ? 'Contratar Plan' : 'Selecciona un Plan'}
+            </Link>
+          </motion.div>
+        )}
       </div>
     </div>
   );

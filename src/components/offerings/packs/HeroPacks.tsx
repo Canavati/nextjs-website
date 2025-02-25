@@ -10,7 +10,7 @@ const packs = [
     id: 'single',
     title: 'Pack Single',
     description: 'Fibra 300 Megas + Llamadas Ilimitadas',
-    price: '33,00',
+    price: '33',
     speed: '300',
     gb: '50',
     lines: 1,
@@ -20,7 +20,7 @@ const packs = [
     id: 'duo',
     title: 'Pack Duo',
     description: 'FIBRA 500 Megas + Llamadas Ilimitadas',
-    price: '50,00',
+    price: '50',
     speed: '500',
     gb: '100',
     lines: 2,
@@ -30,7 +30,7 @@ const packs = [
     id: 'tetra',
     title: 'Pack Tetra',
     description: 'Fibra 500 Megas + Llamadas Ilimitadas',
-    price: '60,00',
+    price: '60',
     speed: '500',
     gb: '175',
     lines: 4,
@@ -40,7 +40,7 @@ const packs = [
     id: 'pro',
     title: 'Pack Pro',
     description: 'Fibra 1000 Megas + Llamadas Ilimitadas',
-    price: '67,00',
+    price: '67',
     speed: '1000',
     gb: '175',
     lines: 2,
@@ -157,7 +157,7 @@ export default function HeroPacks() {
               </div>
 
               {/* Price */}
-              <div className="text-4xl font-black text-white">
+              <div className="text-6xl font-black text-white">
                 {currentPack.price}€
                 <span className="text-base font-matter font-normal text-white/60 ml-2">/mes</span>
               </div>

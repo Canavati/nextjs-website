@@ -1,7 +1,16 @@
-import { useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 export const useScrollTo = () => {
+  const [isBrowser, setIsBrowser] = useState(false);
+  
+  useEffect(() => {
+    setIsBrowser(typeof window !== 'undefined');
+  }, []);
+  
   const scrollTo = useCallback((elementId: string) => {
+    // Only run on the client side
+    if (!isBrowser) return;
+    
     const element = document.getElementById(elementId);
     if (!element) return;
 
@@ -13,7 +22,7 @@ export const useScrollTo = () => {
       top: offsetPosition,
       behavior: 'smooth'
     });
-  }, []);
+  }, [isBrowser]);
 
   return scrollTo;
 }; 

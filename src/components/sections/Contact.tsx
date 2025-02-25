@@ -1,9 +1,28 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 export default function Contact() {
+  // State to hold particles data, initialized as empty array
+  const [particles, setParticles] = useState<{left: string; top: string; size: number; xOffset: number; duration: number; delay: number}[]>([]);
+  const [isClient, setIsClient] = useState(false);
+
+  // Generate particles on the client side only
+  useEffect(() => {
+    setIsClient(true);
+    const generatedParticles = Array(40).fill(0).map((_, i) => ({
+      left: `${Math.random() * 100}%`,
+      top: `${Math.random() * 100}%`,
+      size: i % 3, // 0, 1, or 2 for different sizes
+      xOffset: Math.sin(Math.random() * Math.PI * 2) * 50,
+      duration: 10 + Math.random() * 10,
+      delay: Math.random() * 5
+    }));
+    setParticles(generatedParticles);
+  }, []);
+
   return (
     <section id="contacto" className="min-h-[800px] relative overflow-hidden py-16">
       {/* Main Background */}
@@ -29,36 +48,39 @@ export default function Contact() {
           }}
         />
 
-        {/* Enhanced Floating Particles */}
-        {[...Array(40)].map((_, i) => (
-          <motion.div
-            key={i}
-            className={`absolute rounded-full ${
-              i % 3 === 0 
-                ? 'w-1 h-1 bg-gradient-to-r from-[#292cf6] to-[#51fcff]' 
-                : i % 3 === 1
-                ? 'w-2 h-2 bg-gradient-to-r from-[#51fcff] to-[#292cf6]'
-                : 'w-3 h-3 bg-gradient-to-r from-[#ed54ba] to-[#292cf6]'
-            }`}
-            style={{
-              left: `${Math.random() * 100}%`,
-              top: `${Math.random() * 100}%`,
-              filter: 'blur(1px)',
-            }}
-            animate={{
-              y: [0, -300],
-              x: [0, Math.sin(Math.random() * Math.PI * 2) * 50],
-              opacity: [0, 0.6, 0],
-              scale: [0, 1, 0],
-            }}
-            transition={{
-              duration: 10 + Math.random() * 10,
-              repeat: Infinity,
-              delay: Math.random() * 5,
-              ease: "easeInOut"
-            }}
-          />
-        ))}
+        {/* Enhanced Floating Particles - Client-side rendering only */}
+        <AnimatePresence>
+          {isClient && particles.map((particle, i) => (
+            <motion.div
+              key={i}
+              className={`absolute rounded-full ${
+                particle.size === 0 
+                  ? 'w-1 h-1 bg-gradient-to-r from-[#292cf6] to-[#51fcff]' 
+                  : particle.size === 1
+                  ? 'w-2 h-2 bg-gradient-to-r from-[#51fcff] to-[#292cf6]'
+                  : 'w-3 h-3 bg-gradient-to-r from-[#ed54ba] to-[#292cf6]'
+              }`}
+              style={{
+                left: particle.left,
+                top: particle.top,
+                filter: 'blur(1px)',
+              }}
+              initial={{ opacity: 0 }}
+              animate={{
+                y: [0, -300],
+                x: [0, particle.xOffset],
+                opacity: [0, 0.6, 0],
+                scale: [0, 1, 0],
+              }}
+              transition={{
+                duration: particle.duration,
+                repeat: Infinity,
+                delay: particle.delay,
+                ease: "easeInOut"
+              }}
+            />
+          ))}
+        </AnimatePresence>
       </div>
 
       {/* Enhanced Mesh Gradient */}

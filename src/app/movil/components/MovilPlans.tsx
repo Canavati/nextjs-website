@@ -28,7 +28,12 @@ export const MovilPlans = () => {
   );
 
   return (
-    <section ref={sectionRef} id="planes" className="py-20 relative overflow-hidden">
+    <section 
+      ref={sectionRef} 
+      id="planes" 
+      className="py-20 relative overflow-hidden"
+      style={{ position: 'relative' }}
+    >
       {/* Main Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#b8e5ea] via-[#dbeef2] to-[#b8e5ea]" />
 
@@ -95,9 +100,9 @@ export const MovilPlans = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-xl md:text-2xl font-bold text-center mb-12 text-shimmer-dark relative z-10 drop-shadow-[0_2px_10px_rgba(255,255,255,1)] [text-shadow:0_2px_15px_rgba(255,255,255,0.3),0_-1px_1px_rgba(0,0,0,0)]"
+          className="text-xl md:text-5xl font-bold text-center mb-12 text-shimmer-dark relative z-10 drop-shadow-[0_2px_10px_rgba(255,255,255,1)] [text-shadow:0_2px_15px_rgba(255,255,255,0.3),0_-1px_1px_rgba(0,0,0,0)]"
         >
-          <DeviceMobile size={20} weight="duotone" className="text-[#ed54ba] inline-block mr-2 mb-1" />
+          <DeviceMobile size={40} weight="duotone" className="text-[#ed54ba] inline-block mr-2 mb-1" />
           Planes Móviles
         </motion.h2>
 

@@ -16,7 +16,7 @@ const offerings = [
     title: 'Fibra + Móvil',
     displayTitle: 'Pack Single',
     Icon: WifiHigh,
-    price: '33,00',
+    price: '28',
     features: [
       { icon: WifiHigh, text: 'Fibra 300Mb' },
       { icon: DeviceMobile, text: '1 Línea Móvil 50GB' },
@@ -28,7 +28,7 @@ const offerings = [
     title: 'Solo Fibra',
     displayTitle: 'Fibra Estándar',
     Icon: Broadcast,
-    price: '30,00',
+    price: '30',
     features: [
       { icon: WifiHigh, text: 'Fibra 500Mb' },
       { icon: Broadcast, text: 'Router WiFi 6' },
@@ -40,7 +40,7 @@ const offerings = [
     title: 'Solo Móvil',
     displayTitle: 'Móvil Básico',
     Icon: DeviceMobile,
-    price: '4,90',
+    price: '4.90',
     features: [
       { icon: DeviceMobile, text: '10GB Datos' },
       { icon: Phone, text: '1000 min + 150 otros operadores' },
@@ -138,8 +138,8 @@ export default function Hero() {
       </motion.div>
 
       <div className="relative w-full max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-20">
-        {/* Background UNIMOVIL Text - Fixed Layer */}
-        <div className="fixed inset-0 pointer-events-none overflow-visible">
+        {/* Background UNIMOVIL Text - Changed from fixed to absolute positioning */}
+        <div className="absolute inset-0 pointer-events-none overflow-visible">
           {[
             { top: '20%', left: '15%', scale: 0.9, delay: 0 },
             { top: '65%', left: '25%', scale: 1.1, delay: 0.5 },
@@ -448,7 +448,7 @@ export default function Hero() {
                   <div className="relative">
                     <div className="absolute inset-0 bg-gradient-to-r from-[#4361ee]/20 to-[#51fcff]/20 blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                     <div className="relative">
-                      <div className="text-[4rem] lg:text-[5rem] font-black leading-none">
+                      <div className="text-[4rem] lg:text-[5rem] font-bold leading-none">
                         <span className="text-[#51fcff] drop-shadow-[0_0_8px_rgba(81,252,255,0.5)]">
                           {selectedOffering.price}€
                         </span>

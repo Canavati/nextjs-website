@@ -129,16 +129,25 @@ export default function Plans() {
   const views = [
     { id: 'packs', label: 'Packs' },
     { id: 'fibra-movil', label: 'Fibra + Móvil' },
-    { id: 'solo-fibra', label: 'Solo Fibra' },
+    { id: 'solo-fibra', label: 'Fibra y Fijo' },
     { id: 'solo-movil', label: 'Solo Móvil' }
   ];
 
   const handleViewChange = (view: ViewType) => {
-    setActiveView(view);
+    if (activeView !== view) {
+      setActiveView(view);
+    }
   };
 
   return (
-    <section ref={sectionRef} className="py-20 relative overflow-hidden">
+    <section 
+      ref={sectionRef} 
+      className="py-20 relative overflow-hidden isolate"
+      style={{ 
+        position: 'relative',
+        isolation: 'isolate' 
+      }}
+    >
       {/* Main Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#b8e5ea] via-[#dbeef2] to-[#b8e5ea]" />
 
@@ -198,28 +207,40 @@ export default function Plans() {
         }}
       />
 
-      {/* Content Container */}
-      <div className="container mx-auto px-4 relative">
+      {/* Content Container - Add a protective wrapper with higher stacking context */}
+      <div className="container mx-auto px-4 relative z-[5]" style={{ isolation: 'isolate' }}>
         <motion.h2
           {...motionConfig}
-          className="text-4xl md:text-5xl font-bold text-center mb-12 text-shimmer-dark relative z-10 drop-shadow-[0_2px_10px_rgba(255,255,255,1)] [text-shadow:0_2px_15px_rgba(255,255,255,0.3),0_-1px_1px_rgba(0,0,0,0)]"
+          className="text-4xl md:text-5xl font-bold text-center mb-12 text-shimmer-dark relative z-[30] drop-shadow-[0_2px_10px_rgba(255,255,255,1)] [text-shadow:0_2px_15px_rgba(255,255,255,0.3),0_-1px_1px_rgba(0,0,0,0)]"
         >
           Nuestros Planes
         </motion.h2>
 
-        <div className="flex justify-center mb-12 relative z-10">
+        {/* Click shield to prevent header interference */}
+        <div className="absolute inset-0 z-[10]" style={{ pointerEvents: 'none' }}></div>
+
+        {/* Pillbar with enhanced click handling */}
+        <div className="flex justify-center mb-12 relative z-[40]" style={{ isolation: 'isolate', pointerEvents: 'auto' }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 0.2 }}
-            className="bg-white/90 backdrop-blur-sm rounded-2xl p-2 shadow-md w-full max-w-[400px] md:max-w-fit"
+            className="bg-white/90 backdrop-blur-sm rounded-2xl p-2 shadow-md w-full max-w-[400px] md:max-w-fit relative"
           >
-            <div className="grid grid-cols-2 md:flex md:flex-row gap-2">
+            {/* Mobile scrollable indicator shadows */}
+            <div className="absolute left-2 top-2 bottom-2 w-6 bg-gradient-to-r from-white/90 to-transparent pointer-events-none z-[1] md:hidden"></div>
+            <div className="absolute right-2 top-2 bottom-2 w-6 bg-gradient-to-l from-white/90 to-transparent pointer-events-none z-[1] md:hidden"></div>
+            
+            <div className="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory md:flex-wrap gap-2 md:overflow-visible relative">
               {views.map((view) => (
                 <button
                   key={view.id}
-                  onClick={() => handleViewChange(view.id as ViewType)}
-                  className={`flex items-center justify-center gap-2 rounded-xl px-3 md:px-4 py-2 text-sm font-medium transition-all duration-300 whitespace-nowrap ${
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    e.preventDefault();
+                    handleViewChange(view.id as ViewType);
+                  }}
+                  className={`flex items-center justify-center gap-2 rounded-xl px-3 md:px-4 py-2 text-sm font-medium transition-all duration-300 whitespace-nowrap flex-shrink-0 snap-center relative z-[2] ${
                     activeView === view.id
                       ? 'bg-gradient-new text-white shadow-sm'
                       : 'text-gray-600 hover:text-gray-800 hover:bg-gray-50'
@@ -238,7 +259,7 @@ export default function Plans() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          className="relative w-full min-h-[650px] md:min-h-[750px] z-10"
+          className="relative w-full min-h-[650px] md:min-h-[750px] z-[20]"
         >
           {activeView === 'packs' && <PacksGrid />}
           {activeView === 'fibra-movil' && <FibraMovilConfigurator />}
@@ -259,4 +280,4 @@ export default function Plans() {
       `}</style>
     </section>
   );
-} 
+}

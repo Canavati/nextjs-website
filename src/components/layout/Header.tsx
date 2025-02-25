@@ -43,8 +43,8 @@ export default function Header() {
     fixed top-[35px] left-0 w-full h-[80px] z-[1000] 
     transition-all duration-300
     bg-white border-b border-[#292cf6]
-    before:absolute before:inset-0 before:-bottom-20 before:bg-gradient-to-b before:from-black/10 before:via-black/5 before:to-transparent before:transition-opacity before:duration-300
-    after:absolute after:inset-0 after:bg-gradient-to-b after:from-black/20 after:via-black/5 after:to-transparent after:backdrop-blur-sm after:transition-opacity after:duration-300
+    before:absolute before:inset-0 before:-bottom-20 before:bg-gradient-to-b before:from-black/10 before:via-black/5 before:to-transparent before:transition-opacity before:duration-300 before:pointer-events-none
+    after:absolute after:inset-0 after:bg-gradient-to-b after:from-black/20 after:via-black/5 after:to-transparent after:backdrop-blur-sm after:transition-opacity after:duration-300 after:pointer-events-none
     ${isOverHero 
       ? 'bg-opacity-0 border-opacity-0 before:opacity-100 after:opacity-100' 
       : 'bg-opacity-85 border-opacity-15 border-b-[2px] shadow-sm before:opacity-0 after:opacity-0'
@@ -99,6 +99,7 @@ export default function Header() {
               height={53}
               priority
               className={logoClasses}
+              style={{ width: 'auto', height: 'auto' }}
             />
           </Link>
         </div>

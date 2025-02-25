@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { WifiHigh, DeviceMobile, Plus, Minus, Lightning, Crown, Rocket, Star, ArrowLeft, X, FilePdf } from '@phosphor-icons/react';
@@ -20,25 +20,25 @@ const FIBRA_MOVIL_PLANS = [
     title: 'Básico',
     speed: '300',
     data: '45',
-    basePrice: 33.00
+    basePrice: 28
   },
   {
     title: 'Estándar',
     speed: '500',
-    data: '50',
-    basePrice: 40.00
+    data: '60',
+    basePrice: 40
   },
   {
     title: 'Pro',
     speed: '500',
     data: '115',
-    basePrice: 45.00
+    basePrice: 45
   },
   {
     title: 'Premium',
     speed: '1000',
     data: '115',
-    basePrice: 55.00
+    basePrice: 55
   }
 ];
 
@@ -107,7 +107,9 @@ const ConfigurationModal = ({
           </div>
           <div>
             <div className="text-xl font-bold">
-              {calculateTotalPrice().toFixed(2)}€
+              {Number.isInteger(calculateTotalPrice()) ? 
+                calculateTotalPrice() : 
+                calculateTotalPrice().toFixed(2)}€
               <span className="text-xs font-normal opacity-75 ml-1">/mes</span>
             </div>
             <p className="text-xs opacity-75 text-right">IVA incluido</p>
@@ -116,9 +118,9 @@ const ConfigurationModal = ({
       </div>
 
       {/* Content */}
-      <div className="p-4">
-        <div className="mb-3">
-          <div className="flex items-center justify-between mb-2">
+      <div className="p-3">
+        <div className="mb-2">
+          <div className="flex items-center justify-between mb-1.5">
             <h3 className="text-sm font-medium text-dark">Líneas Adicionales</h3>
             <div className="text-sm text-gray">
               {totalAdditionalLines}/4 líneas
@@ -135,53 +137,58 @@ const ConfigurationModal = ({
           </div>
         </div>
 
-        <div className="space-y-2">
+        <div className="space-y-1.5">
           {[
-            { type: 'line20GB', gb: '20', price: '5,00' },
-            { type: 'line40GB', gb: '40', price: '10,00' },
-            { type: 'line60GB', gb: '60', price: '12,00' }
+            { type: 'line20GB', gb: '20', price: '5' },
+            { type: 'line40GB', gb: '40', price: '10' },
+            { type: 'line60GB', gb: '60', price: '12' }
           ].map((line) => (
             <div 
               key={line.type}
-              className="flex items-center justify-between p-2 bg-slate-50 rounded-2xl"
+              className="flex items-center justify-between py-1.5 px-2 bg-slate-50 rounded-2xl"
             >
               <div className="flex items-center gap-2">
-                <DeviceMobile size={18} weight="duotone" className="text-[#ed54ba]" />
-                <div>
-                  <span className="text-sm font-medium">{line.gb}GB</span>
-                  <span className="text-xs text-gray ml-2">{line.price}€/mes</span>
-                </div>
+                <DeviceMobile size={16} weight="duotone" className="text-[#ed54ba]" />
+                <span className="text-sm font-semibold">{line.gb}GB</span>
               </div>
-              <div className="flex items-center gap-1.5">
-                <motion.button
-                  onClick={() => onLineChange(line.type as keyof typeof config.additionalLines, false)}
-                  className={`w-7 h-7 rounded-2xl flex items-center justify-center transition-colors ${
-                    config.additionalLines[line.type as keyof typeof config.additionalLines] === 0
-                      ? 'bg-gray-100 text-gray-400'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                  }`}
-                  disabled={config.additionalLines[line.type as keyof typeof config.additionalLines] === 0}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Minus size={14} weight="bold" />
-                </motion.button>
-                <span className="w-5 text-center text-sm font-medium">
-                  {config.additionalLines[line.type as keyof typeof config.additionalLines]}
-                </span>
-                <motion.button
-                  onClick={() => onLineChange(line.type as keyof typeof config.additionalLines, true)}
-                  className={`w-7 h-7 rounded-2xl flex items-center justify-center transition-colors ${
-                    !canAddMore
-                      ? 'bg-gray-100 text-gray-400'
-                      : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                  }`}
-                  disabled={!canAddMore}
-                  whileHover={{ scale: 1.05 }}
-                  whileTap={{ scale: 0.95 }}
-                >
-                  <Plus size={14} weight="bold" />
-                </motion.button>
+              <div className="flex items-center gap-2">
+                <div className="flex items-baseline">
+                  <div className="text-shimmer-glow-sync text-2xl font-bold">
+                    {line.price}€
+                  </div>
+                  <span className="text-sm text-[#666666] font-normal ml-1">/mes</span>
+                </div>
+                <div className="flex items-center gap-1">
+                  <motion.button
+                    onClick={() => onLineChange(line.type as keyof typeof config.additionalLines, false)}
+                    className={`w-6 h-6 rounded-2xl flex items-center justify-center transition-colors ${
+                      config.additionalLines[line.type as keyof typeof config.additionalLines] === 0
+                        ? 'bg-gray-100 text-gray-400'
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                    }`}
+                    disabled={config.additionalLines[line.type as keyof typeof config.additionalLines] === 0}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Minus size={12} weight="bold" />
+                  </motion.button>
+                  <span className="w-4 text-center text-sm font-medium">
+                    {config.additionalLines[line.type as keyof typeof config.additionalLines]}
+                  </span>
+                  <motion.button
+                    onClick={() => onLineChange(line.type as keyof typeof config.additionalLines, true)}
+                    className={`w-6 h-6 rounded-2xl flex items-center justify-center transition-colors ${
+                      !canAddMore
+                        ? 'bg-gray-100 text-gray-400'
+                        : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                    }`}
+                    disabled={!canAddMore}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    <Plus size={12} weight="bold" />
+                  </motion.button>
+                </div>
               </div>
             </div>
           ))}
@@ -189,14 +196,14 @@ const ConfigurationModal = ({
       </div>
 
       {/* Footer */}
-      <div className="p-4 border-t">
+      <div className="p-3 border-t">
         <motion.div
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
           <Link
             href="#contacto"
-            className="block text-center bg-gradient-new text-white py-2.5 px-6 rounded-2xl font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+            className="block text-center bg-gradient-new text-white py-2 px-6 rounded-2xl font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
           >
             ¡Lo quiero!
           </Link>
@@ -354,9 +361,9 @@ export const HeroConfigurator = () => {
 
             <div className="grid grid-cols-3 gap-2">
               {[
-                { type: 'line20GB', gb: '20', price: '5,00' },
-                { type: 'line40GB', gb: '40', price: '10,00' },
-                { type: 'line60GB', gb: '60', price: '12,00' }
+                { type: 'line20GB', gb: '20', price: '5' },
+                { type: 'line40GB', gb: '40', price: '10' },
+                { type: 'line60GB', gb: '60', price: '12' }
               ].map((line) => (
                 <div 
                   key={line.type}
@@ -368,44 +375,53 @@ export const HeroConfigurator = () => {
                       <span className="text-2xl font-bold text-white">{line.gb}</span>
                       <span className="text-sm text-white/60">GB</span>
                     </div>
-                    <div className="flex items-center justify-center gap-1.5">
-                      <motion.button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleLineChange(line.type as keyof typeof config.additionalLines, false);
-                        }}
-                        className={`w-6 h-6 rounded-2xl flex items-center justify-center transition-colors ${
-                          config.additionalLines[line.type as keyof typeof config.additionalLines] === 0
-                            ? 'bg-white/10 text-white/40'
-                            : 'bg-white/20 hover:bg-white/30 text-white'
-                        }`}
-                        disabled={config.additionalLines[line.type as keyof typeof config.additionalLines] === 0}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Minus size={12} weight="bold" />
-                      </motion.button>
-                      <span className="w-4 text-center text-sm font-medium text-white">
-                        {config.additionalLines[line.type as keyof typeof config.additionalLines]}
-                      </span>
-                      <motion.button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleLineChange(line.type as keyof typeof config.additionalLines, true);
-                        }}
-                        className={`w-6 h-6 rounded-2xl flex items-center justify-center transition-colors ${
-                          !canAddMore
-                            ? 'bg-white/10 text-white/40'
-                            : 'bg-white/20 hover:bg-white/30 text-white'
-                        }`}
-                        disabled={!canAddMore}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        <Plus size={12} weight="bold" />
-                      </motion.button>
+                    
+                    <div className="flex flex-col items-center justify-center gap-2">
+                      <div className="flex items-baseline">
+                        <div className="text-white text-2xl font-semibold">
+                          {line.price}€
+                        </div>
+                        <span className="text-sm text-white/60 font-normal ml-1">/mes</span>
+                      </div>
+                      
+                      <div className="flex items-center gap-2">
+                        <motion.button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleLineChange(line.type as keyof typeof config.additionalLines, false);
+                          }}
+                          className={`w-6 h-6 rounded-2xl flex items-center justify-center transition-colors ${
+                            config.additionalLines[line.type as keyof typeof config.additionalLines] === 0
+                              ? 'bg-white/10 text-white/40'
+                              : 'bg-white/20 hover:bg-white/30 text-white'
+                          }`}
+                          disabled={config.additionalLines[line.type as keyof typeof config.additionalLines] === 0}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <Minus size={12} weight="bold" />
+                        </motion.button>
+                        <span className="w-4 text-center text-sm font-medium text-white">
+                          {config.additionalLines[line.type as keyof typeof config.additionalLines]}
+                        </span>
+                        <motion.button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleLineChange(line.type as keyof typeof config.additionalLines, true);
+                          }}
+                          className={`w-6 h-6 rounded-2xl flex items-center justify-center transition-colors ${
+                            !canAddMore
+                              ? 'bg-white/10 text-white/40'
+                              : 'bg-white/20 hover:bg-white/30 text-white'
+                          }`}
+                          disabled={!canAddMore}
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          <Plus size={12} weight="bold" />
+                        </motion.button>
+                      </div>
                     </div>
-                    <div className="text-xs text-white/40 mt-1">{line.price}€/mes</div>
                   </div>
                 </div>
               ))}
@@ -426,7 +442,11 @@ export const HeroConfigurator = () => {
                     transition={{ duration: 0.3 }}
                   >
                     <div className="text-6xl font-black text-white group-hover:text-[#51fcff] transition-colors duration-300">
-                      {previewPlanPrice.toFixed(2)}€
+                      <div className="inline text-white">
+                        {Number.isInteger(previewPlanPrice) ? 
+                          previewPlanPrice : 
+                          previewPlanPrice.toFixed(2)}€
+                      </div>
                       <span className="text-base font-medium text-white/60 ml-2">/mes</span>
                     </div>
                     <div className="h-8 flex items-center justify-center">
@@ -467,27 +487,49 @@ export const HeroConfigurator = () => {
         <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-[#292cf6] rounded-full mix-blend-soft-light filter blur-xl opacity-40 animate-float" style={{ animationDelay: '-2s' }} />
         
         {/* Particles */}
-        {[...Array(5)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-[#51fcff] rounded-full"
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -20, 0],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 2 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
+        <ParticlesEffect count={5} />
       </div>
     </div>
+  );
+};
+
+// Client-side only particles component
+const ParticlesEffect = ({ count }: { count: number }) => {
+  const [particles, setParticles] = useState<Array<{ top: string; left: string; delay: number; duration: number }>>([]);
+  
+  useEffect(() => {
+    // Only run in browser after hydration
+    const newParticles = Array.from({ length: count }).map(() => ({
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      delay: Math.random() * 2,
+      duration: 2 + Math.random() * 2
+    }));
+    setParticles(newParticles);
+  }, [count]);
+
+  return (
+    <>
+      {particles.map((particle, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-1 h-1 bg-[#51fcff] rounded-full"
+          style={{
+            top: particle.top,
+            left: particle.left,
+          }}
+          animate={{
+            y: [0, -20, 0],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: particle.duration,
+            repeat: Infinity,
+            delay: particle.delay,
+          }}
+        />
+      ))}
+    </>
   );
 };
 
@@ -538,7 +580,7 @@ export default function FibraMovilConfigurator() {
       className="space-y-3 md:space-y-4"
     >
       {/* Mobile Layout - Full Width Cards */}
-      <div className="md:hidden space-y-3">
+      <div className="md:hidden space-y-2">
         {FIBRA_MOVIL_PLANS.map((plan, index) => (
           <motion.button
             key={index}
@@ -546,7 +588,7 @@ export default function FibraMovilConfigurator() {
               setConfig(prev => ({ ...prev, selectedPlan: index }));
               setShowMobileConfig(true);
             }}
-            className="w-full group relative p-3 rounded-3xl text-left transition-all duration-300"
+            className="w-full group relative p-2.5 rounded-3xl text-left transition-all duration-300"
             style={{
               border: '2px solid transparent',
               background: 'linear-gradient(rgb(248 250 252), rgb(248 250 252)) padding-box, var(--gradient-primary) border-box'
@@ -559,38 +601,42 @@ export default function FibraMovilConfigurator() {
             
             <div className="relative">
               {/* Title and Icon */}
-              <div className="flex items-center gap-2 mb-3">
-                {plan.title === 'Básico' && <Lightning size={20} weight="duotone" className="text-[#ed54ba]" />}
-                {plan.title === 'Estándar' && <Rocket size={20} weight="duotone" className="text-[#ed54ba]" />}
-                {plan.title === 'Pro' && <Star size={20} weight="duotone" className="text-[#ed54ba]" />}
-                {plan.title === 'Premium' && <Crown size={20} weight="duotone" className="text-[#ed54ba]" />}
-                <h3 className="text-xl font-medium text-dark">{plan.title}</h3>
+              <div className="flex items-center gap-2 mb-2">
+                {plan.title === 'Básico' && <Lightning size={18} weight="duotone" className="text-[#ed54ba]" />}
+                {plan.title === 'Estándar' && <Rocket size={18} weight="duotone" className="text-[#ed54ba]" />}
+                {plan.title === 'Pro' && <Star size={18} weight="duotone" className="text-[#ed54ba]" />}
+                {plan.title === 'Premium' && <Crown size={18} weight="duotone" className="text-[#ed54ba]" />}
+                <h3 className="text-lg font-medium text-dark">{plan.title}</h3>
               </div>
 
               {/* Features and Price */}
               <div className="flex items-end justify-between">
-                <div className="grid grid-cols-2 gap-4 w-full">
+                <div className="grid grid-cols-2 gap-3 w-full">
                   <div className="text-center">
-                    <div className="text-base font-medium text-[#444444] mb-2">Fibra</div>
-                    <div className="flex items-center justify-center gap-2">
-                      <span className="text-3xl font-medium text-[#79C4CD]">{plan.speed}</span>
-                      <span className="text-base text-[#666666]">Mb</span>
+                    <div className="text-sm font-medium text-[#444444] mb-1">Fibra</div>
+                    <div className="flex items-center justify-center gap-1">
+                      <span className="text-xl font-medium text-[#79C4CD]">{plan.speed}</span>
+                      <span className="text-sm text-[#666666]">Mb</span>
                     </div>
                   </div>
                   <div className="text-center">
-                    <div className="text-base font-medium text-[#444444] mb-2">Datos Móvil</div>
-                    <div className="flex items-center justify-center gap-2">
-                      <span className="text-3xl font-medium text-[#79C4CD]">{plan.data}</span>
-                      <span className="text-base text-[#666666]">GB</span>
+                    <div className="text-sm font-medium text-[#444444] mb-1">Datos Móvil</div>
+                    <div className="flex items-center justify-center gap-1">
+                      <span className="text-xl font-medium text-[#79C4CD]">{plan.data}</span>
+                      <span className="text-sm text-[#666666]">GB</span>
                     </div>
                   </div>
                 </div>
                 <div className="text-right">
-                  <div className="text-2xl font-medium text-[#79C4CD]">
-                    {plan.basePrice.toFixed(2)}€
-                    <span className="text-base font-normal text-[#666666] ml-1">/mes</span>
+                  <div className="flex items-baseline justify-end">
+                    <div className="text-2xl font-bold text-shimmer-glow-sync">
+                      {Number.isInteger(plan.basePrice) ? 
+                        plan.basePrice : 
+                        plan.basePrice.toFixed(2)}€
+                    </div>
+                    <span className="text-xs font-normal text-[#666666] ml-1">/mes</span>
                   </div>
-                  <span className="text-sm text-[#666666]">IVA incluido</span>
+                  <span className="text-xs text-[#666666]">IVA incluido</span>
                 </div>
               </div>
             </div>
@@ -647,16 +693,16 @@ export default function FibraMovilConfigurator() {
                 <div className="grid grid-cols-2 gap-3 w-[90%] mx-auto">
                   <div className="text-center">
                     <div className="text-sm font-medium text-[#444444] mb-1">Fibra</div>
-                    <div className="flex items-center justify-center gap-2">
-                      <span className="text-3xl font-medium text-[#79C4CD]">{plan.speed}</span>
-                      <span className="text-base text-[#666666]">Mb</span>
+                    <div className="flex items-center justify-center gap-1">
+                      <span className="text-xl font-medium text-[#79C4CD]">{plan.speed}</span>
+                      <span className="text-sm text-[#666666]">Mb</span>
                     </div>
                   </div>
                   <div className="text-center">
                     <div className="text-sm font-medium text-[#444444] mb-1">Datos Móvil</div>
-                    <div className="flex items-center justify-center gap-2">
-                      <span className="text-3xl font-medium text-[#79C4CD]">{plan.data}</span>
-                      <span className="text-base text-[#666666]">GB</span>
+                    <div className="flex items-center justify-center gap-1">
+                      <span className="text-xl font-medium text-[#79C4CD]">{plan.data}</span>
+                      <span className="text-sm text-[#666666]">GB</span>
                     </div>
                   </div>
                 </div>
@@ -666,8 +712,12 @@ export default function FibraMovilConfigurator() {
 
                 {/* Price */}
                 <div className="text-center">
-                  <div className="text-6xl font-medium text-[#79C4CD]">
-                    {plan.basePrice.toFixed(2)}€
+                  <div className="flex items-baseline justify-center">
+                    <div className="text-5xl font-bold text-shimmer-glow-sync">
+                      {Number.isInteger(plan.basePrice) ? 
+                        plan.basePrice : 
+                        plan.basePrice.toFixed(2)}€
+                    </div>
                     <span className="text-lg font-normal text-[#666666] ml-1">/mes</span>
                   </div>
                   <p className="text-sm text-[#666666] mt-1">IVA incluido</p>
@@ -692,7 +742,7 @@ export default function FibraMovilConfigurator() {
         >
           {/* Content */}
           <div className="relative">
-            <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center justify-between mb-2">
               <h3 className="text-lg font-medium text-dark">Líneas Adicionales</h3>
               <div className="text-sm text-gray">
                 {totalAdditionalLines}/4 líneas
@@ -700,7 +750,7 @@ export default function FibraMovilConfigurator() {
             </div>
 
             {/* Progress Bar */}
-            <div className="h-1 bg-gray-100 rounded-2xl mb-3 overflow-hidden">
+            <div className="h-1 bg-gray-100 rounded-2xl mb-2 overflow-hidden">
               <motion.div
                 className="h-full bg-gradient-to-r from-[#ed54ba] to-[#51fcff]"
                 initial={{ width: 0 }}
@@ -709,60 +759,65 @@ export default function FibraMovilConfigurator() {
               />
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2">
               {[
-                { type: 'line20GB', gb: '20', price: '5,00' },
-                { type: 'line40GB', gb: '40', price: '10,00' },
-                { type: 'line60GB', gb: '60', price: '12,00' }
+                { type: 'line20GB', gb: '20', price: '5' },
+                { type: 'line40GB', gb: '40', price: '10' },
+                { type: 'line60GB', gb: '60', price: '12' }
               ].map((line) => (
                 <motion.div 
                   key={line.type}
-                  className="flex items-center justify-between p-2 rounded-2xl hover:bg-gray-50/80 transition-colors"
+                  className="flex items-center justify-between py-1.5 px-2 rounded-2xl hover:bg-gray-50/80 transition-colors"
                   whileHover={{ scale: 1.01 }}
                 >
-                  <div className="flex items-center gap-3">
-                    <DeviceMobile size={20} weight="duotone" className="text-[#ed54ba]" />
-                    <div>
-                      <span className="text-base font-medium">{line.gb}GB</span>
-                      <span className="text-sm text-gray ml-2">{line.price}€/mes</span>
-                    </div>
-                  </div>
                   <div className="flex items-center gap-2">
-                    <motion.button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleLineChange(line.type as keyof typeof config.additionalLines, false);
-                      }}
-                      className={`w-8 h-8 rounded-2xl flex items-center justify-center transition-colors ${
-                        config.additionalLines[line.type as keyof typeof config.additionalLines] === 0
-                          ? 'bg-gray-100 text-gray-400'
-                          : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                      }`}
-                      disabled={config.additionalLines[line.type as keyof typeof config.additionalLines] === 0}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <Minus size={18} weight="bold" />
-                    </motion.button>
-                    <span className="w-6 text-center text-lg font-medium">
-                      {config.additionalLines[line.type as keyof typeof config.additionalLines]}
-                    </span>
-                    <motion.button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleLineChange(line.type as keyof typeof config.additionalLines, true);
-                      }}
-                      className={`w-8 h-8 rounded-2xl flex items-center justify-center transition-colors ${
-                        !canAddMore
-                          ? 'bg-gray-100 text-gray-400'
-                          : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
-                      }`}
-                      disabled={!canAddMore}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      <Plus size={18} weight="bold" />
-                    </motion.button>
+                    <DeviceMobile size={16} weight="duotone" className="text-[#ed54ba]" />
+                    <span className="text-base font-medium">{line.gb}GB</span>
+                  </div>
+                  <div className="flex items-center gap-3">
+                    <div className="flex items-baseline">
+                      <div className="text-shimmer-glow-sync text-2xl font-bold">
+                        {line.price}€
+                      </div>
+                      <span className="text-sm text-[#666666] font-normal ml-1">/mes</span>
+                    </div>
+                    <div className="flex items-center gap-1">
+                      <motion.button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleLineChange(line.type as keyof typeof config.additionalLines, false);
+                        }}
+                        className={`w-7 h-7 rounded-2xl flex items-center justify-center transition-colors ${
+                          config.additionalLines[line.type as keyof typeof config.additionalLines] === 0
+                            ? 'bg-gray-100 text-gray-400'
+                            : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                        }`}
+                        disabled={config.additionalLines[line.type as keyof typeof config.additionalLines] === 0}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Minus size={14} weight="bold" />
+                      </motion.button>
+                      <span className="w-5 text-center text-base font-medium">
+                        {config.additionalLines[line.type as keyof typeof config.additionalLines]}
+                      </span>
+                      <motion.button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleLineChange(line.type as keyof typeof config.additionalLines, true);
+                        }}
+                        className={`w-7 h-7 rounded-2xl flex items-center justify-center transition-colors ${
+                          !canAddMore
+                            ? 'bg-gray-100 text-gray-400'
+                            : 'bg-gray-100 hover:bg-gray-200 text-gray-600'
+                        }`}
+                        disabled={!canAddMore}
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        <Plus size={14} weight="bold" />
+                      </motion.button>
+                    </div>
                   </div>
                 </motion.div>
               ))}
@@ -783,14 +838,19 @@ export default function FibraMovilConfigurator() {
         >
           <div className="relative flex flex-col h-full justify-between">
             <div>
-              <div className="flex items-center justify-between mb-2">
-                <span className="text-base font-medium text-dark">Total Mensual:</span>
-                <div className="text-5xl font-medium text-[#79C4CD]">
-                  {calculateTotalPrice().toFixed(2)}€
+              <p className="text-lg font-bold text-dark text-center mb-3">Total Mensual</p>
+              <hr className="border-[#adadad]/30 w-1/2 mx-auto mb-4" />
+              <div className="text-center mb-1">
+                <div className="flex items-baseline justify-center">
+                  <div className="text-6xl font-bold text-shimmer-glow-sync">
+                    {Number.isInteger(calculateTotalPrice()) ? 
+                      calculateTotalPrice() : 
+                      calculateTotalPrice().toFixed(2)}€
+                  </div>
                   <span className="text-xl font-normal text-[#666666] ml-1">/mes</span>
                 </div>
+                <p className="text-xs text-[#666666] mt-1">IVA incluido</p>
               </div>
-              <p className="text-xs text-[#666666] text-right">IVA incluido</p>
             </div>
 
             <motion.div

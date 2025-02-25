@@ -3,7 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
-import { WifiHigh, Broadcast, Rocket, Crown } from '@phosphor-icons/react';
+import { WifiHigh, Broadcast, Rocket, Crown, Phone } from '@phosphor-icons/react';
 import { TarifasDropdown } from '@/components/ui/TarifasDropdown';
 
 const SOLO_FIBRA_PLANS = [
@@ -92,7 +92,7 @@ export const HeroFibraPacks = () => {
               {/* Title and Icon */}
               <div className="flex items-center gap-2 mb-6">
                 {getPackIcon(currentPack.title)}
-                <h3 className="text-2xl font-cal text-white">{currentPack.title}</h3>
+                <h3 className="text-2xl font-semibold text-white">{currentPack.title}</h3>
                 {currentPack.title === 'Pro' && (
                   <span className="ml-auto text-xs font-matter text-[#51fcff] font-medium px-2 py-1 bg-[#51fcff]/10 rounded-full">
                     Más Potente
@@ -107,15 +107,23 @@ export const HeroFibraPacks = () => {
                     <WifiHigh size={20} weight="duotone" className="text-[#51fcff]" />
                     <span className="text-sm font-matter text-white/60">Fibra</span>
                   </div>
-                  <div className="text-3xl font-black text-white">
-                    {currentPack.speed}<span className="text-sm font-matter ml-1">Mb</span>
+                  <div className="text-3xl font-bold text-white">
+                    {currentPack.speed}<span className="text-sm font-matter text-white/60 ml-1">Mb</span>
                   </div>
+                </div>
+                <div className="flex items-center gap-2 mt-3">
+                  <Phone size={18} weight="duotone" className="text-[#51fcff]" />
+                  <span className="text-sm font-matter text-white/60">Línea fija con llamadas ilimitadas</span>
                 </div>
               </div>
 
               {/* Price */}
-              <div className="text-4xl font-black text-white">
-                {currentPack.basePrice.toFixed(2)}€
+              <div className="text-5xl font-black">
+                <div className="inline text-white">
+                  {Number.isInteger(currentPack.basePrice) ? 
+                    currentPack.basePrice : 
+                    currentPack.basePrice.toFixed(2)}€
+                </div>
                 <span className="text-base font-matter font-normal text-white/60 ml-2">/mes</span>
               </div>
             </motion.div>
@@ -214,7 +222,7 @@ export default function SoloFibraConfigurator() {
         const scrollLeft = scrollRef.current.scrollLeft;
         const cardWidth = 280 + 24; // card width + gap
         const newCard = Math.round(scrollLeft / cardWidth);
-        setCurrentCard(newCard);
+        setCurrentCard(Math.min(newCard, SOLO_FIBRA_PLANS.length - 1));
       }
     };
 
@@ -233,6 +241,7 @@ export default function SoloFibraConfigurator() {
         left: index * cardWidth,
         behavior: 'smooth'
       });
+      setCurrentCard(index);
     }
   };
 
@@ -244,12 +253,12 @@ export default function SoloFibraConfigurator() {
       className="space-y-6"
     >
       {/* Dots Navigation */}
-      <div className="flex justify-center gap-2 mb-4 md:hidden">
+      <div className="flex justify-center gap-2 mb-2 md:hidden">
         {SOLO_FIBRA_PLANS.map((_, index) => (
           <button
             key={index}
             onClick={() => scrollToCard(index)}
-            className="w-2 h-2 rounded-full transition-all duration-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#ed54ba]"
+            className="w-2 h-2 rounded-full transition-all duration-300 focus:outline-none"
             style={{
               background: currentCard === index ? 'var(--gradient-primary)' : '#E5E7EB',
               transform: currentCard === index ? 'scale(1.2)' : 'scale(1)'
@@ -260,36 +269,83 @@ export default function SoloFibraConfigurator() {
       </div>
 
       {/* Mobile Layout */}
-      <div className="md:hidden">
-        {SOLO_FIBRA_PLANS.map((plan, index) => (
-          <div key={index} className="relative">
-            {/* Title and Icon */}
-            <div className="flex items-center gap-2 mb-3">
-              <div className="flex-shrink-0">
-                {plan.title === 'Estándar' && <Rocket size={28} weight="duotone" className="text-[#ed54ba]" />}
-                {plan.title === 'Pro' && <Crown size={28} weight="duotone" className="text-[#ed54ba]" />}
-              </div>
-              <h3 className="text-xl font-medium text-dark">{plan.title}</h3>
-            </div>
+      <div 
+        ref={scrollRef}
+        className="md:hidden flex overflow-x-auto pb-6 pt-2 gap-6 snap-x snap-mandatory hide-scrollbar"
+        style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+      >
+        <div className="flex min-w-max gap-6 px-[10%]">
+          {SOLO_FIBRA_PLANS.map((plan, index) => (
+            <div key={index} className="w-[280px] flex-shrink-0 snap-center">
+              <motion.div
+                className="group relative h-full p-4 rounded-3xl text-left transition-all duration-300"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.1 }}
+                whileHover={{ y: -4 }}
+                style={{
+                  border: '2px solid transparent',
+                  background: 'linear-gradient(rgb(248 250 252), rgb(248 250 252)) padding-box, var(--gradient-primary) border-box'
+                }}
+              >
+                {/* Selection/Hover Gradient */}
+                <div className="absolute inset-[1px] rounded-[1.75rem] bg-gradient-to-tr from-[#ed54ba]/20 to-[#51fcff]/30 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                
+                {/* Content */}
+                <div className="relative flex flex-col h-full">
+                  {/* Title and Icon at top */}
+                  <div className="flex items-center justify-center gap-3 mb-4 h-[32px]">
+                    {plan.title === 'Estándar' && <Rocket size={28} weight="duotone" className="text-[#ed54ba]" />}
+                    {plan.title === 'Pro' && <Crown size={28} weight="duotone" className="text-[#ed54ba]" />}
+                    <h3 className="text-xl font-medium text-dark">{plan.title}</h3>
+                  </div>
 
-            {/* Features and Price */}
-            <div className="flex items-end justify-between">
-              <div className="flex flex-col gap-2">
-                <div className="flex items-center gap-2">
-                  <WifiHigh size={24} weight="duotone" className="text-[#ed54ba]" />
-                  <span className="text-5xl font-medium text-[#79C4CD]">{plan.speed}<span className="text-2xl text-[#666666]">Mb</span></span>
+                  {/* Light Divider */}
+                  <hr className="border-[#adadad] mb-4" />
+
+                  {/* Main Feature - Speed */}
+                  <div className="text-center mb-4 h-[50px] flex items-center justify-center">
+                    <div className="inline-flex items-center justify-center gap-2">
+                      <WifiHigh size={24} weight="duotone" className="text-[#ed54ba]" />
+                      <span className="text-4xl font-medium text-[#79C4CD]">{plan.speed}</span>
+                      <span className="text-xl text-[#666666]">Mb</span>
+                    </div>
+                  </div>
+
+                  {/* Phone Line */}
+                  <div className="flex items-center justify-center gap-2 mb-4">
+                    <Phone size={20} weight="duotone" className="text-[#ed54ba]" />
+                    <span className="text-sm text-[#444444]">Línea fija con llamadas ilimitadas</span>
+                  </div>
+
+                  {/* Light Divider */}
+                  <hr className="border-[#adadad] mb-4" />
+                  
+                  {/* Price */}
+                  <div className="text-center mt-auto h-[80px] flex flex-col items-center justify-center">
+                    <div className="flex items-baseline">
+                      <div className="text-5xl font-bold text-shimmer-glow-sync">
+                        {Number.isInteger(plan.basePrice) ? 
+                          plan.basePrice : 
+                          plan.basePrice.toFixed(2)}€
+                      </div>
+                      <span className="text-lg font-normal text-[#666666] ml-1">/mes</span>
+                    </div>
+                    <p className="text-xs text-[#666666] mt-1">IVA incluido</p>
+                  </div>
+
+                  {/* Action Button */}
+                  <Link
+                    href="#contacto"
+                    className="block text-center bg-gradient-new text-white py-2 px-6 rounded-xl font-medium text-base transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+                  >
+                    ¡Lo quiero!
+                  </Link>
                 </div>
-              </div>
-              <div className="text-right">
-                <div className="text-4xl font-medium text-[#79C4CD]">
-                  {plan.basePrice.toFixed(2)}€
-                  <span className="text-base font-normal text-[#666666] ml-1">/mes</span>
-                </div>
-                <span className="text-sm text-[#666666]">IVA incluido</span>
-              </div>
+              </motion.div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Desktop Layout */}
@@ -297,7 +353,7 @@ export default function SoloFibraConfigurator() {
         {SOLO_FIBRA_PLANS.map((plan, index) => (
           <motion.div
             key={index}
-            className="group relative p-6 rounded-3xl text-left transition-all duration-300"
+            className="group relative p-4 rounded-3xl text-left transition-all duration-300"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3, delay: index * 0.1 }}
@@ -320,15 +376,23 @@ export default function SoloFibraConfigurator() {
               </div>
 
               {/* Light Divider */}
-              <hr className="border-[#adadad] my-6" />
+              <hr className="border-[#adadad] my-2" />
 
-              <div className="space-y-8">
+              <div className="space-y-6">
                 {/* Main Feature - Speed */}
                 <div className="text-center">
-                  <div className="text-2xl font-medium text-[#444444] mb-3">Fibra</div>
-                  <div className="flex items-center justify-center gap-3">
-                    <span className="text-6xl font-medium text-[#79C4CD]">{plan.speed}</span>
-                    <span className="text-3xl text-[#666666]">Mb</span>
+                  <div className="text-xl font-medium text-[#444444] mb-2">Fibra</div>
+                  <div className="flex items-center justify-center gap-2">
+                    <span className="text-4xl font-medium text-[#79C4CD]">{plan.speed}</span>
+                    <span className="text-xl text-[#666666]">Mb</span>
+                  </div>
+                </div>
+
+                {/* Phone Line */}
+                <div className="text-center">
+                  <div className="flex items-center justify-center gap-2">
+                    <Phone size={20} weight="duotone" className="text-[#ed54ba]" />
+                    <span className="text-base text-[#444444]">Línea fija con llamadas ilimitadas</span>
                   </div>
                 </div>
 
@@ -337,9 +401,13 @@ export default function SoloFibraConfigurator() {
 
                 {/* Price */}
                 <div className="text-center">
-                  <div className="text-7xl font-medium text-[#79C4CD]">
-                    {plan.basePrice.toFixed(2)}€
-                    <span className="text-2xl font-normal text-[#666666] ml-1">/mes</span>
+                  <div className="flex items-baseline justify-center">
+                    <div className="text-6xl font-bold text-shimmer-glow-sync">
+                      {Number.isInteger(plan.basePrice) ? 
+                        plan.basePrice : 
+                        plan.basePrice.toFixed(2)}€
+                    </div>
+                    <span className="text-xl font-normal text-[#666666] ml-1">/mes</span>
                   </div>
                   <p className="text-sm text-[#666666] mt-1">IVA incluido</p>
                 </div>
@@ -347,7 +415,7 @@ export default function SoloFibraConfigurator() {
                 {/* Action Button */}
                 <Link
                   href="#contacto"
-                  className="block text-center bg-gradient-new text-white py-3 px-8 rounded-2xl font-medium text-base transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+                  className="block text-center bg-gradient-new text-white py-2 px-6 rounded-xl font-medium text-base transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
                 >
                   ¡Lo quiero!
                 </Link>

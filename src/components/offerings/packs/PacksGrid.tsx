@@ -16,7 +16,7 @@ const packs = [
       'Fibra 300 Megas + Llamadas Ilimitadas',
       '1 línea móvil de 50GB'
     ],
-    price: '33,00',
+    price: '28',
     speed: '300',
     gb: '50',
     lines: 1,
@@ -30,7 +30,7 @@ const packs = [
       'Fibra 500 Megas + Llamadas Ilimitadas',
       '2 líneas móviles con 100GB compartidos'
     ],
-    price: '50,00',
+    price: '50',
     speed: '500',
     gb: '100',
     lines: 2,
@@ -44,7 +44,7 @@ const packs = [
       'Fibra 500 Megas + Llamadas Ilimitadas',
       '4 líneas móviles con 175GB compartidos'
     ],
-    price: '60,00',
+    price: '60',
     speed: '500',
     gb: '175',
     lines: 4,
@@ -58,7 +58,7 @@ const packs = [
       'Fibra 1000 Megas + Llamadas Ilimitadas',
       '2 líneas móviles con 175GB compartidos'
     ],
-    price: '67,00',
+    price: '67',
     speed: '1000',
     gb: '175',
     lines: 2,
@@ -152,7 +152,9 @@ const HeroPackCard = ({ pack, isSelected, onClick }: HeroPackCardProps) => {
         {/* Price */}
         <div className="flex items-baseline justify-between">
           <div className="text-3xl font-medium text-white">
-            {pack.price}€
+            {Number.isInteger(parseFloat(pack.price)) ? 
+              pack.price : 
+              parseFloat(pack.price).toFixed(2)}€
             <span className="text-sm font-normal text-white/60 ml-1">/mes</span>
           </div>
           {pack.isPopular && (
@@ -209,27 +211,49 @@ export const HeroPacks = () => {
         <div className="absolute bottom-0 right-1/4 w-32 h-32 bg-[#292cf6] rounded-full mix-blend-soft-light filter blur-xl opacity-40 animate-float" style={{ animationDelay: '-2s' }} />
         
         {/* Particles */}
-        {[...Array(5)].map((_, i) => (
-          <motion.div
-            key={i}
-            className="absolute w-1 h-1 bg-[#51fcff] rounded-full"
-            style={{
-              top: `${Math.random() * 100}%`,
-              left: `${Math.random() * 100}%`,
-            }}
-            animate={{
-              y: [0, -20, 0],
-              opacity: [0, 1, 0],
-            }}
-            transition={{
-              duration: 2 + Math.random() * 2,
-              repeat: Infinity,
-              delay: Math.random() * 2,
-            }}
-          />
-        ))}
+        <PackParticles count={5} />
       </div>
     </div>
+  );
+};
+
+// Client-side only particles component
+const PackParticles = ({ count }: { count: number }) => {
+  const [particles, setParticles] = useState<Array<{ top: string; left: string; delay: number; duration: number }>>([]);
+  
+  useEffect(() => {
+    // Only run in browser after hydration
+    const newParticles = Array.from({ length: count }).map(() => ({
+      top: `${Math.random() * 100}%`,
+      left: `${Math.random() * 100}%`,
+      delay: Math.random() * 2,
+      duration: 2 + Math.random() * 2
+    }));
+    setParticles(newParticles);
+  }, [count]);
+
+  return (
+    <>
+      {particles.map((particle, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-1 h-1 bg-[#51fcff] rounded-full"
+          style={{
+            top: particle.top,
+            left: particle.left,
+          }}
+          animate={{
+            y: [0, -20, 0],
+            opacity: [0, 1, 0],
+          }}
+          transition={{
+            duration: particle.duration,
+            repeat: Infinity,
+            delay: particle.delay,
+          }}
+        />
+      ))}
+    </>
   );
 };
 

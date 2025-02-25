@@ -26,7 +26,12 @@ export const FibraPlans = () => {
   );
 
   return (
-    <section ref={sectionRef} id="planes" className="py-20 relative overflow-hidden">
+    <section 
+      ref={sectionRef} 
+      id="planes" 
+      className="py-20 relative overflow-hidden"
+      style={{ position: 'relative' }}
+    >
       {/* Main Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-r from-[#b8e5ea] via-[#dbeef2] to-[#b8e5ea]" />
 
@@ -93,7 +98,7 @@ export const FibraPlans = () => {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="text-4xl md:text-5xl font-bold text-center mb-12 text-shimmer-dark relative z-10 drop-shadow-[0_2px_10px_rgba(255,255,255,1)] [text-shadow:0_2px_15px_rgba(255,255,255,0.3),0_-1px_1px_rgba(0,0,0,0)]"
+          className="text-5xl md:text-5xl font-bold text-center mb-12 text-shimmer-dark relative z-10 drop-shadow-[0_2px_10px_rgba(255,255,255,1)] [text-shadow:0_2px_15px_rgba(255,255,255,0.3),0_-1px_1px_rgba(0,0,0,0)]"
         >
           Planes de Fibra
         </motion.h2>

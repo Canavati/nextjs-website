@@ -29,6 +29,7 @@ export default function Footer() {
                 width={200}
                 height={53}
                 className="brightness-0 invert"
+                style={{ width: 'auto', height: 'auto' }}
               />
             </div>
             <p className="text-gray-300 text-xs leading-tight">

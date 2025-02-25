@@ -11,10 +11,19 @@ const HeroContext = createContext<HeroContextType>({ isOverHero: true });
 
 export function HeroProvider({ children }: { children: React.ReactNode }) {
   const [isOverHero, setIsOverHero] = useState(true);
+  const [isMounted, setIsMounted] = useState(false);
   const observerRef = useRef<IntersectionObserver | null>(null);
   const pathname = usePathname();
 
+  // First useEffect just to mark component as mounted on client
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    // Only run on client side after component is mounted
+    if (!isMounted) return;
+    
     // Reset state on route change
     setIsOverHero(true);
 
@@ -41,15 +50,18 @@ export function HeroProvider({ children }: { children: React.ReactNode }) {
       observerRef.current.observe(heroSection);
     };
 
-    // Wait for DOM to be ready
-    setTimeout(setupObserver, 100);
+    // Wait for DOM to be ready with requestAnimationFrame which is more reliable
+    // than setTimeout for ensuring DOM is ready
+    requestAnimationFrame(() => {
+      setupObserver();
+    });
 
     return () => {
       if (observerRef.current) {
         observerRef.current.disconnect();
       }
     };
-  }, [pathname]); // Re-run when pathname changes
+  }, [pathname, isMounted]); // Re-run when pathname changes or when mounted on client
 
   return (
     <HeroContext.Provider value={{ isOverHero }}>

@@ -107,8 +107,11 @@ export default function PackCard({
 
         {/* Price */}
         <div className="text-center">
-          <div className="text-6xl font-medium text-[#79C4CD]">
-            {price}€<span className="text-2xl font-normal text-[#666666] ml-1">/mes</span>
+          <div className="flex items-baseline justify-center">
+            <div className="text-5xl font-bold text-shimmer-glow-sync">
+              {price}€
+            </div>
+            <span className="text-2xl font-normal text-[#666666] ml-1">/mes</span>
           </div>
           <p className="text-sm text-[#666666] mt-1">IVA incluido</p>
         </div>
