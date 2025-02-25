@@ -19,14 +19,11 @@ Web:
 - Agregar Los bonos (afirmar donde) ✅
 - Terminar de configurar el configurador de solo movil, y asegurarse que los otros configuradores estén bien configurados. ✅
 - Hacer mas redondos los bordes de las tarjetas de las ofertas. ✅
-
-- cambiar el .env para que los blogs sean visibles. ⛔|
-
-- Ajustar precios de las ofertas en general. ⛔|
+- cambiar el .env para que los blogs sean visibles. ✅|
+- Ajustar precios de las ofertas en general. ✅|
+- Configurar Contentfull con cuenta de pascual ✅|
 
 - Backend (Forms funcionales con los IDs de cada oferta para alimentar a Make.com con lo que el usuario elija) ⛔ (falta el backend)
-
-- Configurar Contentfull con cuenta de pascual ⛔|
 
 - Configurar vercel de pascual y mandar demo a pascual⛔|
 
