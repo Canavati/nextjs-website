@@ -224,11 +224,11 @@ export default function UniTVPage() {
               initial={{ opacity: 0, x: 50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="relative w-full lg:flex hidden items-center justify-center ml-8"
+              className="relative w-full lg:flex lg:items-center lg:justify-center lg:ml-8 hidden"
             >
-              {/* Carousel Container */}
+              {/* Carousel Container - Desktop */}
               <div 
-                className="relative w-[132%] -mr-20 flex items-center"
+                className="relative w-[160%] -mr-28 flex items-center"
                 onMouseEnter={() => setIsPaused(true)}
                 onMouseLeave={() => setIsPaused(false)}
               >
@@ -247,7 +247,7 @@ export default function UniTVPage() {
                         alt={slides[currentIndex].alt}
                         fill
                         className="object-contain"
-                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                        sizes="(max-width: 768px) 100vw, (max-width: 1200px) 60vw, 40vw"
                         priority
                       />
                     </div>
@@ -266,6 +266,72 @@ export default function UniTVPage() {
                       aria-label={`Go to slide ${index + 1}`}
                     />
                   ))}
+                </div>
+              </div>
+            </motion.div>
+
+            {/* Mobile Carousel - NEW */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+              className="relative w-full mt-8 lg:hidden"
+            >
+              <div className="relative overflow-hidden rounded-xl shadow-xl">
+                <AnimatePresence mode="wait" initial={false}>
+                  <motion.div
+                    key={currentIndex}
+                    initial={{ opacity: 0, x: 100 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -100 }}
+                    transition={{ duration: 0.7, ease: "easeInOut" }}
+                    className="relative w-full"
+                  >
+                    <div className="relative w-full" style={{ paddingBottom: '75%' }}>
+                      <Image
+                        src={slides[currentIndex].src}
+                        alt={slides[currentIndex].alt}
+                        fill
+                        className="object-contain"
+                        sizes="100vw"
+                        priority
+                      />
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+                
+                {/* Mobile Swipe Indicators */}
+                <div className="absolute bottom-0 left-0 right-0 flex justify-between p-3 z-20">
+                  <button 
+                    onClick={() => setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1))}
+                    className="h-10 w-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white"
+                    aria-label="Previous slide"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                    </svg>
+                  </button>
+                  <div className="flex gap-2 bg-black/40 px-3 py-1 rounded-full backdrop-blur-sm">
+                    {slides.map((_, index) => (
+                      <button
+                        key={index}
+                        onClick={() => setCurrentIndex(index)}
+                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                          index === currentIndex ? 'bg-white' : 'bg-white/50'
+                        }`}
+                        aria-label={`Go to slide ${index + 1}`}
+                      />
+                    ))}
+                  </div>
+                  <button 
+                    onClick={() => setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1))}
+                    className="h-10 w-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white"
+                    aria-label="Next slide"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                    </svg>
+                  </button>
                 </div>
               </div>
             </motion.div>
@@ -630,6 +696,54 @@ export default function UniTVPage() {
               <button className="inline-block bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white px-5 py-2.5 rounded-xl font-semibold text-base shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1">
                 Contratar Plan Personalizado
               </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Categories Section */}
+      <section className="py-16 relative overflow-hidden bg-gray-900">
+        {/* Background Elements */}
+        <div className="absolute inset-0 bg-gradient-to-b from-[#03091e] to-[#051c40] opacity-90" />
+        <div className="absolute inset-0 bg-[url('/unitv/grid-pattern.png')] bg-repeat opacity-5" />
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-3">
+              Categorías de Canales
+            </h2>
+            <p className="text-xl text-blue-200/80 max-w-3xl mx-auto">
+              Disfruta de una amplia selección de canales organizados en estas categorías
+            </p>
+          </motion.div>
+
+          {/* Categories only */}
+          <div className="max-w-4xl mx-auto">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+              {[
+                { name: "TDT y Generalistas", icon: "📺", color: "from-[#2196F3] to-[#03A9F4]" },
+                { name: "Cine y Series", icon: "🎬", color: "from-[#673AB7] to-[#9C27B0]" },
+                { name: "Deportes", icon: "🏆", color: "from-[#FF5722] to-[#FF9800]" },
+                { name: "Internacionales", icon: "🌍", color: "from-[#4CAF50] to-[#8BC34A]" }
+              ].map((category, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.5, delay: 0.1 * index }}
+                  className={`bg-gradient-to-r ${category.color} rounded-xl p-5 text-center text-white shadow-lg`}
+                >
+                  <div className="text-5xl mb-3">{category.icon}</div>
+                  <h3 className="text-xl font-bold">{category.name}</h3>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>

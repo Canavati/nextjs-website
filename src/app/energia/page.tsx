@@ -349,40 +349,51 @@ export default function EnergiaPage() {
               </motion.div>
             </div>
 
-            {/* Flyers Grid - Same size as plans */}
-            <div className="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto">
-              {/* Gas Flyer */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.4 }}
-                className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 bg-white"
-              >
-                <Image
-                  src="/energia/Flyer_gas.jpeg"
-                  alt="Tarifa de Gas"
-                  fill
-                  className="object-contain p-2"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </motion.div>
-
-              {/* Luz Flyer */}
-              <motion.div
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5, delay: 0.5 }}
-                className="relative aspect-[4/5] rounded-3xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-300 bg-white"
-              >
-                <Image
-                  src="/energia/Flyer_luz.jpeg"
-                  alt="Tarifa de Luz"
-                  fill
-                  className="object-contain p-2"
-                  sizes="(max-width: 768px) 100vw, 50vw"
-                />
-              </motion.div>
-            </div>
+            {/* Combined Offer Highlight */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="mt-16 bg-gradient-to-r from-[#051c40] to-[#0a2e5c] rounded-3xl overflow-hidden shadow-2xl relative max-w-5xl mx-auto"
+            >
+              <div className="absolute inset-0 bg-[url('/energia/pattern-energy.png')] opacity-5"></div>
+              <div className="absolute right-0 bottom-0 w-64 h-64 bg-[#51fcff] rounded-full filter blur-[100px] opacity-20"></div>
+              
+              <div className="relative p-8 md:p-10 flex flex-col md:flex-row items-center gap-8">
+                <div className="md:w-2/3">
+                  <div className="inline-block bg-white/10 text-white px-3 py-1 rounded-full text-sm font-semibold mb-4">
+                    ¡Oferta Especial!
+                  </div>
+                  <h3 className="text-2xl md:text-3xl font-bold text-white mb-4">
+                    Ahorra contratando Luz + Gas
+                  </h3>
+                  <p className="text-blue-100 mb-6">
+                    Disfruta de 2 meses gratis en tu factura de luz al contratar ambos servicios juntos. Además, recibirás atención prioritaria y descuentos exclusivos en nuestros otros servicios.
+                  </p>
+                  <button className="bg-white text-[#051c40] px-6 py-3 rounded-xl font-bold hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+                    Combinar y Ahorrar
+                  </button>
+                </div>
+                
+                <div className="md:w-1/3 flex items-center justify-center">
+                  <div className="relative w-40 h-40">
+                    <div className="absolute inset-0 animate-ping-slow rounded-full bg-[#51fcff]/20"></div>
+                    <div className="absolute w-full h-full flex items-center justify-center">
+                      <div className="relative w-32 h-32 bg-[#051c40] rounded-full flex items-center justify-center border-2 border-[#51fcff]/30">
+                        <Lightning size={48} weight="duotone" className="text-[#51fcff]" />
+                        <div className="absolute -top-3 -right-3 bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white text-sm font-bold h-8 w-8 rounded-full flex items-center justify-center">
+                          +
+                        </div>
+                        <div className="absolute -bottom-3 -left-3 bg-gradient-to-r from-[#ffa726] to-orange-600 text-white text-sm font-bold h-8 w-8 rounded-full flex items-center justify-center">
+                          <Fire size={18} weight="fill" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
