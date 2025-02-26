@@ -55,7 +55,6 @@
   body {
     @apply antialiased;
     color: var(--dark);
-    padding-top: var(--total-nav-height);
     overflow-y: scroll; /* Ensures consistent scrollbar presence */
   }
 }
@@ -149,6 +148,13 @@
   .bg-gradient-bright {
     @apply relative overflow-hidden;
     background: linear-gradient(60deg, var(--primary) 1%, var(--secondary) 25%, var(--secondary) 50%, var(--quinary) 100%);
+    background-size: 240% 240%;
+    animation: gradient-flow 12s ease infinite;
+  }
+  
+  .bg-gradient-dark {
+    @apply relative overflow-hidden;
+    background: linear-gradient(60deg, var(--primary) 15%, var(--secondary) 50%, var(--quinary) 75%, var(--quinary) 100%);
     background-size: 240% 240%;
     animation: gradient-flow 12s ease infinite;
   }

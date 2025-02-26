@@ -21,7 +21,7 @@ export default async function BlogPage() {
   })));
 
   return (
-    <main className="min-h-[calc(100vh-var(--top-bar-height))] relative overflow-hidden -mt-[var(--header-height)]">
+    <main className="min-h-[calc(100vh-var(--top-bar-height))] relative overflow-hidden">
       {/* Main Gradient Background */}
       <div className="absolute inset-0 bg-gradient-to-br from-[var(--tertiary)] via-[#2a2f4d] to-[var(--quinary)]" />
 

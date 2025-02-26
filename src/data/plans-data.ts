@@ -113,7 +113,7 @@ export const PACK_PLANS: PackPlan[] = [
     id: 'single',
     title: 'Pack Single',
     description: 'Fibra 300 Megas + Llamadas Ilimitadas',
-    price: 28.00,
+    price: 28,
     speed: '300',
     gb: '50', // Updated to 50GB as per CSV
     lines: 1,
@@ -128,7 +128,7 @@ export const PACK_PLANS: PackPlan[] = [
     id: 'duo',
     title: 'Pack Duo',
     description: 'FIBRA 500 Megas + Llamadas Ilimitadas',
-    price: 50.00,
+    price: 50,
     speed: '500',
     gb: '100',
     lines: 2,
@@ -143,7 +143,7 @@ export const PACK_PLANS: PackPlan[] = [
     id: 'tetra',
     title: 'Pack Tetra',
     description: 'Fibra 500 Megas + Llamadas Ilimitadas',
-    price: 60.00,
+    price: 60,
     speed: '500',
     gb: '175',
     lines: 4,
@@ -158,7 +158,7 @@ export const PACK_PLANS: PackPlan[] = [
     id: 'pro',
     title: 'Pack Pro',
     description: 'Fibra 1000 Megas + Llamadas Ilimitadas',
-    price: 67.00,
+    price: 67,
     speed: '1000',
     gb: '175',
     lines: 2,
@@ -178,7 +178,7 @@ export const SOLO_FIBRA_PLANS: SoloFibraPlan[] = [
     id: 'fibra500',
     title: 'Fibra 500',
     speed: 500,
-    price: 30.00, // Updated to 30.00 as per CSV (2P Fibra+Fijo price)
+    price: 30, // Updated to 30.00 as per CSV (2P Fibra+Fijo price)
     features: ['Router WiFi 6'],
     // Backend data
     ttb: "1012",
@@ -190,7 +190,7 @@ export const SOLO_FIBRA_PLANS: SoloFibraPlan[] = [
     id: 'fibra1000',
     title: 'Fibra 1000',
     speed: 1000,
-    price: 40.00, // Updated to 40.00 as per CSV (2P Fibra+Fijo price)
+    price: 40, // Updated to 40.00 as per CSV (2P Fibra+Fijo price)
     features: ['Router WiFi 6'],
     isPopular: true,
     // Backend data
@@ -219,7 +219,7 @@ export const SOLO_MOVIL_PLANS: SoloMovilPlan[] = [
     id: 'movil-estandar',
     title: 'Estándar',
     data: '25',
-    basePrice: 7.00, // Matches CSV
+    basePrice: 7, // Matches CSV
     calls: 'Llamadas ilimitadas',
     // Backend data
     ttb: "1014",
@@ -231,7 +231,7 @@ export const SOLO_MOVIL_PLANS: SoloMovilPlan[] = [
     id: 'movil-pro',
     title: 'Pro',
     data: '40',
-    basePrice: 9.00, // Matches CSV
+    basePrice: 9, // Matches CSV
     calls: 'Llamadas ilimitadas',
     // Backend data
     ttb: "628",
@@ -243,7 +243,7 @@ export const SOLO_MOVIL_PLANS: SoloMovilPlan[] = [
     id: 'movil-premium',
     title: 'Premium',
     data: '75',
-    basePrice: 10.00, // Matches CSV
+    basePrice: 10, // Matches CSV
     calls: 'Llamadas ilimitadas',
     // Backend data
     ttb: "637",
@@ -255,7 +255,7 @@ export const SOLO_MOVIL_PLANS: SoloMovilPlan[] = [
     id: 'movil-premium-plus',
     title: 'Premium+',
     data: '200',
-    basePrice: 20.00, // Matches CSV
+    basePrice: 20, // Matches CSV
     calls: 'Llamadas ilimitadas',
     // Backend data
     ttb: "527",
@@ -271,7 +271,7 @@ export const FIBRA_MOVIL_PLANS: FibraMovilPlan[] = [
     id: 'fm-basico',
     title: 'Básico',
     description: 'Internet de alta velocidad con datos móviles esenciales',
-    basePrice: 28.00, // Matches CSV for 3P Fibra+movil 300Mb
+    basePrice: 28, // Matches CSV for 3P Fibra+movil 300Mb
     speed: 300,
     baseLines: 1,
     baseData: 45, // Updated to 45 as per CSV
@@ -286,7 +286,7 @@ export const FIBRA_MOVIL_PLANS: FibraMovilPlan[] = [
     id: 'fm-estandar',
     title: 'Estándar',
     description: 'Equilibrio perfecto entre velocidad y datos',
-    basePrice: 40.00, // Updated to match CSV
+    basePrice: 40, // Updated to match CSV
     speed: 500,
     baseLines: 1,
     baseData: 60, // Updated to match CSV
@@ -301,7 +301,7 @@ export const FIBRA_MOVIL_PLANS: FibraMovilPlan[] = [
     id: 'fm-pro',
     title: 'Pro',
     description: 'Mayor velocidad y más datos para usuarios exigentes',
-    basePrice: 45.00, // Matches CSV
+    basePrice: 45, // Matches CSV
     speed: 500,
     baseLines: 1,
     baseData: 115, // As per CSV
@@ -316,7 +316,7 @@ export const FIBRA_MOVIL_PLANS: FibraMovilPlan[] = [
     id: 'fm-premium',
     title: 'Premium',
     description: 'Máxima potencia para usuarios exigentes',
-    basePrice: 55.00, // Updated to match CSV
+    basePrice: 55, // Updated to match CSV
     speed: 1000,
     baseLines: 1,
     baseData: 115, // Updated to match CSV
@@ -336,7 +336,7 @@ export const ADDITIONAL_LINES: AdditionalLineOption[] = [
     id: 'line20GB',
     name: 'Línea 20GB',
     gb: 20,
-    price: 5.00, // Matches CSV
+    price: 5, // Matches CSV
     // Backend data
     ttb: "9031",
     serviceId: "9031",
@@ -347,7 +347,7 @@ export const ADDITIONAL_LINES: AdditionalLineOption[] = [
     id: 'line40GB',
     name: 'Línea 40GB',
     gb: 40,
-    price: 10.00, // Updated to 10.00 as per CSV
+    price: 10, // Updated to 10.00 as per CSV
     // Backend data
     ttb: "9050",
     serviceId: "9050",
@@ -358,7 +358,7 @@ export const ADDITIONAL_LINES: AdditionalLineOption[] = [
     id: 'line60GB',
     name: 'Línea 60GB',
     gb: 60,
-    price: 12.00, // Matches CSV
+    price: 12, // Matches CSV
     // Backend data
     ttb: "9051",
     serviceId: "9051",
@@ -373,7 +373,7 @@ export const INTERNATIONAL_BONOS: BonoOption[] = [
     id: '100min', 
     type: 'minutes',
     value: '100', 
-    price: 3.00, // Matches CSV
+    price: 3, // Matches CSV
     // Backend data
     ttb: "896",
     serviceId: "896",
@@ -384,7 +384,7 @@ export const INTERNATIONAL_BONOS: BonoOption[] = [
     id: '300min', 
     type: 'minutes',
     value: '300', 
-    price: 9.00, // Matches CSV
+    price: 9, // Matches CSV
     // Backend data
     ttb: "897",
     serviceId: "897",
@@ -395,7 +395,7 @@ export const INTERNATIONAL_BONOS: BonoOption[] = [
     id: '600min', 
     type: 'minutes',
     value: '600', 
-    price: 12.00, // Matches CSV
+    price: 12, // Matches CSV
     // Backend data
     ttb: "898",
     serviceId: "898",
@@ -410,7 +410,7 @@ export const DATA_BONOS: BonoOption[] = [
     id: '500mb', 
     type: 'data',
     value: '500 MB', 
-    price: 2.00, // Matches CSV
+    price: 2, // Matches CSV
     // Backend data
     ttb: "891",
     serviceId: "891",
@@ -421,7 +421,7 @@ export const DATA_BONOS: BonoOption[] = [
     id: '1gb', 
     type: 'data',
     value: '1 GB', 
-    price: 3.00, // Matches CSV
+    price: 3, // Matches CSV
     // Backend data
     ttb: "892",
     serviceId: "892",
@@ -432,7 +432,7 @@ export const DATA_BONOS: BonoOption[] = [
     id: '3gb', 
     type: 'data',
     value: '3 GB', 
-    price: 5.00, // Matches CSV
+    price: 5, // Matches CSV
     // Backend data
     ttb: "893",
     serviceId: "893",
@@ -443,7 +443,7 @@ export const DATA_BONOS: BonoOption[] = [
     id: '5gb', 
     type: 'data',
     value: '5 GB', 
-    price: 6.00, // Matches CSV
+    price: 6, // Matches CSV
     // Backend data
     ttb: "894",
     serviceId: "894",
@@ -454,7 +454,7 @@ export const DATA_BONOS: BonoOption[] = [
     id: '10gb', 
     type: 'data',
     value: '10 GB', 
-    price: 9.00, // Matches CSV
+    price: 9, // Matches CSV
     // Backend data
     ttb: "895",
     serviceId: "895",

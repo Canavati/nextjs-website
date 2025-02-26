@@ -522,7 +522,7 @@ export default function AyudaPage() {
   return (
     <main className="min-h-screen bg-dark">
       {/* Hero Section */}
-      <section id="hero" className="pt-[200px] -mt-[115px] pb-24 relative overflow-hidden">
+      <section id="hero" className="pt-[200px] pb-24 relative overflow-hidden">
         {/* Background Layers */}
         <div className="absolute inset-0 bg-gradient-new opacity-95" />
         <div className="absolute inset-0 bg-black/40" />

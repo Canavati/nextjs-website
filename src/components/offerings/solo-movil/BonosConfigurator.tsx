@@ -188,11 +188,10 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
                     {selectedMinutes.minutes}
                     <span className="text-lg text-white/60 ml-2">min</span>
                   </div>
-                  <div className="text-5xl font-bold text-[#51fcff] mt-2">
-                    +{Number.isInteger(selectedMinutes.price) ? 
+                  <div className="text-5xl font-black text-white mt-2">
+                    {Number.isInteger(selectedMinutes.price) ? 
                       selectedMinutes.price : 
                       selectedMinutes.price.toFixed(2)}€
-                    <span className="text-sm text-white/60 ml-1">/mes</span>
                   </div>
                 </div>
 
@@ -243,11 +242,10 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
                   <div className="text-4xl font-bold text-white">
                     {selectedData.data}
                   </div>
-                  <div className="text-5xl font-bold text-[#51fcff] mt-2">
-                    +{Number.isInteger(selectedData.price) ? 
+                  <div className="text-5xl font-black text-white mt-2">
+                    {Number.isInteger(selectedData.price) ? 
                       selectedData.price : 
                       selectedData.price.toFixed(2)}€
-                    <span className="text-sm text-white/60 ml-1">/mes</span>
                   </div>
                 </div>
 

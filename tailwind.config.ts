@@ -26,6 +26,7 @@ const config: Config = {
       },
       padding: {
         "top-nav": "calc(35px + 80px)",
+        "total-nav": "var(--total-nav-height)",
       },
       transitionDuration: {
         normal: "var(--transition-normal)",

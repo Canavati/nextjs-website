@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X, CheckCircle, Warning } from '@phosphor-icons/react';
+import { X, CheckCircle, Warning, WifiHigh, DeviceMobile } from '@phosphor-icons/react';
 import { useConfigurator, CustomerFormData } from '@/context/ConfiguratorProvider';
 import { ADDITIONAL_LINES } from '@/data/plans-data';
 
@@ -18,6 +18,22 @@ export default function ConfigurationForm() {
     submitSuccess,
     resetSelections
   } = useConfigurator();
+
+  // Helper function to format prices
+  const formatPrice = (price: number | string): string => {
+    if (typeof price === 'string') return price + '€';
+    
+    // Check if the decimal part is zero
+    const isWholeNumber = price % 1 === 0;
+    
+    if (isWholeNumber) {
+      // If it's a whole number, show without decimals
+      return `${Math.floor(price)}€`;
+    } else {
+      // If there are decimals, ensure we always show 2 decimal places
+      return `${price.toFixed(2)}€`;
+    }
+  };
 
   // Cleanup effect - reset selections when form is closed
   useEffect(() => {
@@ -77,21 +93,24 @@ export default function ConfigurationForm() {
       return {
         title: selections.selectedPack.title,
         description: `${selections.selectedPack.speed}Mb + ${selections.selectedPack.gb}GB`,
-        price: selections.selectedPack.price
+        price: selections.selectedPack.price,
+        type: 'pack'
       };
     } 
     else if (selections.selectedFibraPlan) {
       return {
         title: selections.selectedFibraPlan.title,
         description: `${selections.selectedFibraPlan.speed}Mb Simétricos`,
-        price: selections.selectedFibraPlan.price
+        price: selections.selectedFibraPlan.price,
+        type: 'fibra'
       };
     }
     else if (selections.selectedMovilPlan) {
       return {
         title: selections.selectedMovilPlan.title,
         description: `${selections.selectedMovilPlan.data}GB + ${selections.selectedMovilPlan.calls}`,
-        price: selections.selectedMovilPlan.basePrice
+        price: selections.selectedMovilPlan.basePrice,
+        type: 'movil'
       };
     }
     else if (selections.fibraMovilConfig.basePlan) {
@@ -106,20 +125,30 @@ export default function ConfigurationForm() {
       const lineDetails: string[] = [];
       let totalAdditionalLinesCount = 0;
       
+      // Store each line type and count for the breakdown
+      const additionalLineDetails: {id: string, gb: string, count: number, price: number}[] = [];
+      
       Object.entries(additionalLines).forEach(([id, count]) => {
         if (count > 0) {
           // Find the line in ADDITIONAL_LINES
           const lineOption = ADDITIONAL_LINES.find(line => line.id === id);
-          const linePrice = lineOption ? lineOption.price : 0;
+          if (!lineOption) return;
           
+          const linePrice = lineOption.price;
           totalPrice += linePrice * count;
           totalAdditionalLinesCount += count;
           
           // Add line summary
-          const gbSize = lineOption ? `${lineOption.gb}GB` : '';
+          const gbSize = lineOption.gb.toString();
           
           if (count > 0) {
-            lineDetails.push(`${count}x ${gbSize}`);
+            lineDetails.push(`${count}x ${gbSize}GB`);
+            additionalLineDetails.push({
+              id: id,
+              gb: gbSize,
+              count: count,
+              price: linePrice * count
+            });
           }
         }
       });
@@ -136,8 +165,14 @@ export default function ConfigurationForm() {
       
       return {
         title: enhancedTitle,
+        shortTitle: basePlan.title,
         description: `${basePlan.speed}Mb + ${basePlan.baseData}GB${linesSummary}`,
-        price: totalPrice
+        baseDescription: `${basePlan.speed}Mb + ${basePlan.baseData}GB`,
+        price: totalPrice,
+        basePrice: basePlan.basePrice,
+        additionalLines: additionalLineDetails,
+        totalAdditionalLinesCount,
+        type: 'fibra-movil'
       };
     }
     else if (selections.selectedBono.bono) {
@@ -147,14 +182,16 @@ export default function ConfigurationForm() {
         description: bono.type === 'minutes' ? 
           `${bono.value} minutos internacionales` : 
           `${bono.value} de datos extra`,
-        price: bono.price
+        price: bono.price,
+        type: `bono-${bono.type}`
       };
     }
 
     return {
       title: 'Sin selección',
       description: 'No se ha seleccionado ningún plan',
-      price: 0
+      price: 0,
+      type: 'none'
     };
   };
 
@@ -167,62 +204,75 @@ export default function ConfigurationForm() {
 
   if (!showForm) return null;
 
+  // Helper function to get the label for the plan type
+  const getPlanTypeLabel = (type: string) => {
+    switch (type) {
+      case 'pack': return 'Pack';
+      case 'fibra': return 'Fibra';
+      case 'movil': return 'Móvil';
+      case 'fibra-movil': return 'Fibra + Móvil';
+      case 'bono-minutes': return 'Bono';
+      case 'bono-data': return 'Bono';
+      default: return '';
+    }
+  };
+
   return (
     <AnimatePresence mode="wait">
-      <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+      <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-2 overflow-y-auto">
         <motion.div
           initial={{ opacity: 0, scale: 0.95 }}
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.95 }}
           transition={{ duration: 0.2 }}
-          className="relative bg-white rounded-3xl shadow-xl max-w-md w-full max-h-[90vh] overflow-y-auto"
+          className="relative bg-white rounded-2xl shadow-xl max-w-md w-full max-h-[80vh] overflow-y-auto"
         >
           {submitSuccess === true ? (
-            <div className="p-8 text-center">
-              <div className="flex flex-col items-center justify-center py-8">
+            <div className="p-6 text-center">
+              <div className="flex flex-col items-center justify-center py-6">
                 <motion.div 
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                  className="w-20 h-20 bg-gradient-to-br from-[#51fcff] to-[#ed54ba] bg-opacity-20 rounded-full flex items-center justify-center mb-4"
+                  className="w-16 h-16 bg-gradient-to-br from-[#51fcff] to-[#ed54ba] rounded-full flex items-center justify-center mb-3"
                 >
-                  <CheckCircle size={40} weight="fill" className="text-white" />
+                  <CheckCircle size={32} weight="fill" className="text-white" />
                 </motion.div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">¡Solicitud Enviada!</h3>
-                <p className="text-gray-600 max-w-xs">
+                <h3 className="text-xl font-bold text-gray-800 mb-2">¡Solicitud Enviada!</h3>
+                <p className="text-gray-600 max-w-xs text-sm">
                   Gracias por tu interés. Nos pondremos en contacto contigo lo antes posible.
                 </p>
                 <motion.button
                   whileHover={{ scale: 1.03 }}
                   whileTap={{ scale: 0.97 }}
                   onClick={handleClose}
-                  className="mt-6 bg-gradient-to-r from-[#ed54ba] to-[#51fcff] text-white font-medium py-2 px-6 rounded-xl hover:shadow-lg transition-all duration-300"
+                  className="mt-4 bg-gradient-to-r from-[#ed54ba] to-[#51fcff] text-white font-medium py-2 px-5 rounded-xl hover:shadow-lg transition-all duration-300"
                 >
                   Volver al Sitio
                 </motion.button>
               </div>
             </div>
           ) : submitSuccess === false ? (
-            <div className="p-8 text-center">
-              <div className="flex flex-col items-center justify-center py-8">
+            <div className="p-6 text-center">
+              <div className="flex flex-col items-center justify-center py-6">
                 <motion.div 
                   initial={{ scale: 0 }}
                   animate={{ scale: 1 }}
                   transition={{ type: "spring", stiffness: 200, damping: 10 }}
-                  className="w-20 h-20 bg-red-100 rounded-full flex items-center justify-center mb-4"
+                  className="w-16 h-16 bg-red-100 rounded-full flex items-center justify-center mb-3"
                 >
-                  <Warning size={40} weight="fill" className="text-red-500" />
+                  <Warning size={32} weight="fill" className="text-red-500" />
                 </motion.div>
-                <h3 className="text-2xl font-bold text-gray-800 mb-2">Error al Enviar</h3>
-                <p className="text-gray-600 max-w-xs">
+                <h3 className="text-xl font-bold text-gray-800 mb-2">Error al Enviar</h3>
+                <p className="text-gray-600 max-w-xs text-sm">
                   Ha ocurrido un problema al enviar tu solicitud. Por favor, inténtalo de nuevo.
                 </p>
-                <div className="flex gap-3 mt-6">
+                <div className="flex gap-3 mt-4">
                   <motion.button
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     onClick={handleClose}
-                    className="border border-gray-300 text-gray-700 font-medium py-2 px-6 rounded-xl hover:bg-gray-50 transition-all duration-300"
+                    className="border border-gray-300 text-gray-700 font-medium py-2 px-5 text-sm rounded-xl hover:bg-gray-50 transition-all duration-300"
                   >
                     Cancelar
                   </motion.button>
@@ -230,7 +280,7 @@ export default function ConfigurationForm() {
                     whileHover={{ scale: 1.03 }}
                     whileTap={{ scale: 0.97 }}
                     onClick={handleSubmit}
-                    className="bg-gradient-to-r from-[#ed54ba] to-[#51fcff] text-white font-medium py-2 px-6 rounded-xl hover:shadow-lg transition-all duration-300"
+                    className="bg-gradient-to-r from-[#ed54ba] to-[#51fcff] text-white font-medium py-2 px-5 text-sm rounded-xl hover:shadow-lg transition-all duration-300"
                   >
                     Reintentar
                   </motion.button>
@@ -240,34 +290,119 @@ export default function ConfigurationForm() {
           ) : (
             <>
               {/* Header with Gradient */}
-              <div className="bg-gradient-to-r from-[#ed54ba] to-[#51fcff] p-6 relative">
-                <button
+              <div className="bg-gradient-dark pt-4 pb-5 px-5 relative rounded-t-2xl">
+                <motion.button
+                  whileHover={{ scale: 1.1 }}
+                  whileTap={{ scale: 0.9 }}
                   onClick={handleClose}
-                  className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 transition-all z-10"
+                  className="absolute top-3 right-3 w-7 h-7 flex items-center justify-center rounded-full bg-white/20 text-white hover:bg-white/30 transition-all z-10"
                   aria-label="Cerrar formulario"
                 >
-                  <X size={20} weight="bold" />
-                </button>
-                <h2 className="text-2xl font-bold text-white mb-2">Completar Solicitud</h2>
+                  <X size={18} weight="bold" />
+                </motion.button>
+                <h2 className="text-xl font-bold text-white mb-3">Completar Solicitud</h2>
                 
-                {/* Plan summary in header */}
-                <div className="bg-white/10 backdrop-blur-sm p-4 rounded-2xl mb-2 text-white">
-                  <h3 className="font-medium text-xl">{info.title}</h3>
-                  <p className="text-white/80 text-sm mb-3">{info.description}</p>
-                  <div className="text-2xl font-bold">
-                    {typeof info.price === 'number' ? 
-                      `${info.price.toFixed(2)}€` : 
-                      `${info.price}€`}
-                    {!(info.title === 'Bono Minutos' || info.title === 'Bono Datos') && (
-                      <span className="text-sm font-normal text-white/80 ml-1">/mes</span>
-                    )}
+                {/* Plan Card */}
+                <div className="bg-white/90 backdrop-blur-sm rounded-xl p-3 shadow-sm">
+                  <div className="flex justify-between items-start mb-1">
+                    <h3 className="font-bold text-lg text-gray-800">
+                      {info.type === 'fibra-movil' && info.totalAdditionalLinesCount && info.totalAdditionalLinesCount > 0 
+                        ? `${info.shortTitle} + ${info.totalAdditionalLinesCount} líneas adicionales` 
+                        : info.title}
+                    </h3>
+                    <motion.span 
+                      whileHover={{ scale: 1.05 }}
+                      className={`inline-flex px-3 py-1 rounded-full text-xs font-medium shadow-sm transition-all duration-500 ${
+                        info.type === 'pack' 
+                          ? 'bg-teal-200 text-teal-900 border border-teal-400 animate-pulse hover:shadow-teal-300/50 hover:shadow-md' : 
+                        info.type === 'fibra-movil' 
+                          ? 'bg-blue-200 text-blue-900 border border-blue-400 animate-pulse hover:shadow-blue-300/50 hover:shadow-md' :
+                        info.type === 'fibra' 
+                          ? 'bg-purple-200 text-purple-900 border border-purple-400 animate-pulse hover:shadow-purple-300/50 hover:shadow-md' :
+                        info.type === 'movil' 
+                          ? 'bg-amber-200 text-amber-900 border border-amber-400 animate-pulse hover:shadow-amber-300/50 hover:shadow-md' :
+                        info.type === 'bonos'
+                          ? 'bg-pink-200 text-pink-900 border border-pink-400 animate-pulse hover:shadow-pink-300/50 hover:shadow-md' :
+                        'bg-pink-200 text-pink-900 border border-pink-400 animate-pulse hover:shadow-pink-300/50 hover:shadow-md'
+                      }`}
+                    >
+                      {getPlanTypeLabel(info.type)}
+                    </motion.span>
                   </div>
+                  
+                  <p className="text-gray-600 text-sm mb-2">
+                    {info.type === 'fibra-movil' && 'baseDescription' in info ? info.baseDescription : info.description}
+                  </p>
+                  
+                  {/* Prices */}
+                  {'additionalLines' in info && info.additionalLines && info.additionalLines.length > 0 ? (
+                    <div className="space-y-1.5">
+                      {/* Base Plan */}
+                      <div className="flex justify-between items-center">
+                        <div className="flex items-center">
+                          <span className="h-2 w-2 rounded-full bg-blue-500 mr-2"></span>
+                          <span className="text-sm">Plan Base</span>
+                        </div>
+                        <span className="font-medium">{info.basePrice ? formatPrice(info.basePrice) : '0€'}</span>
+                      </div>
+                      
+                      {/* Additional Lines */}
+                      <div className="space-y-1">
+                        <div className="flex items-center">
+                          <span className="h-2 w-2 rounded-full bg-pink-500 mr-2"></span>
+                          <span className="text-sm">Líneas Adicionales</span>
+                        </div>
+                        
+                        {info.additionalLines.map((line, i) => (
+                          <div key={i} className="flex justify-between items-center pl-4">
+                            <span className="text-sm text-gray-600">{line.count}× Línea {line.gb}GB</span>
+                            <span className="text-sm font-medium text-gray-800">{formatPrice(line.price)}</span>
+                          </div>
+                        ))}
+                      </div>
+                      
+                      {/* Total Price */}
+                      <div className="pt-2 mt-1 border-t border-gray-200">
+                        <div className="flex justify-between items-center">
+                          <motion.span 
+                            initial={{ scale: 1 }}
+                            animate={{ scale: [1, 1.03, 1] }}
+                            transition={{ duration: 2, repeat: Infinity, repeatType: "reverse" }}
+                            className="font-bold text-2xl text-blue-600"
+                          >
+                            {formatPrice(info.price)}
+                          </motion.span>
+                          <span className="text-xs text-gray-500">/mes</span>
+                        </div>
+                        <p className="text-xs text-gray-500">IVA incluido</p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex justify-between items-end">
+                      <motion.span 
+                        className={`font-bold text-3xl relative ${
+                          info.type === 'pack' ? 'text-transparent bg-clip-text text-shimmer-ocean' : 
+                          info.type === 'fibra-movil' ? 'text-transparent bg-clip-text text-shimmer-ocean' :
+                          info.type.includes('bono') ? 'text-transparent bg-clip-text text-shimmer-ocean' :
+                          'text-transparent bg-clip-text text-shimmer-ocean'
+                        } animate-shimmer`}
+                      >
+                        {formatPrice(info.price)}
+                      </motion.span>
+                      <div className="flex flex-col items-end">
+                        {!info.type.includes('bono') && (
+                          <span className="text-xs text-gray-500">/mes</span>
+                        )}
+                        <span className="text-xs text-gray-500">IVA incluido</span>
+                      </div>
+                    </div>
+                  )}
                 </div>
               </div>
               
-              <form onSubmit={handleSubmit} className="p-6">
-                <div className="space-y-4">
-                  <div className="grid grid-cols-2 gap-4">
+              <form onSubmit={handleSubmit} className="p-4">
+                <div className="space-y-3">
+                  <div className="grid grid-cols-2 gap-3">
                     {/* First Name */}
                     <div>
                       <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
@@ -278,7 +413,7 @@ export default function ConfigurationForm() {
                         id="firstName"
                         value={formData.firstName}
                         onChange={(e) => updateFormData('firstName', e.target.value)}
-                        className={`w-full px-3 py-2 border ${errors.firstName ? 'border-red-500' : 'border-gray-300'} rounded-xl focus:outline-none focus:ring-2 focus:ring-[#51fcff]/50 transition-all duration-200`}
+                        className={`w-full px-3 py-1.5 text-sm border ${errors.firstName ? 'border-red-500' : 'border-gray-300'} rounded-xl focus:outline-none focus:ring-2 focus:ring-[#51fcff]/50 transition-all duration-200`}
                       />
                       {errors.firstName && (
                         <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>
@@ -295,7 +430,7 @@ export default function ConfigurationForm() {
                         id="lastName"
                         value={formData.lastName}
                         onChange={(e) => updateFormData('lastName', e.target.value)}
-                        className={`w-full px-3 py-2 border ${errors.lastName ? 'border-red-500' : 'border-gray-300'} rounded-xl focus:outline-none focus:ring-2 focus:ring-[#51fcff]/50 transition-all duration-200`}
+                        className={`w-full px-3 py-1.5 text-sm border ${errors.lastName ? 'border-red-500' : 'border-gray-300'} rounded-xl focus:outline-none focus:ring-2 focus:ring-[#51fcff]/50 transition-all duration-200`}
                       />
                       {errors.lastName && (
                         <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
@@ -313,7 +448,7 @@ export default function ConfigurationForm() {
                       id="email"
                       value={formData.email}
                       onChange={(e) => updateFormData('email', e.target.value)}
-                      className={`w-full px-3 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-xl focus:outline-none focus:ring-2 focus:ring-[#51fcff]/50 transition-all duration-200`}
+                      className={`w-full px-3 py-1.5 text-sm border ${errors.email ? 'border-red-500' : 'border-gray-300'} rounded-xl focus:outline-none focus:ring-2 focus:ring-[#51fcff]/50 transition-all duration-200`}
                     />
                     {errors.email && (
                       <p className="text-red-500 text-xs mt-1">{errors.email}</p>
@@ -330,7 +465,7 @@ export default function ConfigurationForm() {
                       id="phone"
                       value={formData.phone}
                       onChange={(e) => updateFormData('phone', e.target.value)}
-                      className={`w-full px-3 py-2 border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-xl focus:outline-none focus:ring-2 focus:ring-[#51fcff]/50 transition-all duration-200`}
+                      className={`w-full px-3 py-1.5 text-sm border ${errors.phone ? 'border-red-500' : 'border-gray-300'} rounded-xl focus:outline-none focus:ring-2 focus:ring-[#51fcff]/50 transition-all duration-200`}
                     />
                     {errors.phone && (
                       <p className="text-red-500 text-xs mt-1">{errors.phone}</p>
@@ -338,19 +473,19 @@ export default function ConfigurationForm() {
                   </div>
                 </div>
                 
-                <div className="mt-8">
+                <div className="mt-5">
                   <motion.button
                     type="submit"
                     disabled={isSubmitting}
-                    whileHover={{ scale: 1.02 }}
+                    whileHover={{ scale: 1.02, boxShadow: "0 10px 15px -3px rgba(0, 0, 0, 0.1)" }}
                     whileTap={{ scale: 0.98 }}
-                    className="w-full bg-gradient-to-r from-[#ed54ba] to-[#51fcff] text-white font-semibold py-3 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
+                    className="w-full bg-gradient-dark text-white font-semibold py-2.5 px-6 rounded-xl shadow-md hover:shadow-lg transition-all duration-300 disabled:opacity-70 disabled:cursor-not-allowed"
                   >
                     {isSubmitting ? "Enviando..." : "Enviar Solicitud"}
                   </motion.button>
                 </div>
                 
-                <p className="text-xs text-gray-500 mt-4 text-center">
+                <p className="text-xs text-gray-500 mt-3 text-center">
                   Al enviar este formulario, aceptas nuestra política de privacidad y términos de servicio.
                 </p>
               </form>

@@ -341,7 +341,7 @@ export const MovilHero = () => {
   ];
 
   return (
-    <section id="hero" className="relative min-h-[100vh] pt-[115px] -mt-[115px] bg-dark overflow-hidden flex items-center">
+    <section id="hero" className="relative min-h-[100vh] bg-dark overflow-hidden flex items-center">
       {/* Background Gradient Effect */}
       <div className="absolute inset-0 bg-gradient-new opacity-95" />
       

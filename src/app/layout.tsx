@@ -87,7 +87,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es" className="scroll-smooth">
-      <body className={`${inter.className} pt-total-nav min-h-screen relative overflow-x-hidden`}>
+      <body className={`${inter.className} min-h-screen relative overflow-x-hidden`}>
         <ErrorBoundary>
           <HeroProvider>
             <ConfiguratorProvider>
