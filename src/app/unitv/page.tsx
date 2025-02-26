@@ -1163,12 +1163,15 @@ export default function UniTVPage() {
             <X className="w-5 h-5" />
           </button>
           
-          <h3 className="text-lg font-bold text-center text-[#0066FF] bg-gradient-to-r from-[#0066FF] to-[#51fcff] bg-clip-text text-transparent pr-6">
-            Paquetes Adicionales
-          </h3>
+          {/* ENHANCED TITLE WITH BIGGER SIZE AND BETTER GRADIENT */}
+          <div className="mb-4 pt-3 pb-2 border-b border-blue-200/30">
+            <h3 className="text-2xl md:text-3xl font-extrabold text-center bg-gradient-to-r from-[#9c5adb] to-[#51fcff] bg-clip-text text-transparent pr-6 drop-shadow-sm">
+              Paquetes Adicionales
+            </h3>
+          </div>
           
-          <div className="mb-1">
-            <div className="grid grid-cols-1 gap-1.5 mt-1">
+          <div className="mb-2">
+            <div className="grid grid-cols-1 gap-2 mt-1">
               {[
                 { 
                   title: "Internacionales", 
@@ -1211,7 +1214,11 @@ export default function UniTVPage() {
                   <div 
                     key={idx} 
                     onClick={() => toggleAddon({ title: addon.title, price: addon.price, channels: addon.channels })}
-                    className={`bg-white border rounded-lg py-2 px-3 shadow-sm cursor-pointer transition-all duration-300 hover:shadow-md relative ${isSelected ? 'border-pink-500 border-2 bg-pink-50' : 'border-gray-200'}`}
+                    className={`bg-white border rounded-lg py-2 px-3 shadow-sm cursor-pointer transition-all duration-300 hover:shadow-md relative ${
+                      isSelected 
+                        ? 'border-pink-500 border-2 bg-gradient-to-br from-pink-50 to-white' 
+                        : 'border-gray-200'
+                    }`}
                   >
                     <div className="flex items-start">
                       {/* Left Column: Icon and Title */}
@@ -1220,18 +1227,22 @@ export default function UniTVPage() {
                           <addon.icon className="w-4 h-4 text-pink-500 mr-1" />
                           <h5 className="text-base font-bold text-[#051c40]">{addon.title}</h5>
                           
-                          {/* Selection checkmark */}
+                          {/* Selection checkmark with enhanced gradient */}
                           {isSelected && (
-                            <CheckCircle weight="fill" className="w-4 h-4 text-pink-500 ml-1" />
+                            <div className="flex items-center ml-1">
+                              <div className="bg-gradient-to-r from-pink-500 to-purple-500 rounded-full p-0.5">
+                                <CheckCircle weight="fill" className="w-3.5 h-3.5 text-white" />
+                              </div>
+                            </div>
                           )}
                         </div>
                         <p className="text-gray-700 text-xs">{addon.feature}</p>
                         <p className="text-gray-600 text-xs line-clamp-1">{addon.channels}</p>
                       </div>
                       
-                      {/* Right Column: Price only (no button) */}
+                      {/* Right Column: Price only (no button) - Enhanced gradient */}
                       <div className="flex flex-col items-end">
-                        <div className="bg-gradient-to-r from-[#9c5adb] to-[#51fcff] text-white rounded-lg px-2.5 py-1 text-base font-bold">
+                        <div className="bg-gradient-to-r from-[#9c5adb] to-[#51fcff] text-white rounded-lg px-3 py-1.5 text-base font-bold shadow-sm">
                           {addon.price}€<span className="text-xs font-normal">/mes</span>
                         </div>
                       </div>
@@ -1242,17 +1253,17 @@ export default function UniTVPage() {
             </div>
           </div>
           
-          {/* Configurator summary and button - MUCH BIGGER */}
-          <div className="border-t border-gray-300 pt-3 sticky bottom-0 bg-gradient-to-b from-[#e0f7fc] to-[#c4e9ff] pb-2 mt-2">
+          {/* Configurator summary and button - ENHANCED GRADIENT STYLES */}
+          <div className="border-t border-gray-300 pt-4 sticky bottom-0 bg-gradient-to-b from-[#e0f7fc] to-[#c4e9ff] pb-3 mt-2">
             <div className="flex flex-col">
-              <div className="flex justify-between items-center mb-2">
-                <span className="text-base font-bold text-gray-800">Total mensual:</span>
-                <span className="text-3xl font-extrabold bg-gradient-to-r from-[#9c5adb] to-[#51fcff] bg-clip-text text-transparent">
+              <div className="flex justify-between items-center mb-3">
+                <span className="text-lg font-bold text-[#051c40]">Total mensual:</span>
+                <span className="text-4xl font-extrabold bg-gradient-to-r from-[#9c5adb] to-[#51fcff] bg-clip-text text-transparent drop-shadow-sm">
                   {((selectedPlan?.price || 0) + selectedAddons.reduce((sum, addon) => sum + addon.price, 0)).toFixed(2)}€
                 </span>
               </div>
               <button 
-                className="w-full py-3 bg-gradient-to-r from-pink-500 to-[#9c5adb] text-white font-bold rounded-lg shadow-md text-xl"
+                className="w-full py-3.5 bg-gradient-to-r from-pink-500 to-[#9c5adb] text-white font-bold rounded-lg shadow-lg text-xl hover:shadow-xl transition-all duration-300 hover:from-pink-600 hover:to-[#8a4dc3]"
                 onClick={() => {
                   setShowConfigurator(false);
                 }}
