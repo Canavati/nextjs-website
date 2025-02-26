@@ -326,29 +326,46 @@ export function ConfiguratorProvider({ children }: { children: ReactNode }) {
 
     try {
       // Prepare the data to send
-      const formData = prepareSubmissionData();
+      const submissionData = prepareSubmissionData();
       
       // Log the detailed form data being submitted
       console.log('Submitting form with data:', {
-        customer: formData.customer,
-        serviceType: formData.serviceType,
-        id: formData.id,
-        title: formData.title,
-        totalPrice: formData.totalPrice,
-        additionalLines: formData.additionalLines ? formData.additionalLines.length : 0
+        customer: submissionData.customer,
+        serviceType: submissionData.serviceType,
+        id: submissionData.id,
+        title: submissionData.title,
+        totalPrice: submissionData.totalPrice,
+        additionalLines: submissionData.additionalLines ? submissionData.additionalLines.length : 0
       });
       
-      // Simulate API call
-      await new Promise(resolve => setTimeout(resolve, 1500));
+      // Send the data to our API endpoint
+      const response = await fetch('/api/submit-form', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(submissionData),
+      });
+      
+      // Parse the response
+      const result = await response.json();
+      
+      // Check if the submission was successful
+      if (!response.ok || !result.success) {
+        console.error('Error submitting form:', result.message);
+        setSubmitSuccess(false);
+        return false;
+      }
       
       // Log successful response
-      console.log('Submission successful!', formData);
+      console.log('Submission successful!', result);
       
       // Set success and reset form
       setSubmitSuccess(true);
       setFormData(initialFormData);
       return true;
     } catch (error) {
+      console.error('Error in form submission:', error);
       setSubmitSuccess(false);
       return false;
     } finally {

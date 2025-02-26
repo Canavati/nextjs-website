@@ -22,8 +22,7 @@ Web:
 - cambiar el .env para que los blogs sean visibles. ✅|
 - Ajustar precios de las ofertas en general. ✅|
 - Configurar Contentfull con cuenta de pascual ✅|
-
-- Backend (Forms funcionales con los IDs de cada oferta para alimentar a Make.com con lo que el usuario elija) ⛔ (falta el backend)
+- Backend (Forms funcionales con los IDs de cada oferta para alimentar a Make.com con lo que el usuario elija) ✅
 
 - Configurar vercel de pascual y mandar demo a pascual⛔|
 

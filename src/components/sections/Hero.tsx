@@ -9,6 +9,8 @@ import {
   GameController, House, ChatCircleDots
 } from '@phosphor-icons/react';
 import { useState } from 'react';
+import { useConfigurator } from '@/context/ConfiguratorProvider';
+import { PACK_PLANS, SOLO_FIBRA_PLANS, SOLO_MOVIL_PLANS } from '@/data/plans-data';
 
 const offerings = [
   {
@@ -52,6 +54,14 @@ const offerings = [
 export default function Hero() {
   const [selectedOffering, setSelectedOffering] = useState(offerings[0]);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  
+  // Add configurator context
+  const { 
+    setPackSelection, 
+    setFibraPlanSelection, 
+    setMovilPlanSelection, 
+    openForm 
+  } = useConfigurator();
 
   const floatingIcons = [
     // Left side
@@ -76,6 +86,35 @@ export default function Hero() {
     { Icon: House, bottom: '15%', right: '28%', duration: 11, delay: 0.3, size: 44 },
     { Icon: ChatCircleDots, top: '30%', right: '10%', duration: 12, delay: 1.8, size: 34 }
   ];
+
+  // Helper function to handle CTA click based on selected offering
+  const handleCtaClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    
+    // Find and select the correct plan based on the selected offering
+    if (selectedOffering.id === 'fibra-movil') {
+      // Find Pack Single in PACK_PLANS
+      const packSingle = PACK_PLANS.find(plan => plan.id === 'single');
+      if (packSingle) {
+        setPackSelection(packSingle);
+      }
+    } else if (selectedOffering.id === 'fibra') {
+      // Find Fibra Estándar in SOLO_FIBRA_PLANS
+      const fibraEstandar = SOLO_FIBRA_PLANS.find(plan => plan.id === 'fibra500');
+      if (fibraEstandar) {
+        setFibraPlanSelection(fibraEstandar);
+      }
+    } else if (selectedOffering.id === 'movil') {
+      // Find Móvil Básico in SOLO_MOVIL_PLANS
+      const movilBasico = SOLO_MOVIL_PLANS.find(plan => plan.id === 'movil-basico');
+      if (movilBasico) {
+        setMovilPlanSelection(movilBasico);
+      }
+    }
+    
+    // Open the form after setting the selection
+    openForm();
+  };
 
   return (
     <section 
@@ -467,16 +506,16 @@ export default function Hero() {
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.5, delay: 0.4 }}
                 >
-            <Link
-              href="#planes"
+                  <button
+                    onClick={handleCtaClick}
                     className="relative inline-block w-full group/button"
-            >
+                  >
                     <div className="absolute inset-0 bg-gradient-to-r from-[#4361ee] to-[#51fcff] rounded-xl opacity-90 group-hover/button:opacity-100 transition-opacity duration-300" />
                     <div className="relative text-center px-8 py-4 text-white font-semibold text-lg transform group-hover/button:-translate-y-1 transition-transform duration-300">
-              ¡CONTRATAR AHORA!
+                      ¡CONTRATAR AHORA!
                     </div>
                     <div className="absolute inset-0 rounded-xl shadow-lg shadow-[#51fcff]/20 group-hover/button:shadow-[#51fcff]/30 transition-shadow duration-300" />
-            </Link>
+                  </button>
                 </motion.div>
               </div>
             </motion.div>
