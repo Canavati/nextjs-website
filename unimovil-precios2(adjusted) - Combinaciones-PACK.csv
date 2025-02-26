@@ -1,0 +1,26 @@
+,,,,,,,,,,
+Identificador TTB,Servicio,Contrato-Descripcion,Gigas GB movil,Precio WEB,,PACKS,Precio PACK,Identificador TTB,Descripcion interna,Descripcion PACK
+1873,3P Fibra+movil,Fibra 300 Megas + Ilimitadas + 45GB,45,28.00 €,,DUO,50.00 €,"1874, 9050",FIBRA 500 Megas+60GB,"FIBRA 500 Megas + Llamadas Ilimitadas, 2 lineas moviles con 100GB compartidos "
+1874,3P Fibra+movil,Fibra 500 Megas + Ilimitadas + 60GB,60,40.00 €,,,,,,
+1878,3P Fibra+movil,Fibra 500 Megas + Ilimitadas + 115GB,115,45.00 €,,,,,,
+1883,3P Fibra+movil,Fibra 1000 Megas + Ilimitadas + 115GB,115,55.00 €,,SINGLE,28.00 €,1873,Fibra 300 Megas + Ilimitadas + 45GB,"Fibra 300 Megas + Llamadas Ilimitadas, 1 línea móvil de 50GB"
+9031,Movil Adicional C,20GB + Llamadas Ilimitadas,20,5.00 €,,,,,,
+9050,Movil Adicional C,40GB + Llamadas Ilimitadas,40,10.00 €,,TETRA,60.00 €,"1878, 9031, 9031, 9031","Fibra 500 Megas + Ilimitadas + 115GB, 20GB + Llamadas Ilimitadas, 20GB + Llamadas Ilimitadas, 20GB + Llamadas Ilimitadas","Fibra 500 Megas + Llamadas Ilimitadas, 4 líneas moviles con 175GB compartidos"
+9051,Movil Adicional C,60GB + Llamadas Ilimitadas,60,12.00 €,,,,,,
+1909,Add 1 GB extra,1GB movil extra,1,2.00 €,,,,,,
+1012,2P Fibra+Fijo,500 Megas + Telefono fijo,,30.00 €,,,,,,
+962,2P Fibra+Fijo,1000 Megas + Telefono fijo,,40.00 €,,,,,,
+439,Solo Movil,10GB + 1000 min + 150 con otros operadores,10,4.90 €,,,,,,
+1014,Solo Movil,25GB + Llamadas Ilimitadas,25,7.00 €,,PRO,67.00 €,"1883, 9051","Fibra 1000 Megas + Ilimitadas + 115GB, 60GB + Llamadas Ilimitadas ","Fibra 1000 Megas + Llamadas Ilimitadas, 2 líneas moviles con 175GB compartidos"
+628,Solo Movil,40GB + Llamadas Ilimitadas,40,9.00 €,,,,,,
+637,Solo Movil,75GB + Llamadas Ilimitadas,75,10.00 €,,,,,,
+527,Solo Movil,200GB + Llamadas Ilimitadas,200,20.00 €,,,,,,
+439,Solo Movil,"10GB movil + 1000 min +  150 min entre otros operadores (Movistar,Vodafone)",10,4.90 €,,,,,,
+896,BONO INT,Bono Internacional 100 min,100 min,3.00 €,,,,,,
+897,BONO INT,Bono Internacional 300 min,300 min,9.00 €,,,,,,
+898,BONO INT,Bono Internacional 600 min,600 min,12.00 €,,,,,,
+891,BONO GB,Bono Ampliación 500MB,500MB,2.00 €,,,,,,
+892,BONO GB,Bono Ampliación 1GB,1GB,3.00 €,,,,,,
+893,BONO GB,Bono Ampliación 3GB,3GB,5.00 €,,,,,,
+894,BONO GB,Bono Ampliación 5GB,5GB,6.00 €,,,,,,
+895,BONO GB,Bono Ampliación 10GB,10GB,9.00 €,,,,,,

@@ -1,17 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { Globe, Database, } from '@phosphor-icons/react';
+import { useConfigurator } from '@/context/ConfiguratorProvider';
+import { INTERNATIONAL_BONOS, DATA_BONOS } from '@/data/plans-data';
 
-export const INTERNATIONAL_BONOS = [
+// Local UI versions for rendering (keeping the structure to avoid breaking the UI)
+export const UI_INTERNATIONAL_BONOS = [
   { id: '100min', minutes: '100', price: 3.00 },
   { id: '300min', minutes: '300', price: 9.00 },
   { id: '600min', minutes: '600', price: 12.00 },
 ];
 
-export const DATA_BONOS = [
+export const UI_DATA_BONOS = [
   { id: '500mb', data: '500 MB', price: 2.00 },
   { id: '1gb', data: '1 GB', price: 3.00 },
   { id: '3gb', data: '3 GB', price: 5.00 },
@@ -31,28 +34,82 @@ interface BonosConfiguratorProps {
 
 export default function BonosConfigurator({ variant = 'default', className = '' }: BonosConfiguratorProps) {
   const [activeType, setActiveType] = useState<'minutes' | 'data'>('minutes');
-  const [selectedMinutes, setSelectedMinutes] = useState(INTERNATIONAL_BONOS[0]);
-  const [selectedData, setSelectedData] = useState(DATA_BONOS[0]);
+  const [selectedMinutes, setSelectedMinutes] = useState(UI_INTERNATIONAL_BONOS[0]);
+  const [selectedData, setSelectedData] = useState(UI_DATA_BONOS[0]);
   const [isMinutesSelected, setIsMinutesSelected] = useState(false);
   const [isDataSelected, setIsDataSelected] = useState(false);
+  
+  // Get the configurator context
+  const { setBonoSelection, openForm } = useConfigurator();
 
+  // Reset selection state when component mounts or variant changes
+  useEffect(() => {
+    // Reset to initial states
+    setActiveType('minutes');
+    setSelectedMinutes(UI_INTERNATIONAL_BONOS[0]);
+    setSelectedData(UI_DATA_BONOS[0]);
+    setIsMinutesSelected(false);
+    setIsDataSelected(false);
+  }, [variant]); // Include variant in the dependency array to reset on variant changes
+
+  // Handle type change in the hero variant
   const handleTypeChange = (type: 'minutes' | 'data') => {
     if (type === activeType) return;
+    
+    // Reset selections when changing types to ensure clean state
+    if (type === 'minutes') {
+      setIsMinutesSelected(false);
+      // Pre-select the first option to ensure UI has something to show
+      setSelectedMinutes(UI_INTERNATIONAL_BONOS[0]);
+    } else {
+      setIsDataSelected(false);
+      // Pre-select the first option to ensure UI has something to show
+      setSelectedData(UI_DATA_BONOS[0]);
+    }
+    
     setActiveType(type);
   };
 
-  const handleMinutesSelect = (bono: typeof INTERNATIONAL_BONOS[0]) => {
+  const handleMinutesSelect = (bono: typeof UI_INTERNATIONAL_BONOS[0]) => {
+    // First set the active type (this might reset some selection state due to the useEffect)
+    setActiveType('minutes');
+    
+    // Then update the state with the selected bono
     setSelectedMinutes(bono);
     setIsMinutesSelected(true);
     setIsDataSelected(false);
-    setActiveType('minutes');
   };
 
-  const handleDataSelect = (bono: typeof DATA_BONOS[0]) => {
+  const handleDataSelect = (bono: typeof UI_DATA_BONOS[0]) => {
+    // First set the active type (this might reset some selection state due to the useEffect)
+    setActiveType('data');
+    
+    // Then update the state with the selected bono
     setSelectedData(bono);
     setIsDataSelected(true);
     setIsMinutesSelected(false);
-    setActiveType('data');
+  };
+
+  // Handle contract button click - submits selection to configurator
+  const handleContractClick = () => {
+    if (isMinutesSelected || isDataSelected) {
+      const type = isMinutesSelected ? 'minutes' : 'data';
+      let bono;
+      
+      // Find the corresponding bono in the actual data structure
+      if (type === 'minutes') {
+        bono = INTERNATIONAL_BONOS.find(b => b.id === selectedMinutes.id);
+      } else {
+        bono = DATA_BONOS.find(b => b.id === selectedData.id);
+      }
+      
+      if (bono) {
+        // Set the bono selection in the configurator
+        setBonoSelection(type, bono);
+        // Open the form
+        openForm();
+      }
+    }
   };
 
   if (variant === 'hero') {
@@ -141,7 +198,7 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
 
                 {/* Selector */}
                 <div className="grid grid-cols-3 gap-3">
-                  {INTERNATIONAL_BONOS.map((bono) => (
+                  {UI_INTERNATIONAL_BONOS.map((bono) => (
                     <motion.button
                       key={bono.id}
                       onClick={() => handleMinutesSelect(bono)}
@@ -196,7 +253,7 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
 
                 {/* Selector */}
                 <div className="grid grid-cols-3 gap-3">
-                  {DATA_BONOS.map((bono) => (
+                  {UI_DATA_BONOS.map((bono) => (
                     <motion.button
                       key={bono.id}
                       onClick={() => handleDataSelect(bono)}
@@ -225,18 +282,19 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
           </AnimatePresence>
         </div>
 
-        {/* CTA Button */}
+        {/* CTA Button - Changed from Link to button with onClick handler */}
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-          <Link
-            href="#contacto"
-            className={`block text-center py-4 rounded-2xl font-medium text-lg transition-all duration-300 ${
+          <button
+            onClick={handleContractClick}
+            disabled={!isMinutesSelected && !isDataSelected}
+            className={`w-full text-center py-4 rounded-2xl font-medium text-lg transition-all duration-300 ${
               isMinutesSelected || isDataSelected
                 ? 'bg-gradient-new text-white shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30'
                 : 'bg-white/10 text-white/60 cursor-not-allowed'
             }`}
           >
             {isMinutesSelected || isDataSelected ? 'Contratar Bonos' : 'Selecciona un Bono'}
-          </Link>
+          </button>
         </motion.div>
       </motion.div>
     );
@@ -259,7 +317,7 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
             </h3>
           </div>
           <div className="flex justify-center gap-4 overflow-x-auto pb-2 hide-scrollbar">
-            {INTERNATIONAL_BONOS.map((bono) => (
+            {UI_INTERNATIONAL_BONOS.map((bono) => (
               <motion.div
                 key={bono.id}
                 className="w-[220px]"
@@ -306,13 +364,22 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
                     <p className="text-xs text-[#666666] mt-1">IVA incluido</p>
                   </div>
 
-                  {/* Action Button */}
-                  <Link
-                    href="#contacto"
-                    className="block text-center bg-gradient-new text-white py-2 rounded-lg font-medium text-sm transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30"
+                  {/* Action Button - Changed from Link to button with onClick handler */}
+                  <button
+                    onClick={() => {
+                      // Set selected minutes
+                      handleMinutesSelect(bono);
+                      // Handle contract click with the selected minutes bono
+                      const actualBono = INTERNATIONAL_BONOS.find(b => b.id === bono.id);
+                      if (actualBono) {
+                        setBonoSelection('minutes', actualBono);
+                        openForm();
+                      }
+                    }}
+                    className="w-full text-center bg-gradient-new text-white py-2 rounded-lg font-medium text-sm transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30"
                   >
                     ¡Lo quiero!
-                  </Link>
+                  </button>
                 </div>
               </motion.div>
             ))}
@@ -328,7 +395,7 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
             </h3>
           </div>
           <div className="flex justify-center gap-4 overflow-x-auto pb-2 hide-scrollbar">
-            {DATA_BONOS.map((bono) => (
+            {UI_DATA_BONOS.map((bono) => (
               <motion.div
                 key={bono.id}
                 className="w-[220px]"
@@ -374,13 +441,22 @@ export default function BonosConfigurator({ variant = 'default', className = '' 
                     <p className="text-xs text-[#666666] mt-1">IVA incluido</p>
                   </div>
 
-                  {/* Action Button */}
-                  <Link
-                    href="#contacto"
-                    className="block text-center bg-gradient-new text-white py-2 rounded-lg font-medium text-sm transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30"
+                  {/* Action Button - Changed from Link to button with onClick handler */}
+                  <button
+                    onClick={() => {
+                      // Set selected data
+                      handleDataSelect(bono);
+                      // Handle contract click with the selected data bono
+                      const actualBono = DATA_BONOS.find(b => b.id === bono.id);
+                      if (actualBono) {
+                        setBonoSelection('data', actualBono);
+                        openForm();
+                      }
+                    }}
+                    className="w-full text-center bg-gradient-new text-white py-2 rounded-lg font-medium text-sm transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30"
                   >
                     ¡Lo quiero!
-                  </Link>
+                  </button>
                 </div>
               </motion.div>
             ))}

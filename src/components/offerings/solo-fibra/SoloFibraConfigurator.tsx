@@ -5,8 +5,11 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { WifiHigh, Broadcast, Rocket, Crown, Phone } from '@phosphor-icons/react';
 import { TarifasDropdown } from '@/components/ui/TarifasDropdown';
+import { useConfigurator } from '@/context/ConfiguratorProvider';
+import { SOLO_FIBRA_PLANS } from '@/data/plans-data';
 
-const SOLO_FIBRA_PLANS = [
+// Local version of the plans for UI purposes
+const UI_SOLO_FIBRA_PLANS = [
   {
     title: 'Estándar',
     speed: '500',
@@ -32,18 +35,32 @@ const SOLO_FIBRA_PLANS = [
 ];
 
 export const HeroFibraPacks = () => {
-  const [selectedPack, setSelectedPack] = useState(SOLO_FIBRA_PLANS[0]);
-  const [previewPack, setPreviewPack] = useState(SOLO_FIBRA_PLANS[0]);
+  const [selectedPack, setSelectedPack] = useState(UI_SOLO_FIBRA_PLANS[0]);
+  const [previewPack, setPreviewPack] = useState(UI_SOLO_FIBRA_PLANS[0]);
   const [isSelected, setIsSelected] = useState(false);
+  const { setFibraPlanSelection, openForm } = useConfigurator();
 
-  const handlePackSelect = (pack: typeof SOLO_FIBRA_PLANS[0]) => {
+  const handlePackSelect = (pack: typeof UI_SOLO_FIBRA_PLANS[0]) => {
     setSelectedPack(pack);
     setIsSelected(true);
   };
 
-  const handlePackHover = (pack: typeof SOLO_FIBRA_PLANS[0]) => {
+  const handlePackHover = (pack: typeof UI_SOLO_FIBRA_PLANS[0]) => {
     if (!isSelected) {
       setPreviewPack(pack);
+    }
+  };
+
+  const handleContractClick = () => {
+    // Find the corresponding plan in SOLO_FIBRA_PLANS from plans-data.ts
+    const planId = selectedPack.title === 'Estándar' ? 'fibra500' : 'fibra1000';
+    const planData = SOLO_FIBRA_PLANS.find(p => p.id === planId);
+    
+    if (planData) {
+      // Set the selected plan in the configurator
+      setFibraPlanSelection(planData);
+      // Open the form
+      openForm();
     }
   };
 
@@ -132,7 +149,7 @@ export const HeroFibraPacks = () => {
 
         {/* Pack Selector */}
         <div className="grid grid-cols-2 gap-3">
-          {SOLO_FIBRA_PLANS.map((pack) => (
+          {UI_SOLO_FIBRA_PLANS.map((pack) => (
             <motion.button
               key={pack.title}
               onClick={() => handlePackSelect(pack)}
@@ -162,16 +179,17 @@ export const HeroFibraPacks = () => {
 
         {/* CTA Button */}
         <motion.div whileHover={{ scale: 1.02 }} whileTap={{ scale: 0.98 }}>
-          <Link
-            href="#contacto"
-            className={`block text-center py-4 rounded-2xl font-matter font-semibold text-lg transition-all duration-300 ${
+          <button
+            onClick={handleContractClick}
+            disabled={!isSelected}
+            className={`w-full text-center py-4 rounded-2xl font-matter font-semibold text-lg transition-all duration-300 ${
               isSelected
                 ? 'bg-gradient-new text-white shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30'
                 : 'bg-white/10 text-white/60 cursor-not-allowed'
             }`}
           >
             {isSelected ? 'Contratar Ahora' : 'Selecciona un Pack'}
-          </Link>
+          </button>
         </motion.div>
       </motion.div>
 
@@ -214,6 +232,16 @@ export const HeroFibraPacks = () => {
 export default function SoloFibraConfigurator() {
   const [currentCard, setCurrentCard] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { setFibraPlanSelection, openForm } = useConfigurator();
+
+  // Handle plan selection
+  const handlePlanSelection = (planId: string) => {
+    const planData = SOLO_FIBRA_PLANS.find(p => p.id === planId);
+    if (planData) {
+      setFibraPlanSelection(planData);
+      openForm();
+    }
+  };
 
   // Update current card based on scroll position
   useEffect(() => {
@@ -222,7 +250,7 @@ export default function SoloFibraConfigurator() {
         const scrollLeft = scrollRef.current.scrollLeft;
         const cardWidth = 280 + 24; // card width + gap
         const newCard = Math.round(scrollLeft / cardWidth);
-        setCurrentCard(Math.min(newCard, SOLO_FIBRA_PLANS.length - 1));
+        setCurrentCard(Math.min(newCard, UI_SOLO_FIBRA_PLANS.length - 1));
       }
     };
 
@@ -254,7 +282,7 @@ export default function SoloFibraConfigurator() {
     >
       {/* Dots Navigation */}
       <div className="flex justify-center gap-2 mb-2 md:hidden">
-        {SOLO_FIBRA_PLANS.map((_, index) => (
+        {UI_SOLO_FIBRA_PLANS.map((_, index) => (
           <button
             key={index}
             onClick={() => scrollToCard(index)}
@@ -275,7 +303,7 @@ export default function SoloFibraConfigurator() {
         style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
       >
         <div className="flex min-w-max gap-6 px-[10%]">
-          {SOLO_FIBRA_PLANS.map((plan, index) => (
+          {UI_SOLO_FIBRA_PLANS.map((plan, index) => (
             <div key={index} className="w-[280px] flex-shrink-0 snap-center">
               <motion.div
                 className="group relative h-full p-4 rounded-3xl text-left transition-all duration-300"
@@ -335,12 +363,12 @@ export default function SoloFibraConfigurator() {
                   </div>
 
                   {/* Action Button */}
-                  <Link
-                    href="#contacto"
-                    className="block text-center bg-gradient-new text-white py-2 px-6 rounded-xl font-medium text-base transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+                  <button
+                    onClick={() => handlePlanSelection(plan.title === 'Estándar' ? 'fibra500' : 'fibra1000')}
+                    className="w-full text-center bg-gradient-new text-white py-2 px-6 rounded-xl font-medium text-base transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
                   >
                     ¡Lo quiero!
-                  </Link>
+                  </button>
                 </div>
               </motion.div>
             </div>
@@ -350,7 +378,7 @@ export default function SoloFibraConfigurator() {
 
       {/* Desktop Layout */}
       <div className="hidden md:grid md:grid-cols-2 gap-4 max-w-4xl mx-auto">
-        {SOLO_FIBRA_PLANS.map((plan, index) => (
+        {UI_SOLO_FIBRA_PLANS.map((plan, index) => (
           <motion.div
             key={index}
             className="group relative p-4 rounded-3xl text-left transition-all duration-300"
@@ -413,12 +441,12 @@ export default function SoloFibraConfigurator() {
                 </div>
 
                 {/* Action Button */}
-                <Link
-                  href="#contacto"
-                  className="block text-center bg-gradient-new text-white py-2 px-6 rounded-xl font-medium text-base transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+                <button
+                  onClick={() => handlePlanSelection(plan.title === 'Estándar' ? 'fibra500' : 'fibra1000')}
+                  className="w-full text-center bg-gradient-new text-white py-2 px-6 rounded-xl font-medium text-base transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
                 >
                   ¡Lo quiero!
-                </Link>
+                </button>
               </div>
             </div>
           </motion.div>
