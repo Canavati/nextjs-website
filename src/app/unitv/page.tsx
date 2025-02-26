@@ -824,7 +824,7 @@ export default function UniTVPage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.5, delay: 0.6 }}
-            className="mt-8 mb-8 max-w-3xl mx-auto"
+            className={`mt-8 mb-8 max-w-3xl mx-auto ${isMobileView ? 'hidden' : 'block'}`}
           >
             <div 
               onClick={() => {
@@ -853,7 +853,7 @@ export default function UniTVPage() {
           </motion.div>
 
           {/* Desktop inline configurator */}
-          <div id="addons-configurator" className={`mt-8 p-4 bg-gradient-to-b from-[#e0f7fc] to-[#c4e9ff] rounded-xl border border-gray-200 ${isMobileView && selectedPlan ? 'hidden' : 'block'}`}>
+          <div id="addons-configurator" className={`mt-8 p-4 bg-gradient-to-b from-[#e0f7fc] to-[#c4e9ff] rounded-xl border border-gray-200 ${isMobileView ? 'hidden' : 'block'}`}>
             <h3 className="text-3xl font-bold mb-4 text-center text-[#0066FF] bg-gradient-to-r from-[#0066FF] to-[#51fcff] bg-clip-text text-transparent">Configura tu Plan {selectedPlan?.name || "BÁSICO"}</h3>
 
             <div className="mb-4">
