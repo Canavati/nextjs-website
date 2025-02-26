@@ -1,9 +1,9 @@
 'use client';
 
+import React, { useState, useRef, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Image from 'next/image';
 import Contact from '@/components/sections/Contact';
-import { useState, useEffect } from 'react';
 import {
   Television,
   PlayCircle,
@@ -17,22 +17,129 @@ import {
   Desktop,
   Laptop,
   DeviceTablet,
+  Globe,
+  MusicNotes,
+  Flame,
+  Lightning,
+  Heart,
+  X,
+  CaretRight,
+  CheckCircle,
+  Package,
+  Devices
 } from '@phosphor-icons/react';
+
+// Add custom animation keyframes for the plans
+const customAnimations = `
+@keyframes pulse-glow {
+  0% {
+    opacity: 0.3;
+    box-shadow: 0 0 5px rgba(81, 252, 255, 0.2);
+  }
+  50% {
+    opacity: 0.5;
+    box-shadow: 0 0 15px rgba(81, 252, 255, 0.4);
+  }
+  100% {
+    opacity: 0.3;
+    box-shadow: 0 0 5px rgba(81, 252, 255, 0.2);
+  }
+}
+
+@keyframes ping-slow {
+  75%, 100% {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes ping-slower {
+  75%, 100% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+}
+
+.pulse-glow {
+  animation: pulse-glow 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+.animate-ping-slow {
+  animation: ping-slow 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+
+.animate-ping-slower {
+  animation: ping-slower 3s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+`;
 
 export default function UniTVPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const [selectedPlan, setSelectedPlan] = useState({
-    name: "CERO BÁSICO",
-    price: 2.99
-  });
+  const [selectedPlan, setSelectedPlan] = useState<{
+    name: string;
+    price: number;
+  } | null>(null);
   const [selectedAddons, setSelectedAddons] = useState<{
     title: string;
     price: number;
+    channels: string;
   }[]>([]);
+  const [showConfigurator, setShowConfigurator] = useState(false);
+  const [isMobileView, setIsMobileView] = useState(false);
+  
+  // Touch swipe functionality
+  const touchStartX = useRef(0);
+  const touchEndX = useRef(0);
+  
+  // Check if we're in mobile view
+  useEffect(() => {
+    const checkIfMobile = () => {
+      const isMobile = window.innerWidth < 768;
+      setIsMobileView(isMobile);
+      
+      // Auto-clear configurator when switching to mobile if no plan selected
+      if (isMobile && !selectedPlan) {
+        setShowConfigurator(false);
+      }
+    };
+    
+    // Initial check
+    checkIfMobile();
+    
+    // Add event listener
+    window.addEventListener('resize', checkIfMobile);
+    
+    // Cleanup
+    return () => window.removeEventListener('resize', checkIfMobile);
+  }, [selectedPlan]);
+  
+  const handleTouchStart = (e: React.TouchEvent) => {
+    touchStartX.current = e.touches[0].clientX;
+    setIsPaused(true);
+  };
+  
+  const handleTouchMove = (e: React.TouchEvent) => {
+    touchEndX.current = e.touches[0].clientX;
+  };
+  
+  const handleTouchEnd = () => {
+    const swipeDistance = touchEndX.current - touchStartX.current;
+    const minSwipeDistance = 50; // Minimum distance to be considered a swipe
+    
+    if (swipeDistance > minSwipeDistance) {
+      // Swiped right, go to previous slide
+      setCurrentIndex(prev => (prev === 0 ? slides.length - 1 : prev - 1));
+    } else if (swipeDistance < -minSwipeDistance) {
+      // Swiped left, go to next slide
+      setCurrentIndex(prev => (prev === slides.length - 1 ? 0 : prev + 1));
+    }
+    
+    setIsPaused(false);
+  };
 
   const mainPlans = [
-    { name: "CERO BÁSICO", price: 2.99 },
+    { name: "BÁSICO", price: 2.99 },
     { name: "CINE", price: 6.99 },
     { name: "DEPORTES", price: 8.99 },
     { name: "PREMIUM TOTAL", price: 9.99 }
@@ -40,18 +147,45 @@ export default function UniTVPage() {
 
   const calculateTotal = () => {
     const addonsTotal = selectedAddons.reduce((sum, addon) => sum + addon.price, 0);
-    return (selectedPlan.price + addonsTotal).toFixed(2);
+    return ((selectedPlan?.price || 0) + addonsTotal).toFixed(2);
   };
 
-  const toggleAddon = (addon: { title: string; price: string }) => {
+  const toggleAddon = (addon: { title: string; price: number; channels: string }) => {
     setSelectedAddons(prev => {
       const exists = prev.find(item => item.title === addon.title);
       if (exists) {
         return prev.filter(item => item.title !== addon.title);
       } else {
-        return [...prev, { title: addon.title, price: parseFloat(addon.price) }];
+        return [...prev, { 
+          title: addon.title, 
+          price: addon.price,
+          channels: addon.channels
+        }];
       }
     });
+  };
+
+  const handlePlanSelect = (plan: { name: string; price: number }) => {
+    setSelectedPlan(plan);
+    if (isMobileView) {
+      setShowConfigurator(true); // Only open the modal on mobile
+    } else {
+      // Scroll to the configurator section when a plan is selected
+      setTimeout(() => {
+        const configuratorSection = document.querySelector('#addons-configurator');
+        if (configuratorSection) {
+          configuratorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 100);
+    }
+  };
+
+  const closeConfigurator = () => {
+    setShowConfigurator(false);
+  };
+
+  const saveConfiguration = () => {
+    setShowConfigurator(false);
   };
 
   const slides = [
@@ -102,7 +236,7 @@ export default function UniTVPage() {
   return (
     <main className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="relative min-h-[100vh] pt-[115px] -mt-[115px] bg-dark overflow-hidden flex items-center">
+      <section className="relative min-h-[90vh] md:min-h-[100vh] pt-[80px] md:pt-[115px] -mt-[80px] md:-mt-[115px] bg-dark overflow-hidden flex items-center">
         {/* Background Gradient Effect */}
         <div className="absolute inset-0 bg-gradient-new opacity-95" />
         
@@ -148,19 +282,19 @@ export default function UniTVPage() {
 
         {/* Content */}
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-24 items-center">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-24 items-center">
             {/* Left Column - Main Content */}
             <motion.div
               initial={{ opacity: 0, x: -50 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8 }}
-              className="space-y-8 lg:sticky lg:top-[140px] -ml-8"
+              className="space-y-5 md:space-y-8 pt-4 md:pt-0"
             >
               <motion.h1
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.2 }}
-                className="text-[2.5rem] md:text-[4rem] font-black leading-none text-white"
+                className="text-[2.2rem] md:text-[4rem] font-black leading-none text-white"
               >
                 UNITV
                 <br />
@@ -171,7 +305,7 @@ export default function UniTVPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.4 }}
-                className="text-xl text-white/80 max-w-2xl"
+                className="text-base md:text-xl text-white/80 max-w-2xl"
               >
                 Disfruta del mejor contenido en streaming con UNITV. Series, películas, deportes y mucho más, todo en una única plataforma y con la mejor calidad.
               </motion.p>
@@ -181,7 +315,7 @@ export default function UniTVPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.6 }}
-                className="grid grid-cols-2 gap-3 pt-2 max-w-[400px]"
+                className="grid grid-cols-2 gap-2 md:gap-3 pt-2 max-w-[400px]"
               >
                 {[
                   { icon: Television, title: 'Contenido HD', description: 'Máxima calidad' },
@@ -189,10 +323,10 @@ export default function UniTVPage() {
                   { icon: PlayCircle, title: 'Sin publicidad', description: 'Disfruta sin interrupciones' },
                   { icon: FilmStrip, title: 'Contenido exclusivo', description: 'Series y películas únicas' },
                 ].map((feature, index) => (
-                  <div key={index} className="bg-white/10 rounded-lg p-3 backdrop-blur-sm">
-                    <feature.icon size={24} weight="duotone" className="text-[#51fcff] mb-1.5" />
-                    <h3 className="text-white font-medium text-base">{feature.title}</h3>
-                    <p className="text-white/60 text-sm">{feature.description}</p>
+                  <div key={index} className="bg-white/10 rounded-lg p-2.5 md:p-3 backdrop-blur-sm">
+                    <feature.icon size={20} weight="duotone" className="text-[#51fcff] mb-1" />
+                    <h3 className="text-white font-medium text-sm md:text-base">{feature.title}</h3>
+                    <p className="text-white/60 text-xs md:text-sm">{feature.description}</p>
                   </div>
                 ))}
               </motion.div>
@@ -202,17 +336,17 @@ export default function UniTVPage() {
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.8 }}
-                className="flex flex-wrap gap-4 pt-4"
+                className="flex flex-wrap gap-3 md:gap-4 pt-4"
               >
                 <a
                   href="#planes"
-                  className="inline-block bg-gradient-new text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1"
+                  className="inline-block bg-gradient-new text-white px-5 md:px-8 py-2.5 md:py-4 rounded-xl font-semibold text-sm md:text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1"
                 >
                   Ver Planes
                 </a>
                 <a
                   href="#contacto"
-                  className="inline-block bg-white/10 text-white px-6 md:px-8 py-3 md:py-4 rounded-xl font-semibold text-base md:text-lg transition-all duration-300 hover:bg-white/20"
+                  className="inline-block bg-white/10 text-white px-5 md:px-8 py-2.5 md:py-4 rounded-xl font-semibold text-sm md:text-lg transition-all duration-300 hover:bg-white/20"
                 >
                   Contactar
                 </a>
@@ -275,9 +409,14 @@ export default function UniTVPage() {
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.8 }}
-              className="relative w-full mt-8 lg:hidden"
+              className="relative w-full mt-4 lg:hidden"
             >
-              <div className="relative overflow-hidden rounded-xl shadow-xl">
+              <div 
+                className="relative overflow-hidden rounded-lg shadow-lg"
+                onTouchStart={handleTouchStart}
+                onTouchMove={handleTouchMove}
+                onTouchEnd={handleTouchEnd}
+              >
                 <AnimatePresence mode="wait" initial={false}>
                   <motion.div
                     key={currentIndex}
@@ -287,12 +426,12 @@ export default function UniTVPage() {
                     transition={{ duration: 0.7, ease: "easeInOut" }}
                     className="relative w-full"
                   >
-                    <div className="relative w-full" style={{ paddingBottom: '75%' }}>
+                    <div className="relative w-full bg-black/10 rounded-lg" style={{ paddingBottom: '60%' }}>
                       <Image
                         src={slides[currentIndex].src}
                         alt={slides[currentIndex].alt}
                         fill
-                        className="object-contain"
+                        className="object-contain p-1"
                         sizes="100vw"
                         priority
                       />
@@ -300,38 +439,42 @@ export default function UniTVPage() {
                   </motion.div>
                 </AnimatePresence>
                 
-                {/* Mobile Swipe Indicators */}
-                <div className="absolute bottom-0 left-0 right-0 flex justify-between p-3 z-20">
-                  <button 
-                    onClick={() => setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1))}
-                    className="h-10 w-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white"
-                    aria-label="Previous slide"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                    </svg>
-                  </button>
-                  <div className="flex gap-2 bg-black/40 px-3 py-1 rounded-full backdrop-blur-sm">
-                    {slides.map((_, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setCurrentIndex(index)}
-                        className={`w-2 h-2 rounded-full transition-all duration-300 ${
-                          index === currentIndex ? 'bg-white' : 'bg-white/50'
-                        }`}
-                        aria-label={`Go to slide ${index + 1}`}
-                      />
-                    ))}
+                {/* Mobile Swipe Indicators - Fixed position */}
+                <div className="absolute bottom-3 left-0 right-0 flex items-center justify-center z-20">
+                  <div className="flex items-center gap-2 bg-black/60 px-3 py-1.5 rounded-full backdrop-blur-sm">
+                    <button 
+                      onClick={() => setCurrentIndex((prev) => (prev === 0 ? slides.length - 1 : prev - 1))}
+                      className="h-6 w-6 rounded-full bg-black/40 flex items-center justify-center text-white"
+                      aria-label="Previous slide"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-3.5 h-3.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
+                      </svg>
+                    </button>
+                    
+                    <div className="flex gap-1.5">
+                      {slides.map((_, index) => (
+                        <button
+                          key={index}
+                          onClick={() => setCurrentIndex(index)}
+                          className={`w-2 h-2 rounded-full transition-all duration-300 ${
+                            index === currentIndex ? 'bg-white scale-110' : 'bg-white/50'
+                          }`}
+                          aria-label={`Go to slide ${index + 1}`}
+                        />
+                      ))}
+                    </div>
+                    
+                    <button 
+                      onClick={() => setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1))}
+                      className="h-6 w-6 rounded-full bg-black/40 flex items-center justify-center text-white"
+                      aria-label="Next slide"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-3.5 h-3.5">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
                   </div>
-                  <button 
-                    onClick={() => setCurrentIndex((prev) => (prev === slides.length - 1 ? 0 : prev + 1))}
-                    className="h-10 w-10 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center text-white"
-                    aria-label="Next slide"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" className="w-6 h-6">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
                 </div>
               </div>
             </motion.div>
@@ -340,7 +483,7 @@ export default function UniTVPage() {
       </section>
 
       {/* Plans Section */}
-      <section id="planes" className="relative py-24 bg-gradient-to-r from-[#b8e5ea] via-[#dbeef2] to-[#b8e5ea] overflow-hidden">
+      <section id="planes" className="relative py-12 md:py-24 bg-gradient-to-r from-[#b8e5ea] via-[#dbeef2] to-[#b8e5ea] overflow-hidden">
         {/* Main Gradient Background */}
         <div className="absolute inset-0 bg-gradient-to-r from-[#b8e5ea] via-[#dbeef2] to-[#b8e5ea] opacity-90" />
 
@@ -405,38 +548,68 @@ export default function UniTVPage() {
           </motion.div>
 
           {/* Plans Grid */}
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto">
             {/* Basic Plan */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.1 }}
-              onClick={() => setSelectedPlan({ name: "CERO BÁSICO", price: 2.99 })}
-              className={`bg-white rounded-3xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 flex flex-col relative cursor-pointer group ${
-                selectedPlan.name === "CERO BÁSICO" 
-                  ? 'ring-2 ring-[#51fcff] shadow-[#51fcff]/20' 
-                  : 'hover:scale-[1.02] hover:ring-2 hover:ring-[#51fcff]/50'
+              onClick={() => handlePlanSelect({ name: "BÁSICO", price: 2.99 })}
+              className={`bg-gradient-to-b from-[#e0f7fc] to-[#c4e9ff] rounded-3xl shadow-lg p-4 hover:shadow-xl transition-all duration-300 flex flex-col relative cursor-pointer group border-2 border-white/70 ${
+                selectedPlan?.name === "BÁSICO" 
+                  ? 'ring-4 ring-[#51fcff] shadow-[0_0_20px_rgba(81,252,255,0.5)]' 
+                  : 'hover:scale-[1.02] hover:shadow-[0_10px_25px_rgba(0,102,255,0.2)]'
               }`}
             >
-              <h3 className="text-xl font-bold text-gray-900 mb-1">CERO BÁSICO</h3>
-              <p className="text-2xl font-bold text-[#0066FF] mb-3">2.99€<span className="text-sm font-normal text-gray-400">/mes</span></p>
+              {/* Enhanced vibrant pulsing glow effect */}
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#51fcff]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pulse-glow"></div>
+              
+              {/* Enhanced spark animations on hover */}
+              <div className="absolute -right-1 -top-1 w-5 h-5 rounded-full bg-[#51fcff] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-ping-slow"></div>
+              <div className="absolute -left-1 -bottom-1 w-4 h-4 rounded-full bg-[#0066FF] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-ping-slower"></div>
+
+              {/* Title with emoji */}
+              <div className="mb-3 pb-2 border-b-2 border-white/50 text-center">
+                <div className="text-4xl mb-2">📺</div>
+                <h3 className="text-2xl font-black text-[#051c40]">BÁSICO</h3>
+              </div>
+
               <ul className="space-y-2 mb-4 flex-1">
-                <li className="flex items-start gap-1.5">
-                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
-                  <span className="text-gray-600 text-sm">Canales Generalistas (La 1, La 2, Antena 3)</span>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#0066FF] text-lg mt-0.5 flex-shrink-0">•</span>
+                  <span className="text-gray-700 text-base">Canales Generalistas (La 1, La 2, Antena 3)</span>
                 </li>
-                <li className="flex items-start gap-1.5">
-                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
-                  <span className="text-gray-600 text-sm">Canales Regionales y TDT</span>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#0066FF] text-lg mt-0.5 flex-shrink-0">•</span>
+                  <span className="text-gray-700 text-base">Canales Regionales y TDT</span>
                 </li>
-                <li className="flex items-start gap-1.5">
-                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
-                  <span className="text-gray-600 text-sm">Canales Deportivos Básicos</span>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#0066FF] text-lg mt-0.5 flex-shrink-0">•</span>
+                  <span className="text-gray-700 text-base">Canales Deportivos Básicos</span>
                 </li>
               </ul>
-              {selectedPlan.name === "CERO BÁSICO" && (
-                <div className="absolute -top-2 -right-2 bg-[#51fcff] text-white w-6 h-6 rounded-full flex items-center justify-center shadow-lg">
+              
+              {/* Price at the bottom - much bigger */}
+              <div className="mt-auto bg-white/50 rounded-xl p-3 text-center">
+                <p className="text-4xl font-bold text-[#0066FF]">2.99€<span className="text-sm font-normal text-gray-500">/mes</span></p>
+              </div>
+              
+              {/* Only show "TOCA PARA CONFIGURAR" in mobile view */}
+              {isMobileView && (
+                <>
+                  <div className="w-full h-[3px] bg-gradient-to-r from-[#ffa500] via-[#51fcff] to-[#ff00ff] my-2 opacity-100"></div>
+                  <div className="text-sm text-center font-bold text-[#0066FF] py-1.5 group-hover:animate-pulse group-hover:scale-105 transition-all duration-300">
+                    <span className="inline-block relative">
+                      ¡TOCA PARA CONFIGURAR! 
+                      <span className="absolute -right-4 top-0 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                    </span>
+                  </div>
+                </>
+              )}
+              
+              {selectedPlan?.name === "BÁSICO" && (
+                <div className="absolute -top-3 -right-3 bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg animate-pulse">
                   ✓
                 </div>
               )}
@@ -448,31 +621,61 @@ export default function UniTVPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.2 }}
-              onClick={() => setSelectedPlan({ name: "CINE", price: 6.99 })}
-              className={`bg-white rounded-3xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 flex flex-col relative cursor-pointer group ${
-                selectedPlan.name === "CINE" 
-                  ? 'ring-2 ring-[#51fcff] shadow-[#51fcff]/20' 
-                  : 'hover:scale-[1.02] hover:ring-2 hover:ring-[#51fcff]/50'
+              onClick={() => handlePlanSelect({ name: "CINE", price: 6.99 })}
+              className={`bg-gradient-to-b from-[#e0f7fc] to-[#c4e9ff] rounded-3xl shadow-lg p-4 hover:shadow-xl transition-all duration-300 flex flex-col relative cursor-pointer group border-2 border-white/70 ${
+                selectedPlan?.name === "CINE" 
+                  ? 'ring-4 ring-[#51fcff] shadow-[0_0_20px_rgba(81,252,255,0.5)]' 
+                  : 'hover:scale-[1.02] hover:shadow-[0_10px_25px_rgba(0,102,255,0.2)]'
               }`}
             >
-              <h3 className="text-xl font-bold text-gray-900 mb-1">CINE</h3>
-              <p className="text-2xl font-bold text-[#0066FF] mb-3">6.99€<span className="text-sm font-normal text-gray-400">/mes</span></p>
+              {/* Enhanced vibrant pulsing glow effect */}
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#51fcff]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pulse-glow"></div>
+              
+              {/* Enhanced spark animations on hover */}
+              <div className="absolute -right-1 -top-1 w-5 h-5 rounded-full bg-[#51fcff] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-ping-slow"></div>
+              <div className="absolute -left-1 -bottom-1 w-4 h-4 rounded-full bg-[#0066FF] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-ping-slower"></div>
+
+              {/* Title with emoji */}
+              <div className="mb-3 pb-2 border-b-2 border-white/50 text-center">
+                <div className="text-4xl mb-2">🎬</div>
+                <h3 className="text-2xl font-black text-[#051c40]">CINE</h3>
+              </div>
+
               <ul className="space-y-2 mb-4 flex-1">
-                <li className="flex items-start gap-1.5">
-                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
-                  <span className="text-gray-600 text-sm">Incluye Plan Básico + Canales Premium</span>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#0066FF] text-lg mt-0.5 flex-shrink-0">•</span>
+                  <span className="text-gray-700 text-base">Incluye Plan Básico + Canales Premium</span>
                 </li>
-                <li className="flex items-start gap-1.5">
-                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
-                  <span className="text-gray-600 text-sm">Paramount, Clover Channel, Classic Movies</span>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#0066FF] text-lg mt-0.5 flex-shrink-0">•</span>
+                  <span className="text-gray-700 text-base">Paramount, Clover Channel, Classic Movies</span>
                 </li>
-                <li className="flex items-start gap-1.5">
-                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
-                  <span className="text-gray-600 text-sm">Discovery Channel y Documentales</span>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#0066FF] text-lg mt-0.5 flex-shrink-0">•</span>
+                  <span className="text-gray-700 text-base">Discovery Channel y Documentales</span>
                 </li>
               </ul>
-              {selectedPlan.name === "CINE" && (
-                <div className="absolute -top-2 -right-2 bg-[#51fcff] text-white w-6 h-6 rounded-full flex items-center justify-center shadow-lg">
+              
+              {/* Price at the bottom - much bigger */}
+              <div className="mt-auto bg-white/50 rounded-xl p-3 text-center">
+                <p className="text-4xl font-bold text-[#0066FF]">6.99€<span className="text-sm font-normal text-gray-500">/mes</span></p>
+              </div>
+              
+              {/* Only show "TOCA PARA CONFIGURAR" in mobile view */}
+              {isMobileView && (
+                <>
+                  <div className="w-full h-[3px] bg-gradient-to-r from-[#ffa500] via-[#51fcff] to-[#ff00ff] my-2 opacity-100"></div>
+                  <div className="text-sm text-center font-bold text-[#0066FF] py-1.5 group-hover:animate-pulse group-hover:scale-105 transition-all duration-300">
+                    <span className="inline-block relative">
+                      ¡TOCA PARA CONFIGURAR! 
+                      <span className="absolute -right-4 top-0 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                    </span>
+                  </div>
+                </>
+              )}
+              
+              {selectedPlan?.name === "CINE" && (
+                <div className="absolute -top-3 -right-3 bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg animate-pulse">
                   ✓
                 </div>
               )}
@@ -484,31 +687,61 @@ export default function UniTVPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.3 }}
-              onClick={() => setSelectedPlan({ name: "DEPORTES", price: 8.99 })}
-              className={`bg-white rounded-3xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 flex flex-col relative cursor-pointer group ${
-                selectedPlan.name === "DEPORTES" 
-                  ? 'ring-2 ring-[#51fcff] shadow-[#51fcff]/20' 
-                  : 'hover:scale-[1.02] hover:ring-2 hover:ring-[#51fcff]/50'
+              onClick={() => handlePlanSelect({ name: "DEPORTES", price: 8.99 })}
+              className={`bg-gradient-to-b from-[#e0f7fc] to-[#c4e9ff] rounded-3xl shadow-lg p-4 hover:shadow-xl transition-all duration-300 flex flex-col relative cursor-pointer group border-2 border-white/70 ${
+                selectedPlan?.name === "DEPORTES" 
+                  ? 'ring-4 ring-[#51fcff] shadow-[0_0_20px_rgba(81,252,255,0.5)]' 
+                  : 'hover:scale-[1.02] hover:shadow-[0_10px_25px_rgba(0,102,255,0.2)]'
               }`}
             >
-              <h3 className="text-xl font-bold text-gray-900 mb-1">DEPORTES</h3>
-              <p className="text-2xl font-bold text-[#0066FF] mb-3">8.99€<span className="text-sm font-normal text-gray-400">/mes</span></p>
+              {/* Enhanced vibrant pulsing glow effect */}
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#51fcff]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pulse-glow"></div>
+              
+              {/* Enhanced spark animations on hover */}
+              <div className="absolute -right-1 -top-1 w-5 h-5 rounded-full bg-[#51fcff] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-ping-slow"></div>
+              <div className="absolute -left-1 -bottom-1 w-4 h-4 rounded-full bg-[#0066FF] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-ping-slower"></div>
+
+              {/* Title with emoji */}
+              <div className="mb-3 pb-2 border-b-2 border-white/50 text-center">
+                <div className="text-4xl mb-2">⚽</div>
+                <h3 className="text-2xl font-black text-[#051c40]">DEPORTES</h3>
+              </div>
+
               <ul className="space-y-2 mb-4 flex-1">
-                <li className="flex items-start gap-1.5">
-                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
-                  <span className="text-gray-600 text-sm">Incluye Plan Básico + Deportes Premium</span>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#0066FF] text-lg mt-0.5 flex-shrink-0">•</span>
+                  <span className="text-gray-700 text-base">Incluye Plan Básico + Deportes Premium</span>
                 </li>
-                <li className="flex items-start gap-1.5">
-                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
-                  <span className="text-gray-600 text-sm">Eurosport, DAZN, Real Madrid TV</span>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#0066FF] text-lg mt-0.5 flex-shrink-0">•</span>
+                  <span className="text-gray-700 text-base">Eurosport, DAZN, Real Madrid TV</span>
                 </li>
-                <li className="flex items-start gap-1.5">
-                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
-                  <span className="text-gray-600 text-sm">Todos los deportes en directo</span>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#0066FF] text-lg mt-0.5 flex-shrink-0">•</span>
+                  <span className="text-gray-700 text-base">Todos los deportes en directo</span>
                 </li>
               </ul>
-              {selectedPlan.name === "DEPORTES" && (
-                <div className="absolute -top-2 -right-2 bg-[#51fcff] text-white w-6 h-6 rounded-full flex items-center justify-center shadow-lg">
+              
+              {/* Price at the bottom - much bigger */}
+              <div className="mt-auto bg-white/50 rounded-xl p-3 text-center">
+                <p className="text-4xl font-bold text-[#0066FF]">8.99€<span className="text-sm font-normal text-gray-500">/mes</span></p>
+              </div>
+              
+              {/* Only show "TOCA PARA CONFIGURAR" in mobile view */}
+              {isMobileView && (
+                <>
+                  <div className="w-full h-[3px] bg-gradient-to-r from-[#ffa500] via-[#51fcff] to-[#ff00ff] my-2 opacity-100"></div>
+                  <div className="text-sm text-center font-bold text-[#0066FF] py-1.5 group-hover:animate-pulse group-hover:scale-105 transition-all duration-300">
+                    <span className="inline-block relative">
+                      ¡TOCA PARA CONFIGURAR! 
+                      <span className="absolute -right-4 top-0 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                    </span>
+                  </div>
+                </>
+              )}
+              
+              {selectedPlan?.name === "DEPORTES" && (
+                <div className="absolute -top-3 -right-3 bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg animate-pulse">
                   ✓
                 </div>
               )}
@@ -520,181 +753,222 @@ export default function UniTVPage() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: 0.4 }}
-              onClick={() => setSelectedPlan({ name: "PREMIUM TOTAL", price: 9.99 })}
-              className={`bg-white rounded-3xl shadow-lg p-6 hover:shadow-xl transition-all duration-300 flex flex-col relative cursor-pointer group ${
-                selectedPlan.name === "PREMIUM TOTAL" 
-                  ? 'ring-2 ring-[#51fcff] shadow-[#51fcff]/20' 
-                  : 'hover:scale-[1.02] hover:ring-2 hover:ring-[#51fcff]/50'
+              onClick={() => handlePlanSelect({ name: "PREMIUM TOTAL", price: 9.99 })}
+              className={`bg-gradient-to-b from-[#e0f7fc] to-[#c4e9ff] rounded-3xl shadow-lg p-4 hover:shadow-xl transition-all duration-300 flex flex-col relative cursor-pointer group border-2 border-white/70 ${
+                selectedPlan?.name === "PREMIUM TOTAL" 
+                  ? 'ring-4 ring-[#51fcff] shadow-[0_0_20px_rgba(81,252,255,0.5)]' 
+                  : 'hover:scale-[1.02] hover:shadow-[0_10px_25px_rgba(0,102,255,0.2)]'
               }`}
             >
-              <div className="absolute -top-3 right-4 bg-gradient-to-r from-[#51fcff] to-[#0066FF] px-3 py-0.5 rounded-full text-xs font-medium text-white">
+              {/* Enhanced vibrant pulsing glow effect */}
+              <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-[#51fcff]/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 pulse-glow"></div>
+              
+              {/* Enhanced spark animations on hover */}
+              <div className="absolute -right-1 -top-1 w-5 h-5 rounded-full bg-[#51fcff] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-ping-slow"></div>
+              <div className="absolute -left-1 -bottom-1 w-4 h-4 rounded-full bg-[#0066FF] opacity-0 group-hover:opacity-100 transition-opacity duration-300 animate-ping-slower"></div>
+
+              <div className="absolute -top-4 right-3 bg-gradient-to-r from-[#ff3f3f] to-[#ff8a00] px-2.5 py-1 rounded-full text-sm font-bold text-white shadow-lg">
                 Más Popular
               </div>
-              <h3 className="text-xl font-bold text-gray-900 mb-1">PREMIUM TOTAL</h3>
-              <p className="text-2xl font-bold text-[#0066FF] mb-3">9.99€<span className="text-sm font-normal text-gray-400">/mes</span></p>
+              
+              {/* Title with emoji */}
+              <div className="mb-3 pb-2 border-b-2 border-white/50 text-center">
+                <div className="text-4xl mb-2">🌟</div>
+                <h3 className="text-2xl font-black text-[#051c40]">PREMIUM TOTAL</h3>
+              </div>
+
               <ul className="space-y-2 mb-4 flex-1">
-                <li className="flex items-start gap-1.5">
-                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
-                  <span className="text-gray-600 text-sm">Todos los canales incluidos</span>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#0066FF] text-lg mt-0.5 flex-shrink-0">•</span>
+                  <span className="text-gray-700 text-base">Todos los canales incluidos</span>
                 </li>
-                <li className="flex items-start gap-1.5">
-                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
-                  <span className="text-gray-600 text-sm">Warner TV, TCM, COSMO</span>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#0066FF] text-lg mt-0.5 flex-shrink-0">•</span>
+                  <span className="text-gray-700 text-base">Warner TV, TCM, COSMO</span>
                 </li>
-                <li className="flex items-start gap-1.5">
-                  <span className="text-[#51fcff] text-base mt-0.5">♦</span>
-                  <span className="text-gray-600 text-sm">Contenido Adulto y SVOD</span>
+                <li className="flex items-start gap-2">
+                  <span className="text-[#0066FF] text-lg mt-0.5 flex-shrink-0">•</span>
+                  <span className="text-gray-700 text-base">Contenido Adulto y SVOD</span>
                 </li>
               </ul>
-              {selectedPlan.name === "PREMIUM TOTAL" && (
-                <div className="absolute -top-2 -right-2 bg-[#51fcff] text-white w-6 h-6 rounded-full flex items-center justify-center shadow-lg">
+              
+              {/* Price at the bottom - much bigger */}
+              <div className="mt-auto bg-white/50 rounded-xl p-3 text-center">
+                <p className="text-4xl font-bold text-[#0066FF]">9.99€<span className="text-sm font-normal text-gray-500">/mes</span></p>
+              </div>
+              
+              {/* Only show "TOCA PARA CONFIGURAR" in mobile view */}
+              {isMobileView && (
+                <>
+                  <div className="w-full h-[3px] bg-gradient-to-r from-[#ffa500] via-[#51fcff] to-[#ff00ff] my-2 opacity-100"></div>
+                  <div className="text-sm text-center font-bold text-[#0066FF] py-1.5 group-hover:animate-pulse group-hover:scale-105 transition-all duration-300">
+                    <span className="inline-block relative">
+                      ¡TOCA PARA CONFIGURAR! 
+                      <span className="absolute -right-4 top-0 group-hover:translate-x-1 transition-transform duration-300">→</span>
+                    </span>
+                  </div>
+                </>
+              )}
+              
+              {selectedPlan?.name === "PREMIUM TOTAL" && (
+                <div className="absolute -top-3 -right-3 bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white w-8 h-8 rounded-full flex items-center justify-center shadow-lg animate-pulse">
                   ✓
                 </div>
               )}
             </motion.div>
           </div>
 
-          {/* Additional Packages Configurator */}
-          <div className="max-w-6xl mx-auto mt-8 bg-white/90 backdrop-blur-sm rounded-3xl p-4 shadow-xl relative">
-            {/* Selected Plan Preview */}
-            <div className="bg-gradient-to-r from-[#51fcff]/10 to-[#0066FF]/10 rounded-xl p-3">
-              <div className="flex flex-wrap items-center justify-between gap-2">
-                <div className="flex items-center gap-2">
-                  <span className="bg-[#51fcff] text-white text-sm px-2.5 py-0.5 rounded-full font-medium">Plan Base</span>
-                  <h4 className="font-bold text-gray-800 text-base">{selectedPlan.name}</h4>
-                </div>
-                <div className="flex items-center gap-3 text-sm">
-                  <span className="text-gray-600">Base: <span className="font-bold text-[#0066FF]">{selectedPlan.price}€</span></span>
-                  <span className="text-gray-600">Extra: <span className="font-bold text-[#0066FF]">+{(parseFloat(calculateTotal()) - selectedPlan.price).toFixed(2)}€</span></span>
-                  <span className="text-gray-600">Total: <span className="font-bold text-[#0066FF]">{calculateTotal()}€</span></span>
-                </div>
-              </div>
-              {selectedAddons.length > 0 && (
-                <div className="flex flex-wrap gap-2 mt-2">
-                  {selectedAddons.map((addon, idx) => (
-                    <div key={idx} className="bg-[#51fcff]/10 rounded-full px-2.5 py-0.5 text-sm text-gray-600 font-medium">
-                      {addon.title} (+{addon.price}€)
-                    </div>
-                  ))}
-                </div>
-              )}
-            </div>
-
-            <div className="flex items-center justify-between border-b border-gray-200 py-3">
-              <div>
-                <h3 className="text-base font-bold text-gray-800">Personaliza tu plan con paquetes adicionales</h3>
-                <p className="text-sm text-gray-600 mt-0.5">Selecciona los paquetes para tu plan base {selectedPlan.name}</p>
-              </div>
-              <div className="flex items-center gap-3 text-sm">
-                <div className="flex items-center gap-1.5">
-                  <div className="w-5 h-5 rounded-full bg-[#51fcff] text-white flex items-center justify-center text-xs font-medium">1</div>
-                  <span className="text-gray-600">Plan base</span>
-                </div>
-                <div className="w-4 h-px bg-gray-200"></div>
-                <div className="flex items-center gap-1.5">
-                  <div className="w-5 h-5 rounded-full bg-[#51fcff] text-white flex items-center justify-center text-xs font-medium">2</div>
-                  <span className="text-gray-600">Extras</span>
-                </div>
-              </div>
-            </div>
-
-            {/* Additional Packages Grid */}
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 mt-3">
-              {[
-                {
-                  title: "Internacionales",
-                  price: "5.99",
-                  features: [
-                    "BBC, CNN, Al Jazeera, TeleFe",
-                    "Canales temáticos Fox/Star Network",
-                    "+ de 50 canales internacionales"
-                  ]
-                },
-                {
-                  title: "Musicales",
-                  price: "3.99",
-                  features: [
-                    "MTV, VH1, MCM SpaceFest",
-                    "Canales de música en directo",
-                    "Conciertos y festivales exclusivos"
-                  ]
-                },
-                {
-                  title: "SVOD Cocina",
-                  price: "2.99",
-                  features: [
-                    "Recetas de Javier Romero",
-                    "Tutoriales de cocina",
-                    "Programas de gastronomía"
-                  ]
-                },
-                {
-                  title: "Hot Playboy",
-                  price: "5.99",
-                  features: [
-                    "Playboy TV, Venus",
-                    "Penthouse, Sextreme",
-                    "Contenido a la carta"
-                  ]
-                },
-                {
-                  title: "Pride SVOD",
-                  price: "3.99",
-                  features: [
-                    "Cine gay",
-                    "Series LGBTQ+",
-                    "Contenido exclusivo"
-                  ]
+          {/* Add Extra Channels CTA - Simplified and compact */}
+          <motion.div 
+            initial={{ opacity: 0, y: 10 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.6 }}
+            className="mt-8 mb-8 max-w-3xl mx-auto"
+          >
+            <div 
+              onClick={() => {
+                const configuratorSection = document.querySelector('#addons-configurator');
+                if (configuratorSection) {
+                  configuratorSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
-              ].map((pack, index) => (
-                <motion.div
-                  key={index}
-                  initial={{ opacity: 0, y: 20 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.5, delay: 0.1 * index }}
-                  className="relative bg-white rounded-xl p-3 shadow-md hover:shadow-lg transition-all duration-300"
-                >
-                  <div className="flex justify-between items-start mb-1">
-                    <div>
-                      <h3 className="text-base font-bold text-gray-900">{pack.title}</h3>
-                      <p className="text-base font-bold text-[#0066FF]">
-                        {pack.price}€<span className="text-sm font-normal text-gray-400">/mes</span>
-                      </p>
-                    </div>
-                    <button 
-                      onClick={() => toggleAddon(pack)}
-                      className={`w-5 h-5 rounded-full transition-colors duration-300 flex items-center justify-center ${
-                        selectedAddons.some(addon => addon.title === pack.title)
-                          ? 'bg-[#51fcff] border border-[#51fcff]'
-                          : 'bg-white border border-[#51fcff] hover:bg-[#51fcff]/10'
-                      }`}
-                    >
-                      <span className={`text-sm ${
-                        selectedAddons.some(addon => addon.title === pack.title)
-                          ? 'text-white'
-                          : 'text-[#51fcff]'
-                      }`}>
-                        {selectedAddons.some(addon => addon.title === pack.title) ? '✓' : '+'}
-                      </span>
-                    </button>
-                  </div>
-                  <ul className="space-y-1">
-                    {pack.features.map((feature, idx) => (
-                      <li key={idx} className="flex items-start gap-1.5">
-                        <span className="text-[#51fcff] text-xs mt-1">♦</span>
-                        <span className="text-gray-600 text-sm leading-relaxed">{feature}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </motion.div>
-              ))}
+              }}
+              className="bg-gradient-to-r from-[#FF6B00] to-[#FF9500] rounded-lg px-5 py-4 shadow-md flex justify-between items-center cursor-pointer group hover:shadow-lg transition-all duration-300"
+            >
+              <div className="flex items-center">
+                <div className="text-3xl mr-4">📺</div>
+                <div>
+                  <h3 className="text-white font-bold text-2xl mb-1">
+                    Añade canales adicionales
+                  </h3>
+                  <p className="text-white/90 text-lg">
+                    Personaliza tu plan con extras
+                  </p>
+                </div>
+              </div>
+              <div className="text-5xl text-white animate-bounce group-hover:animate-none group-hover:scale-125 group-hover:translate-y-2 transition-transform duration-300">
+                ↓
+              </div>
             </div>
+          </motion.div>
 
-            {/* Checkout Button */}
-            <div className="mt-4 text-center">
-              <button className="inline-block bg-gradient-to-r from-[#51fcff] to-[#0066FF] text-white px-5 py-2.5 rounded-xl font-semibold text-base shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300 hover:-translate-y-1">
-                Contratar Plan Personalizado
+          {/* Desktop inline configurator */}
+          <div id="addons-configurator" className={`mt-8 p-4 bg-gradient-to-b from-[#e0f7fc] to-[#c4e9ff] rounded-xl border border-gray-200 ${isMobileView && selectedPlan ? 'hidden' : 'block'}`}>
+            <h3 className="text-3xl font-bold mb-4 text-center text-[#0066FF] bg-gradient-to-r from-[#0066FF] to-[#51fcff] bg-clip-text text-transparent">Configura tu Plan {selectedPlan?.name || "BÁSICO"}</h3>
+
+            <div className="mb-4">
+              <h4 className="text-xl font-semibold mb-3 text-center text-gray-800">Paquetes Adicionales</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
+                {[
+                  { 
+                    title: "Internacionales", 
+                    price: 5.99, 
+                    icon: Globe, 
+                    feature: "8 canales",
+                    channels: "BBC, CNN, Al Jazeera, Euronews, Bloomberg, France 24, RT, DW"
+                  },
+                  { 
+                    title: "Musicales", 
+                    price: 3.99, 
+                    icon: MusicNotes, 
+                    feature: "5 canales",
+                    channels: "MTV, VH1 Classical, VH1 Flamenco, VH1 Dance, Latino"
+                  },
+                  { 
+                    title: "SVOD Cocina", 
+                    price: 2.99, 
+                    icon: Flame, 
+                    feature: "Recetas exclusivas",
+                    channels: "Canal de Javier Romano con recetas exclusivas y contenido culinario premium"
+                  },
+                  { 
+                    title: "Hot Playboy", 
+                    price: 5.99, 
+                    icon: Lightning, 
+                    feature: "Contenido adulto",
+                    channels: "Playboy TV, Venus y otros canales de entretenimiento para adultos"
+                  },
+                  { 
+                    title: "Pride SVOD", 
+                    price: 3.99, 
+                    icon: Heart, 
+                    feature: "Cine temático",
+                    channels: "Cine gay y contenido especializado LGBTQ+"
+                  }
+                ].map((addon, idx) => {
+                  const isSelected = selectedAddons.some(item => item.title === addon.title);
+                  return (
+                    <div 
+                      key={idx} 
+                      onClick={() => toggleAddon({ title: addon.title, price: addon.price, channels: addon.channels })}
+                      className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-[#0066FF]/30 hover:translate-y-[-2px] relative"
+                    >
+                      <div className="flex flex-col">
+                        <div className="flex items-center mb-2">
+                          <addon.icon className="w-6 h-6 text-[#0066FF] mr-2" />
+                          <h5 className="text-xl font-bold text-[#051c40]">{addon.title}</h5>
+                        </div>
+                        <p className="text-gray-700 text-base mb-1">{addon.feature}</p>
+                        <p className="text-gray-600 text-sm">{addon.channels}</p>
+                        
+                        <div className="flex justify-between items-center mt-3">
+                          <div className="bg-gradient-to-r from-[#0066FF] to-[#51fcff] text-white rounded-lg px-3 py-1.5">
+                            <p className="text-xl font-bold">{addon.price}€<span className="text-xs font-normal">/mes</span></p>
+                          </div>
+                          <button
+                            onClick={(e) => {
+                              e.stopPropagation(); // Prevent duplicate trigger from parent onClick
+                              toggleAddon({ title: addon.title, price: addon.price, channels: addon.channels });
+                            }}
+                            className={`px-4 py-2 rounded-full text-base font-bold transition-all duration-300 ${
+                              isSelected 
+                              ? 'bg-red-500 text-white hover:bg-red-600 shadow-md hover:shadow-lg' 
+                              : 'bg-gradient-to-r from-[#0066FF] to-[#51fcff] text-white hover:shadow-lg hover:scale-105'
+                            }`}
+                          >
+                            {isSelected ? (
+                              <span className="flex items-center">
+                                <X weight="bold" className="mr-1 w-4 h-4" /> Quitar
+                              </span>
+                            ) : (
+                              <span className="flex items-center">
+                                <CheckCircle weight="fill" className="mr-1 w-4 h-4" /> Añadir
+                              </span>
+                            )}
+                          </button>
+                        </div>
+                      </div>
+                      
+                      {/* Selection indicator */}
+                      {isSelected && (
+                        <div className="absolute top-2 right-2 text-[#0066FF]">
+                          <CheckCircle weight="fill" className="w-5 h-5" />
+                        </div>
+                      )}
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
+            
+            {/* Desktop summary and button */}
+            <div className="border-t pt-3 flex justify-between items-center">
+              <div className="flex flex-col">
+                <span className="text-lg font-medium text-gray-800">Total mensual:</span>
+                <span className="text-4xl font-bold bg-gradient-to-r from-[#0066FF] to-[#51fcff] bg-clip-text text-transparent mt-1">
+                  {((selectedPlan?.price || 19.99) + selectedAddons.reduce((sum, addon) => sum + addon.price, 0)).toFixed(2)}€
+                </span>
+              </div>
+              <button 
+                className="py-2.5 px-6 bg-gradient-to-r from-[#0066FF] to-[#51fcff] text-white font-bold rounded-lg hover:shadow-lg transition-all hover:scale-105"
+                onClick={() => {
+                  setSelectedPlan({
+                    name: "BÁSICO",
+                    price: 19.99
+                  });
+                }}
+              >
+                Confirmar selección
               </button>
             </div>
           </div>
@@ -702,7 +976,7 @@ export default function UniTVPage() {
       </section>
 
       {/* Categories Section */}
-      <section className="py-16 relative overflow-hidden bg-gray-900">
+      <section className="py-12 md:py-16 relative overflow-hidden bg-gray-900">
         {/* Background Elements */}
         <div className="absolute inset-0 bg-gradient-to-b from-[#03091e] to-[#051c40] opacity-90" />
         <div className="absolute inset-0 bg-[url('/unitv/grid-pattern.png')] bg-repeat opacity-5" />
@@ -725,7 +999,7 @@ export default function UniTVPage() {
 
           {/* Categories only */}
           <div className="max-w-4xl mx-auto">
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-5">
               {[
                 { name: "TDT y Generalistas", icon: "📺", color: "from-[#2196F3] to-[#03A9F4]" },
                 { name: "Cine y Series", icon: "🎬", color: "from-[#673AB7] to-[#9C27B0]" },
@@ -751,6 +1025,130 @@ export default function UniTVPage() {
 
       {/* Contact Section */}
       <Contact />
+
+      {/* Mobile configurator modal */}
+      <div className={`fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center transition-opacity ${showConfigurator ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className="bg-gradient-to-b from-[#e0f7fc] to-[#c4e9ff] rounded-lg w-full max-w-lg max-h-[90vh] overflow-y-auto p-4 relative">
+          <button onClick={() => setShowConfigurator(false)} className="absolute top-2 right-2 text-gray-700 hover:text-gray-900 bg-white/50 rounded-full p-1">
+            <X className="w-5 h-5" />
+          </button>
+          
+          <h3 className="text-3xl font-bold mb-4 text-center text-[#0066FF] bg-gradient-to-r from-[#0066FF] to-[#51fcff] bg-clip-text text-transparent">Configura tu Plan {selectedPlan?.name || "BÁSICO"}</h3>
+          
+          <div className="mb-4">
+            <h4 className="text-xl font-semibold mb-3 text-center text-gray-800">Paquetes Adicionales</h4>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+              {[
+                { 
+                  title: "Internacionales", 
+                  price: 5.99, 
+                  icon: Globe, 
+                  feature: "8 canales",
+                  channels: "BBC, CNN, Al Jazeera, Euronews, Bloomberg, France 24, RT, DW"
+                },
+                { 
+                  title: "Musicales", 
+                  price: 3.99, 
+                  icon: MusicNotes, 
+                  feature: "5 canales",
+                  channels: "MTV, VH1 Classical, VH1 Flamenco, VH1 Dance, Latino"
+                },
+                { 
+                  title: "SVOD Cocina", 
+                  price: 2.99, 
+                  icon: Flame, 
+                  feature: "Recetas exclusivas",
+                  channels: "Canal de Javier Romano con recetas exclusivas y contenido culinario premium"
+                },
+                { 
+                  title: "Hot Playboy", 
+                  price: 5.99, 
+                  icon: Lightning, 
+                  feature: "Contenido adulto",
+                  channels: "Playboy TV, Venus y otros canales de entretenimiento para adultos"
+                },
+                { 
+                  title: "Pride SVOD", 
+                  price: 3.99, 
+                  icon: Heart, 
+                  feature: "Cine temático",
+                  channels: "Cine gay y contenido especializado LGBTQ+"
+                }
+              ].map((addon, idx) => {
+                const isSelected = selectedAddons.some(item => item.title === addon.title);
+                return (
+                  <div 
+                    key={idx} 
+                    onClick={() => toggleAddon({ title: addon.title, price: addon.price, channels: addon.channels })}
+                    className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-[#0066FF]/30 hover:translate-y-[-2px] relative"
+                  >
+                    <div className="flex flex-col">
+                      <div className="flex items-center mb-2">
+                        <addon.icon className="w-6 h-6 text-[#0066FF] mr-2" />
+                        <h5 className="text-xl font-bold text-[#051c40]">{addon.title}</h5>
+                      </div>
+                      <p className="text-gray-700 text-base mb-1">{addon.feature}</p>
+                      <p className="text-gray-600 text-sm">{addon.channels}</p>
+                      
+                      <div className="flex justify-between items-center mt-3">
+                        <div className="bg-gradient-to-r from-[#0066FF] to-[#51fcff] text-white rounded-lg px-3 py-1.5">
+                          <p className="text-xl font-bold">{addon.price}€<span className="text-xs font-normal">/mes</span></p>
+                        </div>
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation(); // Prevent duplicate trigger from parent onClick
+                            toggleAddon({ title: addon.title, price: addon.price, channels: addon.channels });
+                          }}
+                          className={`px-4 py-2 rounded-full text-base font-bold transition-all duration-300 ${
+                            isSelected 
+                            ? 'bg-red-500 text-white hover:bg-red-600 shadow-md hover:shadow-lg' 
+                            : 'bg-gradient-to-r from-[#0066FF] to-[#51fcff] text-white hover:shadow-lg hover:scale-105'
+                          }`}
+                        >
+                          {isSelected ? (
+                            <span className="flex items-center">
+                              <X weight="bold" className="mr-1 w-4 h-4" /> Quitar
+                            </span>
+                          ) : (
+                            <span className="flex items-center">
+                              <CheckCircle weight="fill" className="mr-1 w-4 h-4" /> Añadir
+                            </span>
+                          )}
+                        </button>
+                      </div>
+                    </div>
+                    
+                    {/* Selection indicator */}
+                    {isSelected && (
+                      <div className="absolute top-2 right-2 text-[#0066FF]">
+                        <CheckCircle weight="fill" className="w-5 h-5" />
+                      </div>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+          
+          {/* Configurator summary and button */}
+          <div className="border-t pt-3">
+            <div className="flex flex-col mb-3">
+              <span className="text-lg font-medium text-gray-800">Total mensual:</span>
+              <span className="text-4xl font-bold bg-gradient-to-r from-[#0066FF] to-[#51fcff] bg-clip-text text-transparent mt-1">
+                {((selectedPlan?.price || 19.99) + selectedAddons.reduce((sum, addon) => sum + addon.price, 0)).toFixed(2)}€
+              </span>
+            </div>
+            <button 
+              className="w-full py-2.5 bg-gradient-to-r from-[#0066FF] to-[#51fcff] text-white font-medium rounded-lg hover:shadow-lg transition-all"
+              onClick={() => {
+                setShowConfigurator(false);
+              }}
+            >
+              Confirmar selección
+            </button>
+          </div>
+        </div>
+      </div>
     </main>
   );
 } 
