@@ -10,8 +10,11 @@ import {
 import Image from 'next/image';
 import BonosConfigurator from '@/components/offerings/solo-movil/BonosConfigurator';
 import Link from 'next/link';
+import { useConfigurator } from '@/context/ConfiguratorProvider';
+import { SOLO_MOVIL_PLANS } from '@/data/plans-data';
 
-const MOVIL_PLANS = [
+// Local UI versions of plans
+const UI_MOVIL_PLANS = [
   {
     id: 'basic',
     title: 'Básico',
@@ -74,10 +77,13 @@ interface BonoConfig {
 }
 
 export const HeroConfigurator = () => {
-  const [selectedPlan, setSelectedPlan] = useState(MOVIL_PLANS[0]);
+  const [selectedPlan, setSelectedPlan] = useState(UI_MOVIL_PLANS[0]);
   const [activeSection, setActiveSection] = useState<'plan' | 'bonos'>('plan');
   const [isSelected, setIsSelected] = useState(false);
   const [bonosKey, setBonosKey] = useState(0);
+  
+  // Get the configurator context
+  const { setMovilPlanSelection, openForm } = useConfigurator();
 
   const handleSectionChange = (section: 'plan' | 'bonos') => {
     // Prevent re-animation if clicking the same section
@@ -91,16 +97,36 @@ export const HeroConfigurator = () => {
     // Reset selections if changing to plan section
     if (section === 'plan') {
       setIsSelected(false);
-      setSelectedPlan(MOVIL_PLANS[0]);
+      setSelectedPlan(UI_MOVIL_PLANS[0]);
     }
     
     // Set active section (immediate visual feedback)
     setActiveSection(section);
   };
 
-  const handlePlanSelect = (plan: typeof MOVIL_PLANS[0]) => {
+  const handlePlanSelect = (plan: typeof UI_MOVIL_PLANS[0]) => {
     setSelectedPlan(plan);
     setIsSelected(true);
+  };
+  
+  // Handle contract button click - submits selection to configurator
+  const handleContractClick = () => {
+    if (isSelected) {
+      // Find the corresponding plan in the actual data structure
+      const planId = selectedPlan.id === 'basic' ? 'movil-basico' : 
+                     selectedPlan.id === 'standard' ? 'movil-estandar' : 
+                     selectedPlan.id === 'pro' ? 'movil-pro' : 
+                     selectedPlan.id === 'premium' ? 'movil-premium' : 'movil-premium-plus';
+      
+      const planData = SOLO_MOVIL_PLANS.find(p => p.id === planId);
+      
+      if (planData) {
+        // Set the plan selection in the configurator
+        setMovilPlanSelection(planData);
+        // Open the form
+        openForm();
+      }
+    }
   };
 
   return (
@@ -221,7 +247,7 @@ export const HeroConfigurator = () => {
 
             {/* Plan Selector */}
             <div className="grid grid-cols-5 gap-3">
-              {MOVIL_PLANS.map((plan) => (
+              {UI_MOVIL_PLANS.map((plan) => (
                 <motion.button
                   key={plan.id}
                   onClick={() => handlePlanSelect(plan)}
@@ -274,16 +300,17 @@ export const HeroConfigurator = () => {
             whileHover={{ scale: 1.02 }} 
             whileTap={{ scale: 0.98 }}
           >
-            <Link
-              href="#contacto"
-              className={`block text-center py-4 rounded-xl font-medium text-lg transition-all duration-300 ${
+            <button
+              onClick={handleContractClick}
+              disabled={!isSelected}
+              className={`w-full text-center py-4 rounded-xl font-medium text-lg transition-all duration-300 ${
                 isSelected
                   ? 'bg-gradient-new text-white shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30'
                   : 'bg-white/10 text-white/60 cursor-not-allowed'
               }`}
             >
               {isSelected ? 'Contratar Plan' : 'Selecciona un Plan'}
-            </Link>
+            </button>
           </motion.div>
         )}
       </div>

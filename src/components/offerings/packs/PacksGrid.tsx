@@ -6,6 +6,8 @@ import { Lightning, UsersThree, UsersFour, Crown, User, Users, Phone, FilePdf, W
 import PackCard from './PackCard';
 import { useState, useRef, useEffect } from 'react';
 import { TarifasDropdown } from '@/components/ui/TarifasDropdown';
+import { useConfigurator } from '@/context/ConfiguratorProvider';
+import { PACK_PLANS } from '@/data/plans-data';
 
 const packs = [
   {
@@ -170,6 +172,18 @@ const HeroPackCard = ({ pack, isSelected, onClick }: HeroPackCardProps) => {
 
 export const HeroPacks = () => {
   const [selectedPack, setSelectedPack] = useState(packs[0].id);
+  const { setPackSelection, openForm } = useConfigurator();
+
+  const handleContractClick = () => {
+    // Find the corresponding pack in PACK_PLANS from plans-data.ts
+    const selectedPackData = PACK_PLANS.find(p => p.id === selectedPack);
+    if (selectedPackData) {
+      // Set the selected pack in the configurator state
+      setPackSelection(selectedPackData);
+      // Open the form
+      openForm();
+    }
+  };
 
   return (
     <div className="relative w-full max-w-[500px] mx-auto">
@@ -195,12 +209,12 @@ export const HeroPacks = () => {
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <Link
-            href="#contacto"
-            className="block text-center bg-gradient-new text-white py-4 rounded-2xl font-semibold text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300"
+          <button
+            onClick={handleContractClick}
+            className="w-full text-center bg-gradient-new text-white py-4 rounded-2xl font-semibold text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300"
           >
             Contratar Ahora
-          </Link>
+          </button>
         </motion.div>
       </motion.div>
 
@@ -315,7 +329,10 @@ export default function PacksGrid() {
         <div className="flex md:grid md:grid-cols-2 lg:grid-cols-4 gap-6 min-w-max md:min-w-0 md:w-full px-[10%] md:px-0">
           {packs.map((pack) => (
             <div key={pack.id} className="w-[280px] md:w-auto snap-center">
-              <PackCard {...pack} />
+              <PackCard 
+                {...pack} 
+                id={pack.id}  
+              />
             </div>
           ))}
         </div>

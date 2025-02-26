@@ -3,6 +3,8 @@
 import { motion } from 'framer-motion';
 import Link from 'next/link';
 import { Lightning, UsersThree, UsersFour, Crown, User, Users, Phone } from '@phosphor-icons/react';
+import { useConfigurator } from '@/context/ConfiguratorProvider';
+import { PACK_PLANS } from '@/data/plans-data';
 
 interface PackCardProps {
   title: string;
@@ -13,6 +15,7 @@ interface PackCardProps {
   delay: number;
   gb: string;
   speed: string;
+  id: string;
 }
 
 const motionConfig = {
@@ -30,8 +33,19 @@ export default function PackCard({
   isPopular,
   delay,
   gb,
-  speed
+  speed,
+  id
 }: PackCardProps) {
+  const { setPackSelection, openForm } = useConfigurator();
+  
+  const handlePackSelection = () => {
+    const packData = PACK_PLANS.find(p => p.id === id);
+    if (packData) {
+      setPackSelection(packData);
+      openForm();
+    }
+  };
+
   const getPackIcon = () => {
     if (title.includes('Single')) return <Lightning size={32} weight="duotone" className="text-[#ed54ba]" />;
     if (title.includes('Duo')) return <Users size={32} weight="duotone" className="text-[#ed54ba]" />;
@@ -117,12 +131,12 @@ export default function PackCard({
         </div>
 
         {/* Action Button */}
-        <Link
-          href="#contacto"
-          className="block text-center bg-gradient-new text-white py-3 px-8 rounded-2xl font-medium text-lg transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+        <button
+          onClick={handlePackSelection}
+          className="w-full text-center bg-gradient-new text-white py-3 px-8 rounded-2xl font-medium text-lg transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
         >
           ¡Lo quiero!
-        </Link>
+        </button>
       </div>
     </motion.div>
   );

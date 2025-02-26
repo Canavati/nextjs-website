@@ -142,6 +142,7 @@ export default function Plans() {
   return (
     <section 
       ref={sectionRef} 
+      id="planes"
       className="py-20 relative overflow-hidden isolate"
       style={{ 
         position: 'relative',
@@ -208,19 +209,19 @@ export default function Plans() {
       />
 
       {/* Content Container - Add a protective wrapper with higher stacking context */}
-      <div className="container mx-auto px-4 relative z-[5]" style={{ isolation: 'isolate' }}>
+      <div className="container mx-auto px-4 relative z-[3]" style={{ isolation: 'isolate' }}>
         <motion.h2
           {...motionConfig}
-          className="text-4xl md:text-5xl font-bold text-center mb-12 text-shimmer-dark relative z-[30] drop-shadow-[0_2px_10px_rgba(255,255,255,1)] [text-shadow:0_2px_15px_rgba(255,255,255,0.3),0_-1px_1px_rgba(0,0,0,0)]"
+          className="text-4xl md:text-5xl font-bold text-center mb-12 text-shimmer-dark relative z-[2] drop-shadow-[0_2px_10px_rgba(255,255,255,1)] [text-shadow:0_2px_15px_rgba(255,255,255,0.3),0_-1px_1px_rgba(0,0,0,0)]"
         >
           Nuestros Planes
         </motion.h2>
 
         {/* Click shield to prevent header interference */}
-        <div className="absolute inset-0 z-[10]" style={{ pointerEvents: 'none' }}></div>
+        <div className="absolute inset-0 z-[1]" style={{ pointerEvents: 'none' }}></div>
 
         {/* Pillbar with enhanced click handling */}
-        <div className="flex justify-center mb-12 relative z-[40]" style={{ isolation: 'isolate', pointerEvents: 'auto' }}>
+        <div className="flex justify-center mb-12 relative z-[2]" style={{ isolation: 'isolate', pointerEvents: 'auto' }}>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -259,7 +260,7 @@ export default function Plans() {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.3 }}
-          className="relative w-full min-h-[650px] md:min-h-[750px] z-[20]"
+          className="relative w-full min-h-[650px] md:min-h-[750px] z-[3]"
         >
           {activeView === 'packs' && <PacksGrid />}
           {activeView === 'fibra-movil' && <FibraMovilConfigurator />}

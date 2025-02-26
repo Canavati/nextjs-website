@@ -6,33 +6,41 @@ import Link from 'next/link';
 import { DeviceMobile, Phone, Lightning, Rocket, Star, Crown, Sparkle } from '@phosphor-icons/react';
 import { TarifasDropdown } from '@/components/ui/TarifasDropdown';
 import MovilBonos from './MovilBonos';
+import { useConfigurator } from '@/context/ConfiguratorProvider';
+import { SOLO_MOVIL_PLANS } from '@/data/plans-data';
 
-const SOLO_MOVIL_PLANS = [
+// Local UI version of plans
+const UI_SOLO_MOVIL_PLANS = [
   {
+    id: 'movil-basico',
     title: 'Básico',
     data: '10',
     basePrice: 4.90,
     calls: '1000 min + 150 otros operadores'
   },
   {
+    id: 'movil-estandar',
     title: 'Estándar',
     data: '25',
     basePrice: 7,
     calls: 'Llamadas ilimitadas'
   },
   {
+    id: 'movil-pro',
     title: 'Pro',
     data: '40',
     basePrice: 9,
     calls: 'Llamadas ilimitadas'
   },
   {
+    id: 'movil-premium',
     title: 'Premium',
     data: '75',
     basePrice: 10,
     calls: 'Llamadas ilimitadas'
   },
   {
+    id: 'movil-premium-plus',
     title: 'Premium+',
     data: '200',
     basePrice: 20,
@@ -44,6 +52,16 @@ export default function SoloMovilConfigurator() {
   const [activeSection, setActiveSection] = useState<'plans' | 'bonos'>('plans');
   const [currentCard, setCurrentCard] = useState(0);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const { setMovilPlanSelection, openForm } = useConfigurator();
+
+  // Function to handle plan selection and open the form
+  const handlePlanSelection = (planId: string) => {
+    const planData = SOLO_MOVIL_PLANS.find(p => p.id === planId);
+    if (planData) {
+      setMovilPlanSelection(planData);
+      openForm();
+    }
+  };
 
   // Update current card based on scroll position
   useEffect(() => {
@@ -117,7 +135,7 @@ export default function SoloMovilConfigurator() {
           >
             {/* Dots Navigation */}
             <div className="flex justify-center gap-2 mb-4 md:hidden">
-              {SOLO_MOVIL_PLANS.map((_, index) => (
+              {UI_SOLO_MOVIL_PLANS.map((_, index) => (
                 <button
                   key={index}
                   onClick={() => scrollToCard(index)}
@@ -136,7 +154,7 @@ export default function SoloMovilConfigurator() {
               className="flex overflow-x-auto pb-6 pt-4 gap-6 snap-x snap-mandatory hide-scrollbar"
             >
               <div className="flex md:grid md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 min-w-max md:min-w-0 md:w-full px-[10%] md:px-0">
-                {SOLO_MOVIL_PLANS.map((plan, index) => (
+                {UI_SOLO_MOVIL_PLANS.map((plan, index) => (
                   <div key={index} className="w-[280px] md:w-auto snap-center">
                     <motion.div
                       className="group relative p-3 md:p-4 rounded-3xl text-left transition-all duration-300"
@@ -201,12 +219,12 @@ export default function SoloMovilConfigurator() {
                         </div>
 
                         {/* Action Button */}
-                        <Link
-                          href="#contacto"
-                          className="block text-center bg-gradient-new text-white py-2 px-6 rounded-lg font-medium text-sm mt-4 transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+                        <button
+                          onClick={() => handlePlanSelection(plan.id)}
+                          className="w-full text-center bg-gradient-new text-white py-2 px-6 rounded-lg font-medium text-sm mt-4 transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
                         >
                           ¡Lo quiero!
-                        </Link>
+                        </button>
                       </div>
                     </motion.div>
                   </div>

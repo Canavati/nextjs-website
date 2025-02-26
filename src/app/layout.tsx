@@ -5,6 +5,8 @@ import TopBar from "@/components/layout/TopBar";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import { HeroProvider } from '@/contexts/HeroContext';
+import { ConfiguratorProvider } from '@/context/ConfiguratorProvider';
+import ConfigurationForm from '@/components/ui/ConfigurationForm';
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -88,13 +90,16 @@ export default function RootLayout({
       <body className={`${inter.className} pt-total-nav min-h-screen relative overflow-x-hidden`}>
         <ErrorBoundary>
           <HeroProvider>
-            <div className="h-1 bg-primary fixed top-0 left-0 z-[1002] transition-all duration-300" id="scroll-progress" />
-            <TopBar />
-            <Header />
-            <main>
-              {children}
-            </main>
-            <Footer />
+            <ConfiguratorProvider>
+              <div className="h-1 bg-primary fixed top-0 left-0 z-[1002] transition-all duration-300" id="scroll-progress" />
+              <TopBar />
+              <Header />
+              <main className="min-h-screen w-full relative overflow-hidden">
+                {children}
+              </main>
+              <Footer />
+              <ConfigurationForm />
+            </ConfiguratorProvider>
           </HeroProvider>
         </ErrorBoundary>
       </body>

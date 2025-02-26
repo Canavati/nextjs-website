@@ -5,6 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import Link from 'next/link';
 import { WifiHigh, DeviceMobile, Plus, Minus, Lightning, Crown, Rocket, Star, ArrowLeft, X, FilePdf } from '@phosphor-icons/react';
 import { TarifasDropdown } from '@/components/ui/TarifasDropdown';
+import { useConfigurator } from '@/context/ConfiguratorProvider';
+import { FIBRA_MOVIL_PLANS, ADDITIONAL_LINES, FibraMovilPlan } from '@/data/plans-data';
 
 interface FibraMovilConfig {
   selectedPlan: number;
@@ -15,33 +17,6 @@ interface FibraMovilConfig {
   };
 }
 
-const FIBRA_MOVIL_PLANS = [
-  {
-    title: 'Básico',
-    speed: '300',
-    data: '45',
-    basePrice: 28
-  },
-  {
-    title: 'Estándar',
-    speed: '500',
-    data: '60',
-    basePrice: 40
-  },
-  {
-    title: 'Pro',
-    speed: '500',
-    data: '115',
-    basePrice: 45
-  },
-  {
-    title: 'Premium',
-    speed: '1000',
-    data: '115',
-    basePrice: 55
-  }
-];
-
 // Separate Modal Component
 const ConfigurationModal = ({
   plan,
@@ -50,22 +25,26 @@ const ConfigurationModal = ({
   onLineChange,
   totalAdditionalLines,
   canAddMore,
-  calculateTotalPrice
+  calculateTotalPrice,
+  onContractClick
 }: {
-  plan: typeof FIBRA_MOVIL_PLANS[0],
+  plan: FibraMovilPlan,
   config: FibraMovilConfig,
   onClose: () => void,
   onLineChange: (lineType: keyof typeof config.additionalLines, increment: boolean) => void,
   totalAdditionalLines: number,
   canAddMore: boolean,
-  calculateTotalPrice: () => number
+  calculateTotalPrice: () => number,
+  onContractClick: () => void
 }) => (
   <motion.div 
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     exit={{ opacity: 0 }}
-    className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4"
+    className="fixed inset-0 bg-black/50 z-[1500] flex items-center justify-center p-4 configuration-modal"
+    style={{ isolation: 'isolate' }}
     onClick={() => onClose()}
+    tabIndex={0}
   >
     <motion.div
       initial={{ scale: 0.95, opacity: 0 }}
@@ -102,7 +81,7 @@ const ConfigurationModal = ({
             <span className="text-white/50">+</span>
             <div className="flex items-center gap-1.5">
               <DeviceMobile size={24} weight="duotone" className="text-white/90" />
-              <span className="text-base opacity-90">{plan.data}GB</span>
+              <span className="text-base opacity-90">{plan.baseData}GB</span>
             </div>
           </div>
           <div>
@@ -201,12 +180,12 @@ const ConfigurationModal = ({
           whileHover={{ scale: 1.02 }}
           whileTap={{ scale: 0.98 }}
         >
-          <Link
-            href="#contacto"
-            className="block text-center bg-gradient-new text-white py-2 px-6 rounded-2xl font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+          <button
+            onClick={onContractClick}
+            className="block w-full text-center bg-gradient-new text-white py-2 px-6 rounded-2xl font-medium transition-all duration-300 hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
           >
             ¡Lo quiero!
-          </Link>
+          </button>
         </motion.div>
       </div>
     </motion.div>
@@ -269,6 +248,30 @@ export const HeroConfigurator = () => {
   const previewPlanPrice = calculateTotalPrice(previewPlan);
   const priceDifference = previewPlanPrice - selectedPlanPrice;
   
+  // Use the same useConfigurator hook instance
+  const { setFibraMovilBasePlan, updateAdditionalLine, openForm, resetSelections } = useConfigurator();
+
+  const handleContractClick = () => {
+    // Define basePlan from the selected plan in config
+    const basePlan = FIBRA_MOVIL_PLANS[config.selectedPlan];
+    if (!basePlan) return;
+    
+    setFibraMovilBasePlan(basePlan);
+    
+    // Update additional lines if any are selected
+    setTimeout(() => {
+      Object.entries(config.additionalLines).forEach(([id, quantity]) => {
+        if (quantity > 0) {
+          updateAdditionalLine(id, quantity);
+        }
+      });
+      
+      setTimeout(() => {
+        openForm();
+      }, 100);
+    }, 100);
+  };
+
   return (
     <div className="relative w-full max-w-[500px] mx-auto">
       {/* Main Card */}
@@ -332,7 +335,7 @@ export const HeroConfigurator = () => {
                 <div className="absolute inset-0 bg-gradient-to-b from-[#51fcff]/10 to-transparent rounded-2xl -z-10 group-hover:from-[#51fcff]/20 transition-colors duration-300" />
                 <div className="p-4 text-center">
                   <div className="text-3xl font-black text-white mb-1 group-hover:text-[#51fcff] transition-colors duration-300">
-                    {currentPlan.data}
+                    {currentPlan.baseData}
                     <span className="text-lg font-bold ml-1">GB</span>
                   </div>
                   <div className="text-sm text-white/60">Datos Móviles</div>
@@ -474,6 +477,7 @@ export const HeroConfigurator = () => {
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
             className="w-full bg-gradient-new text-white py-4 rounded-2xl font-semibold text-lg shadow-lg shadow-[#51fcff]/20 hover:shadow-[#51fcff]/30 transition-all duration-300"
+            onClick={handleContractClick}
           >
             Contratar Ahora
           </motion.button>
@@ -546,6 +550,36 @@ export default function FibraMovilConfigurator() {
   // Mobile-specific state
   const [showMobileConfig, setShowMobileConfig] = useState(false);
 
+  // Add useConfigurator hook
+  const { setFibraMovilBasePlan, updateAdditionalLine, openForm, resetSelections } = useConfigurator();
+
+  // Prevent body scrolling when modal is open
+  useEffect(() => {
+    if (showMobileConfig) {
+      // Disable scrolling on body
+      document.body.style.overflow = 'hidden';
+      
+      // Add a higher z-index to the body to ensure the backdrop covers everything
+      document.body.style.position = 'relative';
+      
+      // Focus on the modal for accessibility
+      const modalElement = document.querySelector('.configuration-modal');
+      if (modalElement) {
+        (modalElement as HTMLElement).focus();
+      }
+    } else {
+      // Re-enable scrolling on body
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+    }
+    
+    // Cleanup function to ensure scrolling is re-enabled when component unmounts
+    return () => {
+      document.body.style.overflow = '';
+      document.body.style.position = '';
+    };
+  }, [showMobileConfig]);
+
   const totalAdditionalLines = Object.values(config.additionalLines).reduce((a, b) => a + b, 0);
   const canAddMore = totalAdditionalLines < 4;
 
@@ -572,6 +606,27 @@ export default function FibraMovilConfigurator() {
     return basePlan.basePrice + additionalCost;
   };
 
+  const handleContractClick = () => {
+    // Define basePlan from the selected plan in config
+    const basePlan = FIBRA_MOVIL_PLANS[config.selectedPlan];
+    if (!basePlan) return;
+    
+    setFibraMovilBasePlan(basePlan);
+    
+    // Update additional lines if any are selected
+    setTimeout(() => {
+      Object.entries(config.additionalLines).forEach(([id, quantity]) => {
+        if (quantity > 0) {
+          updateAdditionalLine(id, quantity);
+        }
+      });
+      
+      setTimeout(() => {
+        openForm();
+      }, 100);
+    }, 100);
+  };
+
   return (
     <motion.div 
       initial={{ opacity: 0, y: 20 }}
@@ -587,6 +642,11 @@ export default function FibraMovilConfigurator() {
             onClick={() => {
               setConfig(prev => ({ ...prev, selectedPlan: index }));
               setShowMobileConfig(true);
+              // Scroll to the Plans section for better visibility of the modal
+              const plansSection = document.getElementById('planes');
+              if (plansSection) {
+                plansSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+              }
             }}
             className="w-full group relative p-2.5 rounded-3xl text-left transition-all duration-300"
             style={{
@@ -622,7 +682,7 @@ export default function FibraMovilConfigurator() {
                   <div className="text-center">
                     <div className="text-sm font-medium text-[#444444] mb-1">Datos Móvil</div>
                     <div className="flex items-center justify-center gap-1">
-                      <span className="text-xl font-medium text-[#79C4CD]">{plan.data}</span>
+                      <span className="text-xl font-medium text-[#79C4CD]">{plan.baseData}</span>
                       <span className="text-sm text-[#666666]">GB</span>
                     </div>
                   </div>
@@ -701,7 +761,7 @@ export default function FibraMovilConfigurator() {
                   <div className="text-center">
                     <div className="text-sm font-medium text-[#444444] mb-1">Datos Móvil</div>
                     <div className="flex items-center justify-center gap-1">
-                      <span className="text-xl font-medium text-[#79C4CD]">{plan.data}</span>
+                      <span className="text-xl font-medium text-[#79C4CD]">{plan.baseData}</span>
                       <span className="text-sm text-[#666666]">GB</span>
                     </div>
                   </div>
@@ -858,12 +918,12 @@ export default function FibraMovilConfigurator() {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
-              <Link
-                href="#contacto"
-                className="block text-center bg-gradient-new text-white py-2.5 px-6 rounded-2xl font-medium text-sm transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
+              <button
+                onClick={handleContractClick}
+                className="block w-full text-center bg-gradient-new text-white py-2.5 px-6 rounded-2xl font-medium text-sm transition-all duration-300 hover:shadow-lg hover:shadow-[#80c4cc]/30 hover:-translate-y-1"
               >
                 ¡Lo quiero!
-              </Link>
+              </button>
             </motion.div>
           </div>
         </motion.div>
@@ -885,6 +945,7 @@ export default function FibraMovilConfigurator() {
             totalAdditionalLines={totalAdditionalLines}
             canAddMore={canAddMore}
             calculateTotalPrice={calculateTotalPrice}
+            onContractClick={handleContractClick}
           />
         )}
       </AnimatePresence>
