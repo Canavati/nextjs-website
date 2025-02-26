@@ -24,6 +24,7 @@ Web:
 - Configurar Contentfull con cuenta de pascual ✅|
 - Backend (Forms funcionales con los IDs de cada oferta para alimentar a Make.com con lo que el usuario elija) ✅
 - Optimizar la pagina para Mobile ✅
+
 - Configurar vercel de pascual y mandar demo a pascual⛔|
 
 
