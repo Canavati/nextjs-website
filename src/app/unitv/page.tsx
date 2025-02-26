@@ -531,6 +531,38 @@ export default function UniTVPage() {
         />
 
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Custom style for mobile swiper */}
+          <style jsx global>{`
+            .mobile-plan-swiper {
+              display: flex;
+              overflow-x: auto;
+              scroll-snap-type: x mandatory;
+              scrollbar-width: none; /* Firefox */
+              -ms-overflow-style: none; /* IE and Edge */
+              padding: 20px 0;
+              -webkit-overflow-scrolling: touch;
+            }
+            
+            .mobile-plan-swiper::-webkit-scrollbar {
+              display: none; /* Chrome, Safari, Opera */
+            }
+            
+            .mobile-plan-card {
+              scroll-snap-align: center;
+              flex: 0 0 85%;
+              margin-right: 15px;
+              background: white;
+              border-radius: 24px;
+              overflow: hidden;
+              box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+              transition: all 0.3s ease;
+            }
+            
+            .mobile-plan-card:last-child {
+              margin-right: 0;
+            }
+          `}</style>
+
           {/* Section Title */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -547,8 +579,122 @@ export default function UniTVPage() {
             </p>
           </motion.div>
 
-          {/* Plans Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto">
+          {/* Mobile Swipeable Plans */}
+          <div className={`${!isMobileView ? 'hidden' : 'block'} mb-8`}>
+            <div className="mobile-plan-swiper">
+              {mainPlans.map((plan, idx) => (
+                <div 
+                  key={idx} 
+                  className="mobile-plan-card"
+                  onClick={() => handlePlanSelect(plan)}
+                >
+                  <div className="p-5">
+                    {/* Plan Title */}
+                    <div className="flex items-center mb-3">
+                      <div className="text-pink-500 mr-2">
+                        {idx === 0 && <Television weight="bold" size={24} />}
+                        {idx === 1 && <FilmStrip weight="bold" size={24} />}
+                        {idx === 2 && <PlayCircle weight="bold" size={24} />}
+                        {idx === 3 && <Package weight="bold" size={24} />}
+                      </div>
+                      <h3 className="text-xl font-bold text-[#333]">{plan.name}</h3>
+                    </div>
+
+                    {/* Divider */}
+                    <div className="h-px bg-gray-200 w-full my-4"></div>
+
+                    {/* Features List */}
+                    <ul className="space-y-2.5 mb-4">
+                      {idx === 0 && (
+                        <>
+                          <li className="flex items-start gap-2">
+                            <span className="text-pink-500 text-lg mt-0.5 flex-shrink-0">•</span>
+                            <span className="text-gray-700 text-sm">Canales Generalistas (La 1, La 2, Antena 3)</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-pink-500 text-lg mt-0.5 flex-shrink-0">•</span>
+                            <span className="text-gray-700 text-sm">Canales Regionales y TDT</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-pink-500 text-lg mt-0.5 flex-shrink-0">•</span>
+                            <span className="text-gray-700 text-sm">Canales Deportivos Básicos</span>
+                          </li>
+                        </>
+                      )}
+                      {idx === 1 && (
+                        <>
+                          <li className="flex items-start gap-2">
+                            <span className="text-pink-500 text-lg mt-0.5 flex-shrink-0">•</span>
+                            <span className="text-gray-700 text-sm">Incluye Plan Básico + Canales Premium</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-pink-500 text-lg mt-0.5 flex-shrink-0">•</span>
+                            <span className="text-gray-700 text-sm">Paramount, Clover Channel, Classic Movies</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-pink-500 text-lg mt-0.5 flex-shrink-0">•</span>
+                            <span className="text-gray-700 text-sm">Discovery Channel y Documentales</span>
+                          </li>
+                        </>
+                      )}
+                      {idx === 2 && (
+                        <>
+                          <li className="flex items-start gap-2">
+                            <span className="text-pink-500 text-lg mt-0.5 flex-shrink-0">•</span>
+                            <span className="text-gray-700 text-sm">Incluye Plan Básico + Deportes Premium</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-pink-500 text-lg mt-0.5 flex-shrink-0">•</span>
+                            <span className="text-gray-700 text-sm">Eurosport, DAZN, Real Madrid TV</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-pink-500 text-lg mt-0.5 flex-shrink-0">•</span>
+                            <span className="text-gray-700 text-sm">Todos los deportes en directo</span>
+                          </li>
+                        </>
+                      )}
+                      {idx === 3 && (
+                        <>
+                          <li className="flex items-start gap-2">
+                            <span className="text-pink-500 text-lg mt-0.5 flex-shrink-0">•</span>
+                            <span className="text-gray-700 text-sm">Todos los canales incluidos</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-pink-500 text-lg mt-0.5 flex-shrink-0">•</span>
+                            <span className="text-gray-700 text-sm">Warner TV, TCM, COSMO</span>
+                          </li>
+                          <li className="flex items-start gap-2">
+                            <span className="text-pink-500 text-lg mt-0.5 flex-shrink-0">•</span>
+                            <span className="text-gray-700 text-sm">Contenido Adulto y SVOD</span>
+                          </li>
+                        </>
+                      )}
+                    </ul>
+
+                    {/* Divider */}
+                    <div className="h-px bg-gray-200 w-full my-4"></div>
+
+                    {/* Price */}
+                    <div className="text-center mb-4">
+                      <div className="text-5xl font-bold bg-gradient-to-r from-[#9c5adb] to-[#51fcff] bg-clip-text text-transparent">
+                        {plan.price.toFixed(2)}€
+                        <span className="text-sm text-gray-500 font-normal">/mes</span>
+                      </div>
+                      <div className="text-xs text-gray-500 mt-1">IVA incluido</div>
+                    </div>
+
+                    {/* CTA Button */}
+                    <button className="w-full py-3 bg-gradient-to-r from-[#9c5adb] to-[#51fcff] text-white text-lg font-medium rounded-full">
+                      ¡Lo quiero!
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          {/* Desktop Plans Grid */}
+          <div className={`grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6 max-w-6xl mx-auto ${isMobileView ? 'hidden' : 'block'}`}>
             {/* Basic Plan */}
             <motion.div
               initial={{ opacity: 0, y: 20 }}
@@ -901,75 +1047,55 @@ export default function UniTVPage() {
                     <div 
                       key={idx} 
                       onClick={() => toggleAddon({ title: addon.title, price: addon.price, channels: addon.channels })}
-                      className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-[#0066FF]/30 hover:translate-y-[-2px] relative"
+                      className={`bg-white border rounded-lg py-2 px-3 shadow-sm cursor-pointer transition-all duration-300 hover:shadow-md relative ${isSelected ? 'border-pink-500 border-2 bg-pink-50' : 'border-gray-200'}`}
                     >
-                      <div className="flex flex-col">
-                        <div className="flex items-center mb-2">
-                          <addon.icon className="w-6 h-6 text-[#0066FF] mr-2" />
-                          <h5 className="text-xl font-bold text-[#051c40]">{addon.title}</h5>
-                        </div>
-                        <p className="text-gray-700 text-base mb-1">{addon.feature}</p>
-                        <p className="text-gray-600 text-sm">{addon.channels}</p>
-                        
-                        <div className="flex justify-between items-center mt-3">
-                          <div className="bg-gradient-to-r from-[#0066FF] to-[#51fcff] text-white rounded-lg px-3 py-1.5">
-                            <p className="text-xl font-bold">{addon.price}€<span className="text-xs font-normal">/mes</span></p>
-                          </div>
-                          <button
-                            onClick={(e) => {
-                              e.stopPropagation(); // Prevent duplicate trigger from parent onClick
-                              toggleAddon({ title: addon.title, price: addon.price, channels: addon.channels });
-                            }}
-                            className={`px-4 py-2 rounded-full text-base font-bold transition-all duration-300 ${
-                              isSelected 
-                              ? 'bg-red-500 text-white hover:bg-red-600 shadow-md hover:shadow-lg' 
-                              : 'bg-gradient-to-r from-[#0066FF] to-[#51fcff] text-white hover:shadow-lg hover:scale-105'
-                            }`}
-                          >
-                            {isSelected ? (
-                              <span className="flex items-center">
-                                <X weight="bold" className="mr-1 w-4 h-4" /> Quitar
-                              </span>
-                            ) : (
-                              <span className="flex items-center">
-                                <CheckCircle weight="fill" className="mr-1 w-4 h-4" /> Añadir
-                              </span>
+                      <div className="flex items-start">
+                        {/* Left Column: Icon and Title */}
+                        <div className="flex-grow mr-2">
+                          <div className="flex items-center">
+                            <addon.icon className="w-4 h-4 text-pink-500 mr-1" />
+                            <h5 className="text-base font-bold text-[#051c40]">{addon.title}</h5>
+                            
+                            {/* Selection checkmark */}
+                            {isSelected && (
+                              <CheckCircle weight="fill" className="w-4 h-4 text-pink-500 ml-1" />
                             )}
-                          </button>
+                          </div>
+                          <p className="text-gray-700 text-xs">{addon.feature}</p>
+                          <p className="text-gray-600 text-xs line-clamp-1">{addon.channels}</p>
+                        </div>
+                        
+                        {/* Right Column: Price only (no button) */}
+                        <div className="flex flex-col items-end">
+                          <div className="bg-gradient-to-r from-[#9c5adb] to-[#51fcff] text-white rounded-lg px-2.5 py-1 text-base font-bold">
+                            {addon.price}€<span className="text-xs font-normal">/mes</span>
+                          </div>
                         </div>
                       </div>
-                      
-                      {/* Selection indicator */}
-                      {isSelected && (
-                        <div className="absolute top-2 right-2 text-[#0066FF]">
-                          <CheckCircle weight="fill" className="w-5 h-5" />
-                        </div>
-                      )}
                     </div>
                   );
                 })}
               </div>
             </div>
             
-            {/* Desktop summary and button */}
-            <div className="border-t pt-3 flex justify-between items-center">
+            {/* Configurator summary and button - MUCH BIGGER */}
+            <div className="border-t border-gray-300 pt-3 sticky bottom-0 bg-gradient-to-b from-[#e0f7fc] to-[#c4e9ff] pb-2 mt-2">
               <div className="flex flex-col">
-                <span className="text-lg font-medium text-gray-800">Total mensual:</span>
-                <span className="text-4xl font-bold bg-gradient-to-r from-[#0066FF] to-[#51fcff] bg-clip-text text-transparent mt-1">
-                  {((selectedPlan?.price || 19.99) + selectedAddons.reduce((sum, addon) => sum + addon.price, 0)).toFixed(2)}€
-                </span>
+                <div className="flex justify-between items-center mb-2">
+                  <span className="text-base font-bold text-gray-800">Total mensual:</span>
+                  <span className="text-3xl font-extrabold bg-gradient-to-r from-[#9c5adb] to-[#51fcff] bg-clip-text text-transparent">
+                    {((selectedPlan?.price || 0) + selectedAddons.reduce((sum, addon) => sum + addon.price, 0)).toFixed(2)}€
+                  </span>
+                </div>
+                <button 
+                  className="w-full py-3 bg-gradient-to-r from-pink-500 to-[#9c5adb] text-white font-bold rounded-lg shadow-md text-xl"
+                  onClick={() => {
+                    setShowConfigurator(false);
+                  }}
+                >
+                  Confirmar
+                </button>
               </div>
-              <button 
-                className="py-2.5 px-6 bg-gradient-to-r from-[#0066FF] to-[#51fcff] text-white font-bold rounded-lg hover:shadow-lg transition-all hover:scale-105"
-                onClick={() => {
-                  setSelectedPlan({
-                    name: "BÁSICO",
-                    price: 19.99
-                  });
-                }}
-              >
-                Confirmar selección
-              </button>
             </div>
           </div>
         </div>
@@ -1027,17 +1153,22 @@ export default function UniTVPage() {
       <Contact />
 
       {/* Mobile configurator modal */}
-      <div className={`fixed inset-0 bg-black bg-opacity-70 z-50 flex items-center justify-center transition-opacity ${showConfigurator ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
-        <div className="bg-gradient-to-b from-[#e0f7fc] to-[#c4e9ff] rounded-lg w-full max-w-lg max-h-[90vh] overflow-y-auto p-4 relative">
-          <button onClick={() => setShowConfigurator(false)} className="absolute top-2 right-2 text-gray-700 hover:text-gray-900 bg-white/50 rounded-full p-1">
+      <div className={`fixed inset-0 bg-black bg-opacity-80 z-[100] flex items-center justify-center transition-opacity ${showConfigurator ? 'opacity-100' : 'opacity-0 pointer-events-none'}`}>
+        <div className="bg-gradient-to-b from-[#e0f7fc] to-[#c4e9ff] rounded-xl w-[95%] max-w-lg max-h-[70vh] overflow-y-auto p-3 relative mx-auto shadow-2xl border-2 border-white/20">
+          {/* Fixed position close button to ensure it's always visible */}
+          <button 
+            onClick={() => setShowConfigurator(false)} 
+            className="absolute top-2 right-2 z-50 bg-red-500 text-white rounded-full p-1.5 shadow-lg hover:bg-red-600 transition-colors"
+          >
             <X className="w-5 h-5" />
           </button>
           
-          <h3 className="text-3xl font-bold mb-4 text-center text-[#0066FF] bg-gradient-to-r from-[#0066FF] to-[#51fcff] bg-clip-text text-transparent">Configura tu Plan {selectedPlan?.name || "BÁSICO"}</h3>
+          <h3 className="text-lg font-bold text-center text-[#0066FF] bg-gradient-to-r from-[#0066FF] to-[#51fcff] bg-clip-text text-transparent pr-6">
+            Paquetes Adicionales
+          </h3>
           
-          <div className="mb-4">
-            <h4 className="text-xl font-semibold mb-3 text-center text-gray-800">Paquetes Adicionales</h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div className="mb-1">
+            <div className="grid grid-cols-1 gap-1.5 mt-1">
               {[
                 { 
                   title: "Internacionales", 
@@ -1080,75 +1211,58 @@ export default function UniTVPage() {
                   <div 
                     key={idx} 
                     onClick={() => toggleAddon({ title: addon.title, price: addon.price, channels: addon.channels })}
-                    className="bg-white border border-gray-200 rounded-lg p-3 shadow-sm cursor-pointer transition-all duration-300 hover:shadow-lg hover:border-[#0066FF]/30 hover:translate-y-[-2px] relative"
+                    className={`bg-white border rounded-lg py-2 px-3 shadow-sm cursor-pointer transition-all duration-300 hover:shadow-md relative ${isSelected ? 'border-pink-500 border-2 bg-pink-50' : 'border-gray-200'}`}
                   >
-                    <div className="flex flex-col">
-                      <div className="flex items-center mb-2">
-                        <addon.icon className="w-6 h-6 text-[#0066FF] mr-2" />
-                        <h5 className="text-xl font-bold text-[#051c40]">{addon.title}</h5>
-                      </div>
-                      <p className="text-gray-700 text-base mb-1">{addon.feature}</p>
-                      <p className="text-gray-600 text-sm">{addon.channels}</p>
-                      
-                      <div className="flex justify-between items-center mt-3">
-                        <div className="bg-gradient-to-r from-[#0066FF] to-[#51fcff] text-white rounded-lg px-3 py-1.5">
-                          <p className="text-xl font-bold">{addon.price}€<span className="text-xs font-normal">/mes</span></p>
-                        </div>
-                        <button
-                          onClick={(e) => {
-                            e.stopPropagation(); // Prevent duplicate trigger from parent onClick
-                            toggleAddon({ title: addon.title, price: addon.price, channels: addon.channels });
-                          }}
-                          className={`px-4 py-2 rounded-full text-base font-bold transition-all duration-300 ${
-                            isSelected 
-                            ? 'bg-red-500 text-white hover:bg-red-600 shadow-md hover:shadow-lg' 
-                            : 'bg-gradient-to-r from-[#0066FF] to-[#51fcff] text-white hover:shadow-lg hover:scale-105'
-                          }`}
-                        >
-                          {isSelected ? (
-                            <span className="flex items-center">
-                              <X weight="bold" className="mr-1 w-4 h-4" /> Quitar
-                            </span>
-                          ) : (
-                            <span className="flex items-center">
-                              <CheckCircle weight="fill" className="mr-1 w-4 h-4" /> Añadir
-                            </span>
+                    <div className="flex items-start">
+                      {/* Left Column: Icon and Title */}
+                      <div className="flex-grow mr-2">
+                        <div className="flex items-center">
+                          <addon.icon className="w-4 h-4 text-pink-500 mr-1" />
+                          <h5 className="text-base font-bold text-[#051c40]">{addon.title}</h5>
+                          
+                          {/* Selection checkmark */}
+                          {isSelected && (
+                            <CheckCircle weight="fill" className="w-4 h-4 text-pink-500 ml-1" />
                           )}
-                        </button>
+                        </div>
+                        <p className="text-gray-700 text-xs">{addon.feature}</p>
+                        <p className="text-gray-600 text-xs line-clamp-1">{addon.channels}</p>
+                      </div>
+                      
+                      {/* Right Column: Price only (no button) */}
+                      <div className="flex flex-col items-end">
+                        <div className="bg-gradient-to-r from-[#9c5adb] to-[#51fcff] text-white rounded-lg px-2.5 py-1 text-base font-bold">
+                          {addon.price}€<span className="text-xs font-normal">/mes</span>
+                        </div>
                       </div>
                     </div>
-                    
-                    {/* Selection indicator */}
-                    {isSelected && (
-                      <div className="absolute top-2 right-2 text-[#0066FF]">
-                        <CheckCircle weight="fill" className="w-5 h-5" />
-                      </div>
-                    )}
                   </div>
                 );
               })}
             </div>
           </div>
           
-          {/* Configurator summary and button */}
-          <div className="border-t pt-3">
-            <div className="flex flex-col mb-3">
-              <span className="text-lg font-medium text-gray-800">Total mensual:</span>
-              <span className="text-4xl font-bold bg-gradient-to-r from-[#0066FF] to-[#51fcff] bg-clip-text text-transparent mt-1">
-                {((selectedPlan?.price || 19.99) + selectedAddons.reduce((sum, addon) => sum + addon.price, 0)).toFixed(2)}€
-              </span>
+          {/* Configurator summary and button - MUCH BIGGER */}
+          <div className="border-t border-gray-300 pt-3 sticky bottom-0 bg-gradient-to-b from-[#e0f7fc] to-[#c4e9ff] pb-2 mt-2">
+            <div className="flex flex-col">
+              <div className="flex justify-between items-center mb-2">
+                <span className="text-base font-bold text-gray-800">Total mensual:</span>
+                <span className="text-3xl font-extrabold bg-gradient-to-r from-[#9c5adb] to-[#51fcff] bg-clip-text text-transparent">
+                  {((selectedPlan?.price || 0) + selectedAddons.reduce((sum, addon) => sum + addon.price, 0)).toFixed(2)}€
+                </span>
+              </div>
+              <button 
+                className="w-full py-3 bg-gradient-to-r from-pink-500 to-[#9c5adb] text-white font-bold rounded-lg shadow-md text-xl"
+                onClick={() => {
+                  setShowConfigurator(false);
+                }}
+              >
+                Confirmar
+              </button>
             </div>
-            <button 
-              className="w-full py-2.5 bg-gradient-to-r from-[#0066FF] to-[#51fcff] text-white font-medium rounded-lg hover:shadow-lg transition-all"
-              onClick={() => {
-                setShowConfigurator(false);
-              }}
-            >
-              Confirmar selección
-            </button>
           </div>
         </div>
       </div>
     </main>
   );
-} 
+}
